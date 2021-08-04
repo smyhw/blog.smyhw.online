@@ -1,0 +1,386 @@
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>向死而生 | 吾于此生，竭尽所能</title>
+    
+<script src="../jquery.js"></script>
+
+    
+<link rel="stylesheet" href="../style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<!--  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/default.min.css">    -->  
+
+<link rel="stylesheet" href="../markdown.css">
+
+    <style>
+        .content{
+            line-height: 1.5;
+            color: rgb(0, 0, 0);
+            border: 0;
+            font-size: 100%;
+            background-color: rgba(255, 255, 255, 0.70);
+            max-width: 896px;
+            padding: 0 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
+            padding: 0 27px 27px;
+            overflow: auto;
+        }
+        #title{
+            line-height: 2;
+            color: #333;
+            margin: 27px 0 0 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            font-size: 2.7em;
+        }
+        #nav{
+            line-height: 1.5;
+            color: #333;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .nav_item{
+            line-height: 1.5;
+            margin: 0;
+            border: 0;
+            outline: 0;
+            color: #333;
+            padding: 14px 20px;
+            display: block;
+            background-color: rgba(119, 119, 255,0);
+        }
+        #nav_center{
+            line-height: 1.5;
+            color: #333;
+            padding: 0 10vw 0 10vw;
+            border: 0;
+            outline: 0;
+            margin: 0 auto;
+            line-height: 1.5;
+            color: #333;
+            outline: none;
+            position: fixed;
+            top: 0;
+            height: 3.5em;
+            width: 80vw;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.65);
+            background-color: rgba(255, 255, 255, 0.70);
+        }
+        #main{
+            margin: 80px auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content:center;
+        }
+        #sidebar{
+            width: 36%;
+            max-width: 360px;
+        }
+        #article{
+            border-radius: 27px;
+            margin: 0 20px 0 20px;
+/*            min-width: 896px; */
+        }
+        .sidebar_item{
+            margin-bottom: 50px;
+            padding: 30px;
+            border-radius: 15px;
+        }
+        .highlight{
+            background: #2d2d2d;
+            margin: 0 -20px;
+            padding: 15px 20px;
+            border-style: solid;
+            border-color: #ddd;
+            border-width: 1px 0;
+            overflow: auto;
+            color: #ABB2BF;
+            line-height: 22px;
+        }
+        .sidebar_title{
+            line-height: 1.5;
+            box-sizing: border-box;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: -10px 0 10px -10px;
+            color: #be7e4a;
+        }
+        #date{
+            line-height: 1.15;
+            box-sizing: border-box;
+            transition: all .35s ease-out;
+            word-wrap: break-word;
+            background-color: rgba(255,78,106,0.3);
+            color: #ff4e4e;
+            border-radius: 20px;
+            padding: 10px 18px;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 5px;
+            margin-right: 10px;
+            text-decoration: none;
+        }
+        .hide_nav_button{
+            width: 100%;
+            line-height: 1.5em;
+            text-align: center;
+            display: block;
+        }
+        /*高亮*/
+        .code{
+            border:none;
+        }
+        /* code行号字体颜色 */
+        span.line{
+            color: #666;
+            margin: 0 9px;
+            font-size: 0.5em;
+            line-height: 2.55em;
+        }
+        /* code主体字体颜色 */
+        code.plaintext{
+            color: #ABB2BF;
+            line-height: 1.25em;
+            font-size: 1em;
+        }
+        /* hljs的配色背景删掉 */
+        .hljs{
+            background-color:rgba(0, 0, 0, 0);
+        }
+        /* hljs的padding */
+        pre code.hljs{
+            padding: 0;
+        }
+    </style>
+    <body>
+        <!-- 背景板 -->
+        <div class='background' id='background'></div>
+        <!-- 背景遮罩层 -->
+        <div class='background' id='background_mask'></div>
+        <!-- 博客标题 -->
+        <div id='side_title' style='
+        position: fixed;
+        top: 0;
+        z-index: 1;
+        margin: 3px 0px 0px 3vw;
+        '>
+            <span style='font-size: 30;'>向死而生</span>
+            <span>吾于此生,竭尽所能</span>
+        </div>
+        <!-- 导航栏 -->
+        <div id='nav_center'>
+                <div id='nav'>
+                    <a class='nav_item' href='/'>首页</a>
+                    <a class='nav_item' href='/friends/'>友人帐</a>
+                    <a class='nav_item' href='/about/'>关于我</a>
+                </div>
+        </div>
+        <!--隐藏导航栏-->
+        <div id='hide_nav' style='
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width:100vw;
+        '>
+            <!--切换按钮-->
+            <a id='hide_nav_sub' style='
+                position: absolute;
+                width: 2em;
+                height: 3em;
+                right: 1em;
+                top: 0.7em;
+            '>
+                <span href='#' style='background-color: #7f8c8d;display: block;width: 2em;height: 3px;border-radius: 1px;margin-top: 6px;'></span>
+                <span href='#' style='background-color: #7f8c8d;display: block;width: 2em;height: 3px;border-radius: 1px;margin-top: 6px;'></span>
+                <span href='#' style='background-color: #7f8c8d;display: block;width: 2em;height: 3px;border-radius: 1px;margin-top: 6px;'></span>
+            </a>
+            <!--内容-->
+            <div style='height: 3.5em;'><!--占位符--></div>
+            <div id='hide_nav_list' style='
+                display: none;
+                width: 100%;
+                height: 5em;
+                background-color: rgba(88, 88, 88, 0.85);
+            '>
+                <a href='/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>首页</a>
+                <a href='/friends/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>友人帐</a>
+                <a href='/about/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>关于我</a>
+            </div>
+        </div>
+        <!-- 主体 -->
+        <div id='main'>
+            <!--文章-->
+            <div class='content' id='article'>
+                <p id='title'>ess配置文件汉化</p>
+                <div id='date'>2021-08-02</div>
+                <hr>
+                <p>emmmm,发一个存货,ESS本体配置文件的汉化,去年做的</p>
+<span id="more"></span>
+<blockquote>
+<p>注意:该配置文件已经是根据我OurWorld的服务器的实际需求更改过的,可以对照编辑你的配置文件,但是不要照搬</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br><span class="line">624</span><br><span class="line">625</span><br><span class="line">626</span><br><span class="line">627</span><br><span class="line">628</span><br><span class="line">629</span><br><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br><span class="line">639</span><br><span class="line">640</span><br><span class="line">641</span><br><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br><span class="line">649</span><br><span class="line">650</span><br><span class="line">651</span><br><span class="line">652</span><br><span class="line">653</span><br><span class="line">654</span><br><span class="line">655</span><br><span class="line">656</span><br><span class="line">657</span><br><span class="line">658</span><br><span class="line">659</span><br><span class="line">660</span><br><span class="line">661</span><br><span class="line">662</span><br><span class="line">663</span><br><span class="line">664</span><br><span class="line">665</span><br><span class="line">666</span><br><span class="line">667</span><br><span class="line">668</span><br><span class="line">669</span><br><span class="line">670</span><br><span class="line">671</span><br><span class="line">672</span><br><span class="line">673</span><br><span class="line">674</span><br><span class="line">675</span><br><span class="line">676</span><br><span class="line">677</span><br><span class="line">678</span><br><span class="line">679</span><br><span class="line">680</span><br><span class="line">681</span><br><span class="line">682</span><br><span class="line">683</span><br><span class="line">684</span><br><span class="line">685</span><br><span class="line">686</span><br><span class="line">687</span><br><span class="line">688</span><br><span class="line">689</span><br><span class="line">690</span><br><span class="line">691</span><br><span class="line">692</span><br><span class="line">693</span><br><span class="line">694</span><br><span class="line">695</span><br><span class="line">696</span><br><span class="line">697</span><br><span class="line">698</span><br><span class="line">699</span><br><span class="line">700</span><br><span class="line">701</span><br><span class="line">702</span><br><span class="line">703</span><br><span class="line">704</span><br><span class="line">705</span><br><span class="line">706</span><br><span class="line">707</span><br><span class="line">708</span><br><span class="line">709</span><br><span class="line">710</span><br><span class="line">711</span><br><span class="line">712</span><br><span class="line">713</span><br><span class="line">714</span><br><span class="line">715</span><br><span class="line">716</span><br><span class="line">717</span><br><span class="line">718</span><br><span class="line">719</span><br><span class="line">720</span><br><span class="line">721</span><br><span class="line">722</span><br><span class="line">723</span><br><span class="line">724</span><br><span class="line">725</span><br><span class="line">726</span><br><span class="line">727</span><br><span class="line">728</span><br><span class="line">729</span><br><span class="line">730</span><br><span class="line">731</span><br><span class="line">732</span><br><span class="line">733</span><br><span class="line">734</span><br><span class="line">735</span><br><span class="line">736</span><br><span class="line">737</span><br><span class="line">738</span><br><span class="line">739</span><br><span class="line">740</span><br><span class="line">741</span><br><span class="line">742</span><br><span class="line">743</span><br><span class="line">744</span><br><span class="line">745</span><br><span class="line">746</span><br><span class="line">747</span><br><span class="line">748</span><br><span class="line">749</span><br><span class="line">750</span><br><span class="line">751</span><br><span class="line">752</span><br><span class="line">753</span><br><span class="line">754</span><br><span class="line">755</span><br><span class="line">756</span><br><span class="line">757</span><br><span class="line">758</span><br><span class="line">759</span><br><span class="line">760</span><br><span class="line">761</span><br><span class="line">762</span><br><span class="line">763</span><br><span class="line">764</span><br><span class="line">765</span><br><span class="line">766</span><br><span class="line">767</span><br><span class="line">768</span><br><span class="line">769</span><br><span class="line">770</span><br><span class="line">771</span><br><span class="line">772</span><br><span class="line">773</span><br><span class="line">774</span><br><span class="line">775</span><br><span class="line">776</span><br><span class="line">777</span><br><span class="line">778</span><br><span class="line">779</span><br><span class="line">780</span><br><span class="line">781</span><br><span class="line">782</span><br><span class="line">783</span><br><span class="line">784</span><br><span class="line">785</span><br><span class="line">786</span><br><span class="line">787</span><br><span class="line">788</span><br><span class="line">789</span><br><span class="line">790</span><br><span class="line">791</span><br><span class="line">792</span><br><span class="line">793</span><br><span class="line">794</span><br><span class="line">795</span><br><span class="line">796</span><br><span class="line">797</span><br><span class="line">798</span><br><span class="line">799</span><br><span class="line">800</span><br><span class="line">801</span><br><span class="line">802</span><br><span class="line">803</span><br><span class="line">804</span><br><span class="line">805</span><br><span class="line">806</span><br><span class="line">807</span><br><span class="line">808</span><br><span class="line">809</span><br><span class="line">810</span><br><span class="line">811</span><br><span class="line">812</span><br><span class="line">813</span><br><span class="line">814</span><br><span class="line">815</span><br><span class="line">816</span><br><span class="line">817</span><br><span class="line">818</span><br><span class="line">819</span><br><span class="line">820</span><br><span class="line">821</span><br><span class="line">822</span><br><span class="line">823</span><br><span class="line">824</span><br><span class="line">825</span><br><span class="line">826</span><br><span class="line">827</span><br><span class="line">828</span><br><span class="line">829</span><br><span class="line">830</span><br><span class="line">831</span><br><span class="line">832</span><br><span class="line">833</span><br><span class="line">834</span><br><span class="line">835</span><br><span class="line">836</span><br><span class="line">837</span><br><span class="line">838</span><br><span class="line">839</span><br><span class="line">840</span><br><span class="line">841</span><br><span class="line">842</span><br><span class="line">843</span><br><span class="line">844</span><br><span class="line">845</span><br><span class="line">846</span><br><span class="line">847</span><br><span class="line">848</span><br><span class="line">849</span><br><span class="line">850</span><br><span class="line">851</span><br><span class="line">852</span><br><span class="line">853</span><br><span class="line">854</span><br><span class="line">855</span><br><span class="line">856</span><br><span class="line">857</span><br><span class="line">858</span><br><span class="line">859</span><br><span class="line">860</span><br><span class="line">861</span><br><span class="line">862</span><br><span class="line">863</span><br><span class="line">864</span><br><span class="line">865</span><br><span class="line">866</span><br><span class="line">867</span><br><span class="line">868</span><br><span class="line">869</span><br><span class="line">870</span><br><span class="line">871</span><br><span class="line">872</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">############################################################<br># +------------------------------------------------------+ #<br># |                       Notes                          | #<br># +------------------------------------------------------+ #<br>############################################################<br><br># If you want to use special characters in this document, such as accented letters, you MUST save the file as UTF-8, not ANSI.<br># If you receive an error when Essentials loads, ensure that:<br>#   - No tabs are present: YAML only allows spaces<br>#   - Indents are correct: YAML hierarchy is based entirely on indentation<br>#   - You have &quot;escaped&quot; all apostrophes in your text: If you want to write &quot;don&#x27;t&quot;, for example, write &quot;don&#x27;&#x27;t&quot; instead (note the doubled apostrophe)<br>#   - Text with symbols is enclosed in single or double quotation marks<br><br># If you have problems join the Essentials help support channel: http://tiny.cc/EssentialsChat<br><br>#中文简略翻译 by smyhw<br>#2019.5.15<br><br>############################################################<br># +------------------------------------------------------+ #<br># |                 Essentials (Global)                  | #<br># +------------------------------------------------------+ #<br>############################################################<br><br># A color code between 0-9 or a-f. Set to &#x27;none&#x27; to disable.<br>#op名字的颜色代码<br>ops-name-color: &#x27;a&#x27;<br><br># The character(s) to prefix all nicknames, so that you know they are not true usernames.<br>#nick指令的前缀<br>nickname-prefix: &#x27;~&#x27;<br><br># The maximum length allowed in nicknames. The nickname prefix is included in this.<br>#nick的长度限制<br>max-nick-length: 15<br><br># Disable this if you have any other plugin, that modifies the displayname of a user.<br>#更改玩家的显示名称<br>change-displayname: true<br><br># When this option is enabled, the (tab) player list will be updated with the displayname.<br># The value of change-displayname (above) has to be true.<br>#将ESS定义的玩家显示名称显示在tab菜单上<br>#若要将此项更改为true，上方的change-displayname必须为true<br>change-playerlist: true<br><br># When EssentialsChat.jar isn&#x27;t used, force essentials to add the prefix and suffix from permission plugins to displayname.<br># This setting is ignored if EssentialsChat.jar is used, and defaults to &#x27;true&#x27;.<br># The value of change-displayname (above) has to be true.<br># Do not edit this setting unless you know what you are doing!<br>#当你不用EssentialsChat时，你可以启用此项，这会让ESS强制把玩家的显示名称更改成ESS定义的<br>#如果启动这个选项，上方的change-displayname必须为true<br>#如果你使用的EssentialsChat，这个选项将被无视。。。<br>#原文还写了：如果你不知道你在干什么，请不要改动这个选项！<br>#add-prefix-suffix: false<br><br># If the teleport destination is unsafe, should players be teleported to the nearest safe location?<br># If this is set to true, Essentials will attempt to teleport players close to the intended destination.<br># If this is set to false, attempted teleports to unsafe locations will be cancelled with a warning.<br>#传送安全设置<br>#如果设置为true，ESS会无条件把玩家精确地传送到目标未知，哪怕目标位置有一堆怪或者直接是虚空XD<br>#如果设置为false，ESS则会判断目标地点是否安全并且自动取消不安全的传送，并向玩家发送不安全警告<br>teleport-safety: true<br><br># The delay, in seconds, required between /home, /tp, etc.<br>#传送指令的冷却时间,比如/home,/tp,/tp。。。<br>#单位是秒<br>teleport-cooldown: 9<br><br># The delay, in seconds, before a user actually teleports.  If the user moves or gets attacked in this timeframe, the teleport never occurs.<br>#传送指令的延迟，就是从你输入指令到传送发生之间的延迟（就像有些服务器的：传送还有x秒开始。。。。）<br>#如果这期间玩家被攻击或者移动，传送会被取消<br>#单位是秒<br>teleport-delay: 3<br><br># The delay, in seconds, a player can&#x27;t be attacked by other players after they have been teleported by a command.<br># This will also prevent the player attacking other players.<br>#当一个传送指令完成后，玩家在多少秒内不会受到攻击，在这期间，玩家也不能攻击别人<br>#单位是秒<br>teleport-invulnerability: 3<br><br># The delay, in seconds, required between /heal or /feed attempts.<br>#治疗指令（/heal）和恢复饱食度指令（/feed）的冷却时间<br>#单位是秒<br>heal-cooldown: 60<br><br># What to prevent from /item and /give.<br># e.g item-spawn-blacklist: 10,11,46<br>#给予物品的指令（/item或者/give）的黑名单<br>#就是使用这几个指令不能给予的物品<br>item-spawn-blacklist:<br><br># Set this to true if you want permission based item spawn rules.<br># Note: The blacklist above will be ignored then.<br># Example permissions (these go in your permissions manager):<br>#  - essentials.itemspawn.item-all<br>#  - essentials.itemspawn.item-[itemname]<br>#  - essentials.itemspawn.item-[itemid]<br>#  - essentials.give.item-all<br>#  - essentials.give.item-[itemname]<br>#  - essentials.give.item-[itemid]<br>#  - essentials.unlimited.item-all<br>#  - essentials.unlimited.item-[itemname]<br>#  - essentials.unlimited.item-[itemid]<br>#  - essentials.unlimited.item-bucket # Unlimited liquid placing<br>#<br># For more information, visit http://wiki.ess3.net/wiki/Command_Reference/ICheat#Item.2FGive<br>#是否基于权限来设定是否允许使用以上黑名单的物品<br>permission-based-item-spawn: false<br><br># Mob limit on the /spawnmob command per execution.<br>#使用/spawnmob命令生成怪物时一次最多生成多少？<br>spawnmob-limit: 3<br><br># Shall we notify users when using /lightning?<br>#是否在使用/lightning指令（就是劈闪电）时通知被劈中的玩家？<br>warn-on-smite: true<br><br># The motd and rules are now configured in the files motd.txt and rules.txt.<br><br># When a command conflicts with another plugin, by default, Essentials will try to force the OTHER plugin to take priority.<br># Commands in this list, will tell Essentials to &#x27;not give up&#x27; the command to other plugins.<br># In this state, which plugin &#x27;wins&#x27; appears to be almost random.<br>#<br># If you have two plugin with the same command and you wish to force Essentials to take over, you need an alias.<br># To force essentials to take &#x27;god&#x27; alias &#x27;god&#x27; to &#x27;egod&#x27;.<br># See http://wiki.bukkit.org/Commands.yml#aliases for more information.<br><br>#服务器MOTD和规则文本现在配置在文件motd.txt和rules.txt中。<br>#默认情况下，当一个ESS的命令与另一个插件的命令发生冲突时（就是俩命令一样的时候），Essentials会尝试另一个插件占据优先级。<br>#但是如果指令出现在下方的列表中，则ESS会尝试让自己占据优先级。<br>#如果那个插件也同样试图占据优先级，那么，到底是哪个插件会取得优先级就是几乎随机的。<br>#如果您有两个具有相同命令的插件，并且希望强制Essentials接管，那么您需要一个别名。<br>#比如将“god”别名“god”改为“egod”。<br>#PS：简而言之，插件冲突。。。<br><br>overridden-commands:<br>#  - god<br>#  - info<br><br># Disabling commands here will prevent Essentials handling the command, this will not affect command conflicts.<br># You should not have to disable commands used in other plugins, they will automatically get priority.<br># See http://wiki.bukkit.org/Commands.yml#aliases to map commands to other plugins.<br>#简而言之 就是禁用指令列表<br>disabled-commands:<br>#  - nick<br>#  - clear<br><br># These commands will be shown to players with socialSpy enabled.<br># You can add commands from other plugins you may want to track or<br># remove commands that are used for something you dont want to spy on.<br># Set - &#x27;*&#x27; in order to listen on all possible commands.<br>#OP可以监听以下私聊指令的内容<br>socialspy-commands:<br>  - msg<br>  - w<br>  - r<br>  - mail<br>  - m<br>  - t<br>  - whisper<br>  - emsg<br>  - tell<br>  - er<br>  - reply<br>  - ereply<br>  - email<br>  - action<br>  - describe<br>  - eme<br>  - eaction<br>  - edescribe<br>  - etell<br>  - ewhisper<br>  - pm<br><br># If you do not wish to use a permission system, you can define a list of &#x27;player perms&#x27; below.<br># This list has no effect if you are using a supported permissions system.<br># If you are using an unsupported permissions system, simply delete this section.<br># Whitelist the commands and permissions you wish to give players by default (everything else is op only).<br># These are the permissions without the &quot;essentials.&quot; part.<br>#如果你没有其他的权限组插件，你可以使用下面的权限系统<br>#如下是玩家拥有的权限组<br>player-commands:<br>  # - afk<br>  # - afk.auto<br>  # - back<br>  # - back.ondeath<br>  # - balance<br>  # - balance.others<br>  # - balancetop<br>  # - build<br>  # - chat.color<br>  # - chat.format<br>  # - chat.shout<br>  # - chat.question<br>  # - clearinventory<br>  # - compass<br>  # - depth<br>  # - delhome<br>  # - getpos<br>  # - geoip.show<br>  # - help<br>  # - helpop<br>  # - home<br>  # - home.others<br>  # - ignore<br>  # - info<br>  # - itemdb<br>  # - kit<br>  # - kits.tools<br>  # - list<br>  # - mail<br>  # - mail.send<br>  # - me<br>  # - motd<br>  # - msg<br>  # - msg.color<br>  # - nick<br>  # - near<br>  # - pay<br>  # - ping<br>  # - protect<br>  # - r<br>  # - rules<br>  # - realname<br>  # - seen<br>  # - sell<br>  # - sethome<br>  # - setxmpp<br>  # - signs.create.protection<br>  # - signs.create.trade<br>  # - signs.break.protection<br>  # - signs.break.trade<br>  # - signs.use.balance<br>  # - signs.use.buy<br>  # - signs.use.disposal<br>  # - signs.use.enchant<br>  # - signs.use.free<br>  # - signs.use.gamemode<br>  # - signs.use.heal<br>  # - signs.use.info<br>  # - signs.use.kit<br>  # - signs.use.mail<br>  # - signs.use.protection<br>  # - signs.use.repair<br>  # - signs.use.sell<br>  # - signs.use.time<br>  # - signs.use.trade<br>  # - signs.use.warp<br>  # - signs.use.weather<br>  # - spawn<br>  # - suicide<br>  # - time<br>  # - tpa<br>  # - tpaccept<br>  # - tpahere<br>  # - tpdeny<br>  # - warp<br>  # - warp.list<br>  # - world<br>  # - worth<br>  # - xmpp<br><br># Note: All items MUST be followed by a quantity!<br># All kit names should be lower case, and will be treated as lower in permissions/costs.<br># Syntax: - itemID[:DataValue/Durability] Amount [Enchantment:Level].. [itemmeta:value]...<br># For Item Meta information visit http://wiki.ess3.net/wiki/Item_Meta<br># &#x27;delay&#x27; refers to the cooldown between how often you can use each kit, measured in seconds.<br># Set delay to -1 for a one time kit.<br># For more information, visit http://wiki.ess3.net/wiki/Kits<br>#嘛...kits工具包，玩家可以通过/kits+工具包名获取指定工具包<br>kits:<br>#工具包名称<br>#  tools:<br>#获取冷却时间<br>#单位是秒<br>#    delay: 10<br>#工具包所含物品<br>    # items:<br>      # - 272 1<br>      # - 273 1<br>      # - 274 1<br>      # - 275 1<br>  # dtools:<br>    # delay: 600<br>    # items:<br>      # - 278 1 efficiency:1 durability:1 fortune:1 name:&amp;4Gigadrill lore:The_drill_that_&amp;npierces|the_heavens<br>      # - 277 1 digspeed:3 name:Dwarf lore:Diggy|Diggy|Hole<br>      # - 298 1 color:255,255,255 name:Top_Hat lore:Good_day,_Good_day<br>      # - 279:780 1<br>  # notch:<br>    # delay: 6000<br>    # items:<br>      # - 397:3 1 player:Notch<br>  # color:<br>    # delay: 6000<br>    # items:<br>      # - 387 1 title:&amp;4Book_&amp;9o_&amp;6Colors author:KHobbits lore:Ingame_color_codes book:Colors<br>  # firework:<br>    # delay: 6000<br>    # items:<br>      # - 401 1 name:Angry_Creeper color:red fade:green type:creeper power:1<br>      # - 401 1 name:StarryNight color:yellow,orange fade:blue type:star effect:trail,twinkle power:1<br>      # - 401 2 name:SolarWind color:yellow,orange fade:red shape:large effect:twinkle color:yellow,orange fade:red shape:ball effect:trail color:red,purple fade:pink shape:star effect:trail power:1<br><br># Essentials Sign Control<br># See http://wiki.ess3.net/wiki/Sign_Tutorial for instructions on how to use these.<br># To enable signs, remove # symbol. To disable all signs, comment/remove each sign.<br># Essentials colored sign support will be enabled when any sign types are enabled.<br># Color is not an actual sign, it&#x27;s for enabling using color codes on signs, when the correct permissions are given.<br>#牌子，选择启用哪些功能牌子<br>enabledSigns:<br>  #- color<br>  #- balance<br>  #- buy<br>  #- sell<br>  #- trade<br>  #- free<br>  #- disposal<br>  #- warp<br>  #- kit<br>  #- mail<br>  #- enchant<br>  #- gamemode<br>  - heal<br>  #- info<br>  #- spawnmob<br>  - repair<br>  #- time<br>  #- weather<br><br># How many times per second can Essentials signs be interacted with per player.<br># Values should be between 1-20, 20 being virtually no lag protection.<br># Lower numbers will reduce the possibility of lag, but may annoy players.<br>#每个玩家每秒可以用多少次特殊牌子<br>#可用值在1-20之间<br>#因为MC每秒最多判定20次，所以当值为20时，效果等同于禁用此项<br>#注意！如果玩家开个连点器点牌子，并且该项的值设置得太高，则会大量占用服务器资源<br>sign-use-per-second: 3<br><br># Backup runs a batch/bash command while saving is disabled.<br>#当存档定时保存被禁用时，定时运行一个存档保存指令<br>backup:<br>  # Interval in minutes.<br>  #时间间隔<br>  interval: 30<br>  # Unless you add a valid backup command or script here, this feature will be useless.<br>  # Use &#x27;save-all&#x27; to simply force regular world saving without backup.<br>  #command: &#x27;rdiff-backup World1 backups/World1&#x27;<br>#除非你在这里写了一个有效的备份指令或者脚本，不然这个选项会被无视<br><br># Set this true to enable permission per warp.<br>#将这个选项设置为true，则每个warp点会有单独的传送权限<br>per-warp-permission: false<br><br># Sort output of /list command by groups.<br># You can hide and merge the groups displayed in /list by defining the desired behaviour here.<br># Detailed instructions and examples can be found on the wiki: http://wiki.ess3.net/wiki/List<br>#对list指令（输出在线玩家列表）输出的列表进行排序<br>list:<br>    # To merge groups, list the groups you wish to merge<br>    #Staff: owner admin moderator<br>#    Admins: owner admin<br>    # To limit groups, set a max user limit<br>    #builder: 20<br>    # To hide groups, set the group as hidden<br>    #default: hidden<br>    # Uncomment the line below to simply list all players with no grouping<br>    #Players: &#x27;*&#x27;<br><br># More output to the console.<br>#测试模式。。。没啥说的<br>debug: false<br><br># Set the locale for all messages.<br># If you don&#x27;t set this, the default locale of the server will be used.<br># For example, to set language to English, set locale to en, to use the file &quot;messages_en.properties&quot;.<br># Don&#x27;t forget to remove the # in front of the line.<br># For more information, visit http://wiki.ess3.net/wiki/Locale<br>locale: zhcn<br><br># Turn off god mode when people leave the server.<br>#当一个玩家离线时，关掉他的上帝模式<br>remove-god-on-disconnect: false<br><br># Auto-AFK<br># After this timeout in seconds, the user will be set as AFK.<br># This feature requires the player to have essentials.afk.auto node.<br># Set to -1 for no timeout.<br>#玩家不动多少秒后自动进入afk状态<br>#设置为-1则禁用该功能<br>#单位是秒<br>auto-afk: 300<br><br># Auto-AFK Kick<br># After this timeout in seconds, the user will be kicked from the server.<br># essentials.afk.kickexempt node overrides this feature.<br># Set to -1 for no timeout.<br>#玩家多少秒不动就会被踢出服务器<br>#单位是秒<br>auto-afk-kick: -1<br><br># Set this to true, if you want to freeze the player, if the player is AFK.<br># Other players or monsters can&#x27;t push the player out of AFK mode then.<br># This will also enable temporary god mode for the AFK player.<br># The player has to use the command /afk to leave the AFK mode.<br>#如果这个选项被设定为true<br>#处于afk状态下的玩家将无法被伤害<br>#同时，除非玩家使用/afk退出afk状态，否则玩家啥事都干不了<br>freeze-afk-players: false<br><br># When the player is AFK, should he be able to pickup items?<br># Enable this, when you don&#x27;t want people idling in mob traps.<br>#是否禁用afk玩家捡起物品<br>#设置为true，afk状态下玩家无法拾起物品<br>disable-item-pickup-while-afk: true<br><br># This setting controls if a player is marked as active on interaction.<br># When this setting is false, the player would need to manually un-AFK using the /afk command.<br>#是否在玩家活动时自动解除afk状态<br>#设置为false则玩家无法移动或者干其他任何事情，除非他们用/afk解除afk状态<br>cancel-afk-on-interact: true<br><br># Should we automatically remove afk status when a player moves?<br># Player will be removed from AFK on chat/command regardless of this setting.<br># Disable this to reduce server lag.<br>#当玩家移动时解除afk状态<br>#禁用此项会减少服务器负载<br>cancel-afk-on-move: true<br><br># You can disable the death messages of Minecraft here.<br>#是否开启原版死亡提示<br>#true：开启<br>#false：关闭<br>death-messages: true<br><br># Should players with permissions be able to join and part silently?<br># You can control this with essentials.silentjoin and essentials.silentquit permissions if it is enabled.<br># In addition, people with essentials.silentjoin.vanish will be vanished on join.<br>#是否关闭玩家进入或退出服务器的提示<br>#false：开启提示<br>#true：关闭提示<br>allow-silent-join-quit: false<br><br># You can set a custom join message here, set to &quot;none&quot; to disable.<br># You may use color codes, use &#123;USERNAME&#125; the player&#x27;s name or &#123;PLAYER&#125; for the player&#x27;s displayname.<br>#自定义玩家进入服务器的提示，玩家名可以用&#123;player&#125;变量<br>#可以使用颜色代码<br>custom-join-message: &quot;&#123;PLAYER&#125;汇聚了&quot;<br><br># You can set a custom quit message here, set to &quot;none&quot; to disable.<br># You may use color codes, use &#123;USERNAME&#125; the player&#x27;s name or &#123;PLAYER&#125; for the player&#x27;s displayname.<br>#自定义玩家退出服务器的提示，玩家名可以用&#123;player&#125;变量<br>#可以使用颜色代码<br>custom-quit-message: &quot;&#123;PLAYER&#125;离散了&quot;<br><br># Add worlds to this list, if you want to automatically disable god mode there.<br>#这个列表里的世界会禁用上帝模式<br>no-god-in-worlds:<br>#  - world_nether<br><br># Set to true to enable per-world permissions for teleporting between worlds with essentials commands.<br># This applies to /world, /back, /tp[a|o][here|all], but not warps.<br># Give someone permission to teleport to a world with essentials.worlds.&lt;worldname&gt;<br># This does not affect the /home command, there is a separate toggle below for this.<br>#是否启用每一个的传送权限（例如essentials.worlds.世界名称）<br>#这会影响到/world, /back, /tp，但是warp不受影响<br>#/home也不受影响，但是/home在底下会有设置<br>world-teleport-permissions: false<br><br># The number of items given if the quantity parameter is left out in /item or /give.<br># If this number is below 1, the maximum stack size size is given. If over-sized stacks.<br># are not enabled, any number higher than the maximum stack size results in more than one stack.、<br>#使用/item或者/give这样的指令能最大给予的数量<br>#设置为-1则不限制<br>default-stack-size: -1<br><br># Over-sized stacks are stacks that ignore the normal max stack size.<br># They can be obtained using /give and /item, if the player has essentials.oversizedstacks permission.<br># How many items should be in an over-sized stack?<br>#物品最大堆叠数量<br>oversized-stacksize: 64<br><br># Allow repair of enchanted weapons and armor.<br># If you set this to false, you can still allow it for certain players using the permission.<br># essentials.repair.enchanted<br>#是否允许修理附魔武器和工具<br>#即使你设置为false（就是不允许），你仍然可以通过权限组来允许玩家修理<br>repair-enchanted: true<br><br># Allow &#x27;unsafe&#x27; enchantments in kits and item spawning.<br># Warning: Mixing and overleveling some enchantments can cause issues with clients, servers and plugins.<br>#是否允许不安全的附魔？<br>unsafe-enchantments: false<br><br>#Do you want Essentials to keep track of previous location for /back in the teleport listener?<br>#If you set this to true any plugin that uses teleport will have the previous location registered.<br>#是否允许ess保留back的坐标<br>register-back-in-listener: false<br><br>#Delay to wait before people can cause attack damage after logging in.<br>#玩家登入后几秒内不能打人<br>#单位是秒<br>login-attack-delay: 5<br><br>#Set the max fly speed, values range from 0.1 to 1.0<br>#最大飞行速度<br>#值为0.1~1.0<br>max-fly-speed: 1.0<br><br>#Set the max walk speed, values range from 0.1 to 1.0<br>#最大步行速度<br>#值为0.1~1.0<br>max-walk-speed: 1.0<br><br>#Set the maximum amount of mail that can be sent within a minute.<br>#服务器每秒最多产生多少邮件<br>mails-per-minute: 0<br><br># Set the maximum time /tempban can be used for in seconds.<br># Set to -1 to disable, and essentials.tempban.unlimited can be used to override.<br>#tempban可以最大封禁的秒数<br>#单位是秒<br>#设置为-1则不限制<br>max-tempban-time: -1<br><br>############################################################<br># +------------------------------------------------------+ #<br># |                   EssentialsHome                     | #<br># +------------------------------------------------------+ #<br>############################################################<br><br># Allows people to set their bed at daytime.<br>#是否允许在白天点击床来设定出生点？<br>update-bed-at-daytime: true<br><br># Set to true to enable per-world permissions for using homes to teleport between worlds.<br># This applies to the /home only.<br># Give someone permission to teleport to a world with essentials.worlds.&lt;worldname&gt;<br>#是否允许玩家/home跨世界？<br>world-home-permissions: false<br><br># Allow players to have multiple homes.<br># Players need essentials.sethome.multiple before they can have more than 1 home.<br># You can set the default number of multiple homes using the &#x27;default&#x27; rank below.<br># To remove the home limit entirely, give people &#x27;essentials.sethome.multiple.unlimited&#x27;.<br># To grant different home amounts to different people, you need to define a &#x27;home-rank&#x27; below.<br># Create the &#x27;home-rank&#x27; below, and give the matching permission: essentials.sethome.multiple.&lt;home-rank&gt;<br># For more information, visit http://wiki.ess3.net/wiki/Multihome<br>#设置玩家可以拥有几个家<br>#使用essentials.sethome.multiple.unlimited允许玩家无限设置<br>#使用essentials.sethome.multiple.权限组名称 来设置权限组<br>sethome-multiple:<br>  default: 1<br>#  vip: 5<br>#  staff: 10<br><br># In this example someone with &#x27;essentials.sethome.multiple&#x27; and &#x27;essentials.sethome.multiple.vip&#x27; will have 5 homes.<br># Remember, they MUST have both permission nodes in order to be able to set multiple homes.<br><br># Set the timeout, in seconds for players to accept a tpa before the request is cancelled.<br># Set to 0 for no timeout.<br>#设置玩家传送超时时间<br>#单位是秒<br>tpa-accept-cancellation: 30<br><br>############################################################<br># +------------------------------------------------------+ #<br># |                   EssentialsEco                      | #<br># +------------------------------------------------------+ #<br>############################################################<br><br># For more information, visit http://wiki.ess3.net/wiki/Essentials_Economy<br><br># Defines the balance with which new players begin. Defaults to 0.<br>#新玩家默认有多少钱<br>starting-balance: 5000<br><br># worth-# defines the value of an item when it is sold to the server via /sell.<br># These are now defined in worth.yml<br><br># Defines the cost to use the given commands PER USE.<br># Some commands like /repair have sub-costs, check the wiki for more information.<br>#定义使用一个指令需要多少钱<br>command-costs:<br>  # /example costs $1000 PER USE<br>  #example: 1000<br>  # /kit tools costs $1500 PER USE<br>  #kit-tools: 1500<br><br># Set this to a currency symbol you want to use.<br># Remember, if you want to use special characters in this document, <br># such as accented letters, you MUST save the file as UTF-8, not ANSI.<br>#货币符号<br>currency-symbol: &#x27;$&#x27;<br><br># Set the maximum amount of money a player can have.<br># The amount is always limited to 10 trillion because of the limitations of a java double.<br>#玩家最大货币数量<br>#别超了java上限就好<br>max-money: 100000000<br><br># Set the minimum amount of money a player can have (must be above the negative of max-money).<br># Setting this to 0, will disable overdrafts/loans completely.  Users need &#x27;essentials.eco.loan&#x27; perm to go below 0.<br>#设置玩家最低货币数量<br>#可以设置为负数<br>min-money: 0<br><br># Enable this to log all interactions with trade/buy/sell signs and sell command.<br>#是否让ess记录所有可能记录的交易<br>economy-log-enabled: false<br><br>############################################################<br># +------------------------------------------------------+ #<br># |                   EssentialsHelp                     | #<br># +------------------------------------------------------+ #<br>############################################################<br><br># Show other plugins commands in help.<br>#在/help列表里列出其他插件的帮助<br>non-ess-in-help: true<br><br># Hide plugins which do not give a permission.<br># You can override a true value here for a single plugin by adding a permission to a user/group.<br># The individual permission is: essentials.help.&lt;plugin&gt;, anyone with essentials.* or &#x27;*&#x27; will see all help regardless.<br># You can use negative permissions to remove access to just a single plugins help if the following is enabled.<br>#在help里隐藏没有权限的插件的帮助<br>hide-permissionless-help: true<br><br>############################################################<br># +------------------------------------------------------+ #<br># |                   EssentialsChat                     | #<br># +------------------------------------------------------+ #<br>############################################################<br><br># This section requires the EssentialsChat.jar to work.<br><br>chat:<br><br>  # If EssentialsChat is installed, this will define how far a player&#x27;s voice travels, in blocks.  Set to 0 to make all chat global.<br>  # Note that users with the &quot;essentials.chat.spy&quot; permission will hear everything, regardless of this setting.<br>  # Users with essentials.chat.shout can override this by prefixing text with an exclamation mark (!)<br>  # Users with essentials.chat.question can override this by prefixing text with a question mark (?)<br>  # You can add command costs for shout/question by adding chat-shout and chat-question to the command costs section.&quot;<br>#聊天半径<br>  radius: 0<br><br>  # Chat formatting can be done in two ways, you can either define a standard format for all chat.<br>  # Or you can give a group specific chat format, to give some extra variation.<br>  # For more information of chat formatting, check out the wiki: http://wiki.ess3.net/wiki/Chat_Formatting<br>#玩家聊天时的格式<br>  format: &#x27;|&#123;DISPLAYNAME&#125;|&#123;deluxetags_tag&#125; ： &#123;MESSAGE&#125; &amp;d喵呜~&#x27;<br>  #format: &#x27;&amp;7[&#123;GROUP&#125;]&amp;r &#123;DISPLAYNAME&#125;&amp;7:&amp;r &#123;MESSAGE&#125;&#x27;<br>#分组定义聊天格式<br>  group-formats:<br>  #  Default: &#x27;&#123;WORLDNAME&#125; &#123;DISPLAYNAME&#125;&amp;7:&amp;r &#123;MESSAGE&#125;&#x27;<br>  #  Admins: &#x27;&#123;WORLDNAME&#125; &amp;c[&#123;GROUP&#125;]&amp;r &#123;DISPLAYNAME&#125;&amp;7:&amp;c &#123;MESSAGE&#125;&#x27;<br><br>  # If you are using group formats make sure to remove the &#x27;#&#x27; to allow the setting to be read.<br><br>############################################################<br># +------------------------------------------------------+ #<br># |                 EssentialsProtect                    | #<br># +------------------------------------------------------+ #<br>############################################################<br><br># This section requires the EssentialsProtect.jar to work.<br><br>protect:<br>#ess保护列表<br>  # General physics/behavior modifications.<br>  prevent:<br>    lava-flow: false<br>    water-flow: false<br>    water-bucket-flow: false<br>    fire-spread: false<br>    lava-fire-spread: false<br>    flint-fire: false<br>    lightning-fire-spread: false<br>    portal-creation: false<br>    tnt-explosion: true<br>    tnt-playerdamage: false<br>    tnt-minecart-explosion: false<br>    tnt-minecart-playerdamage: false<br>    fireball-explosion: false<br>    fireball-fire: false<br>    fireball-playerdamage: false<br>    witherskull-explosion: false<br>    witherskull-playerdamage: false<br>    wither-spawnexplosion: false<br>    wither-blockreplace: false<br>    creeper-explosion: false<br>    creeper-playerdamage: false<br>    creeper-blockdamage: false<br>    enderdragon-blockdamage: true<br>    enderman-pickup: true<br>    villager-death: false<br>    # Monsters won&#x27;t follow players.<br>    # permission essentials.protect.entitytarget.bypass disables this.<br>    entitytarget: false<br>    # Prevent the spawning of creatures.<br>    #生物生成<br>    spawn:<br>      creeper: false<br>      skeleton: false<br>      spider: false<br>      giant: false<br>      zombie: false<br>      slime: false<br>      ghast: false<br>      pig_zombie: false<br>      enderman: false<br>      cave_spider: false<br>      silverfish: false<br>      blaze: false<br>      magma_cube: false<br>      ender_dragon: false<br>      pig: false<br>      sheep: false<br>      cow: false<br>      chicken: false<br>      squid: false<br>      wolf: false<br>      mushroom_cow: false<br>      snowman: false<br>      ocelot: false<br>      iron_golem: false<br>      villager: false<br>      wither: false<br>      bat: false<br>      witch: false<br>      horse: false<br><br>  # Maximum height the creeper should explode. -1 allows them to explode everywhere.<br>  # Set prevent.creeper-explosion to true, if you want to disable creeper explosions.<br>  creeper:<br>    max-height: -1<br><br>  # Disable various default physics and behaviors.<br>  disable:<br>    # Should fall damage be disabled?<br>    fall: false<br><br>    # Users with the essentials.protect.pvp permission will still be able to attack each other if this is set to true.<br>    # They will be unable to attack users without that same permission node.<br>    pvp: false<br><br>    # Should drowning damage be disabled?<br>    # (Split into two behaviors; generally, you want both set to the same value.)<br>    drown: false<br>    suffocate: false<br><br>    # Should damage via lava be disabled?  Items that fall into lava will still burn to a crisp. ;)<br>    lavadmg: false<br><br>    # Should arrow damage be disabled?<br>    projectiles: false<br><br>    # This will disable damage from touching cacti.<br>    contactdmg: false<br><br>    # Burn, baby, burn!  Should fire damage be disabled?<br>    firedmg: false<br><br>    # Should the damage after hit by a lightning be disabled?<br>    lightning: false<br><br>    # Should Wither damage be disabled?<br>    wither: false<br><br>    # Disable weather options?<br>    weather:<br>      storm: false<br>      thunder: false<br>      lightning: false<br><br>############################################################<br># +------------------------------------------------------+ #<br># |                EssentialsAntiBuild                   | #<br># +------------------------------------------------------+ #<br>############################################################<br><br>  # This section requires the EssentialsAntiBuild.jar to work.<br><br>  # Disable various default physics and behaviors<br>  # For more information, visit http://wiki.ess3.net/wiki/AntiBuild<br><br>    # Should people with build: false in permissions be allowed to build?<br>    # Set true to disable building for those people.<br>    # Setting to false means EssentialsAntiBuild will never prevent you from building.<br>    #是否允许建造<br>    build: true<br><br>    # Should people with build: false in permissions be allowed to use items?<br>    # Set true to disable using for those people.<br>    # Setting to false means EssentialsAntiBuild will never prevent you from using items.<br>    #是否使用EssentialsAntiBuild<br>    use: false<br><br>    # Should we tell people they are not allowed to build?<br>    #当玩家被禁止建造时是否告知玩家<br>    warn-on-build-disallow: true<br><br>  # For which block types would you like to be alerted?<br>  # You can find a list of IDs in plugins/Essentials/items.csv after loading Essentials for the first time.<br>  # 10 = lava :: 11 = still lava :: 46 = TNT :: 327 = lava bucket<br>  alert:<br>    on-placement: 10,11,46,327<br>    on-use: 327<br>    on-break:<br>#方块黑名单<br>  blacklist:<br><br>    # Which blocks should people be prevented from placing?<br>    placement: <br><br>    # Which items should people be prevented from using?<br>    usage: <br><br>    # Which blocks should people be prevented from breaking?<br>    break:<br><br>    # Which blocks should not be pushed by pistons?<br>    piston:<br><br>    # Which blocks should not be dispensed by dispensers<br>    dispenser:<br><br>############################################################<br># +------------------------------------------------------+ #<br># |            Essentials Spawn / New Players            | #<br># +------------------------------------------------------+ #<br>############################################################<br><br># This section requires essentialsspawn.jar to work.<br><br>newbies:<br>  # Should we announce to the server when someone logs in for the first time?<br>  # If so, use this format, replacing &#123;DISPLAYNAME&#125; with the player name.<br>  # If not, set to &#x27;&#x27;<br>  #announce-format: &#x27;&#x27;<br>  #玩家第一次进入服务器时的提示<br>  #设置为&#x27;&#x27;禁用<br>  announce-format: &#x27;&amp;d欢迎 &#123;DISPLAYNAME&#125;&amp;d 来到OurWorld!&#x27;<br><br>  # When we spawn for the first time, which spawnpoint do we use?<br>  # Set to &quot;none&quot; if you want to use the spawn point of the world.<br>  #玩家第一次登入用啥作为出生点？<br>  #设置为none来使用世界默认出生带你<br>  spawnpoint: none<br><br>  # Do we want to give users anything on first join? Set to &#x27;&#x27; to disable<br>  # This kit will be given regardless of cost and permissions, and will not trigger the kit delay.<br>  #kit: &#x27;&#x27;<br>  #新玩家获得哪些东西？<br>  #可以是钱，kits，权限。。。<br>  kit: &#x27;&#x27;<br><br># Set this to lowest, if you want Multiverse to handle the respawning.<br># Set this to high, if you want EssentialsSpawn to handle the respawning.<br># Set this to highest, if you want to force EssentialsSpawn to handle the respawning.<br>#设置为lowest，会让Multiverse处理重生<br>#设置为high，会让EssentialsSpawn处理重生<br>#设置为lighest，会强制让EssentialsSpawn处理重生<br>respawn-listener-priority: lowest<br><br># When users die, should they respawn at their first home or bed, instead of the spawnpoint?<br>#玩家嗝屁之后，是否在他的床上复活<br>respawn-at-home: false<br><br># End of file &lt;-- No seriously, you&#x27;re done with configuration.<br></code></pre></td></tr></table></figure>
+                <br><br><br>
+                <script src="https://giscus.app/client.js"
+                    data-repo="smyhw/blog.smyhw.online"
+                    data-repo-id="MDEwOlJlcG9zaXRvcnkzODYyODg2MDg="
+                    data-category="Announcements"
+                    data-category-id="DIC_kwDOFwZL4M4B-hYs"
+                    data-mapping="pathname"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-theme="light"
+                    crossorigin="anonymous"
+                    async>
+                </script>
+            </div>
+            <!--侧边栏-->
+            <div id='sidebar'>
+                <div id='smyhw_int' class='content sidebar_item' style='
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                '>
+                    <img style='margin: 0px 75px 10px;' src='/images/awa.png'>
+                    <hr>
+                    <p style='margin:0 auto;font-size: 2em;'>smyhw</p>
+                    <hr>
+                    <p style='margin:0 auto;'>emmmm,大概已经是一条咸鱼了qwq...</p>
+                </div>
+                <div class='content sidebar_item'>
+                    <p class='sidebar_title'>页面</p>
+                    <a target="_blank"  href='/friends/'>友人帐</a><br>
+                    <a target="_blank"  href='/about/'>关于我</a><br>
+                    <a target="_blank"  href=''></a><br>
+                    <a target="_blank"  href=''></a><br>
+                </div>
+                <div class='content sidebar_item'>我也不知道这里该放什么[・ヘ・?]<br>所以就放个占位符好了(｀・ω・´)
+                
+                </div>
+            </div>
+        </div>
+        <div id='footer' style='
+    display: flex;
+    position: fixed;
+    flex-direction:row;
+    justify-content:center;
+    bottom:0px;
+    width:100%;
+    background-color: rgba(173, 173, 173, 0.5);
+    padding: 10px 0 10px;
+'>
+    <div style='text-align: center;line-height: 1.2em ;color: rgb(92, 92, 92);'>
+        <p>©2018-2021 smyhw</p>
+        <p>smyhw | 吾于此生，竭尽所能 </p>
+    </div>
+</div>
+    </body>
+    <script>
+        //窗口大小
+        (function(){
+            var ref = function(){
+                if(document.body.clientWidth<1331){
+                    $('#smyhw_int').css('margin-top','10em');  
+                    $('#sidebar').css('width','90vw');
+                }else{
+                    $('#sidebar').css('width','36%');
+                }
+                if(document.body.clientWidth<700){
+                    $('.nav_item').hide();
+                    $('#hide_nav').show();
+                }else{
+                    $('.nav_item').show();
+                    $('#hide_nav').hide();
+                }
+            }
+            //窗口调整
+            $(window).resize(function(){ref();});
+            ref();
+        })();
+
+        //侧边栏滚动
+        $(window).scroll(function(){
+            var tar = $(document).scrollTop();
+            if(document.body.clientWidth>1330){
+                $('#smyhw_int').animate({marginTop:tar},1);
+            }
+        });
+        //导航栏按钮
+        $('.nav_item').hover(
+            function(){
+                function get_a(target){
+                    tmp3 = $(target).css('background-color');
+                    tmp3 = tmp3.replace('\(','');
+                    tmp3 = tmp3.replace('\)','');
+                    tmp3 = tmp3.replace('rgba','');
+                    tmp2 = tmp3.split(',');
+                    if(isNaN(tmp2[3])){return 1;}
+                    return parseFloat(tmp2[3]);
+                }
+                var tmp1 = function do_it(target,num){
+                    if(get_a(target).toFixed(2) != num.toFixed(2)){return;}
+                    num = num+0.01;
+            //        num = num.toFixed(2);
+                    target.css('background-color','rgba(250,168,255,'+num+')');
+                    setTimeout(function(){tmp1(target,num)},1);
+                }
+                tmp1($(this),get_a($(this)));
+            },
+            function(){
+                function get_a(target){
+                    tmp3 = $(target).css('background-color');
+                    tmp3 = tmp3.replace('\(','');
+                    tmp3 = tmp3.replace('\)','');
+                    tmp3 = tmp3.replace('rgba','');
+                    tmp2 = tmp3.split(',');
+                    if(isNaN(tmp2[3])){return 1;}
+                    return parseFloat(tmp2[3]);
+                }
+                var tmp1 = function do_it(target,num){
+                    if(get_a(target).toFixed(2) != num.toFixed(2)){return;}
+                    num = num-0.01;
+            //        num = num.toFixed(2);
+                    target.css('background-color','rgba(250,168,255,'+num+')');
+                    setTimeout(function(){tmp1(target,num)},1);
+                }
+                tmp1($(this),get_a($(this)));
+            }
+        );
+        //隐藏导航栏按钮
+        $('#hide_nav_sub').click(function(){
+            if($('#hide_nav_list').css('display')=='none'){
+                $('#hide_nav_list').show();
+            }else{
+                $('#hide_nav_list').hide();
+            }
+        });
+        //背景加载动画
+        (function(){
+            function changeBPX(){
+                num=0.99
+                function do_it(){
+                    $("#background_mask").css("background","rgba(255,255,255,"+num+")");
+                    num=num-0.01;
+                    if(num>=0){
+                        setTimeout(do_it,1);
+                    }
+                }
+                setTimeout(do_it,1);
+            }
+            var img=new Image();
+            img.src='/images/background.jpg';
+            img.onload=function(){
+                console.log('background load finished');
+                $("#background").css("background-image","url("+this.src+")");
+                //动画
+                changeBPX();
+            };
+        })();
+
+        //TBC
+    </script>
+</html>

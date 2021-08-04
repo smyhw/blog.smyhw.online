@@ -1,0 +1,406 @@
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>向死而生 | 吾于此生，竭尽所能</title>
+    
+<script src="../jquery.js"></script>
+
+    
+<link rel="stylesheet" href="../style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<!--  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/default.min.css">    -->  
+
+<link rel="stylesheet" href="../markdown.css">
+
+    <style>
+        .content{
+            line-height: 1.5;
+            color: rgb(0, 0, 0);
+            border: 0;
+            font-size: 100%;
+            background-color: rgba(255, 255, 255, 0.70);
+            max-width: 896px;
+            padding: 0 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
+            padding: 0 27px 27px;
+            overflow: auto;
+        }
+        #title{
+            line-height: 2;
+            color: #333;
+            margin: 27px 0 0 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            font-size: 2.7em;
+        }
+        #nav{
+            line-height: 1.5;
+            color: #333;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .nav_item{
+            line-height: 1.5;
+            margin: 0;
+            border: 0;
+            outline: 0;
+            color: #333;
+            padding: 14px 20px;
+            display: block;
+            background-color: rgba(119, 119, 255,0);
+        }
+        #nav_center{
+            line-height: 1.5;
+            color: #333;
+            padding: 0 10vw 0 10vw;
+            border: 0;
+            outline: 0;
+            margin: 0 auto;
+            line-height: 1.5;
+            color: #333;
+            outline: none;
+            position: fixed;
+            top: 0;
+            height: 3.5em;
+            width: 80vw;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.65);
+            background-color: rgba(255, 255, 255, 0.70);
+        }
+        #main{
+            margin: 80px auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content:center;
+        }
+        #sidebar{
+            width: 36%;
+            max-width: 360px;
+        }
+        #article{
+            border-radius: 27px;
+            margin: 0 20px 0 20px;
+/*            min-width: 896px; */
+        }
+        .sidebar_item{
+            margin-bottom: 50px;
+            padding: 30px;
+            border-radius: 15px;
+        }
+        .highlight{
+            background: #2d2d2d;
+            margin: 0 -20px;
+            padding: 15px 20px;
+            border-style: solid;
+            border-color: #ddd;
+            border-width: 1px 0;
+            overflow: auto;
+            color: #ABB2BF;
+            line-height: 22px;
+        }
+        .sidebar_title{
+            line-height: 1.5;
+            box-sizing: border-box;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: -10px 0 10px -10px;
+            color: #be7e4a;
+        }
+        #date{
+            line-height: 1.15;
+            box-sizing: border-box;
+            transition: all .35s ease-out;
+            word-wrap: break-word;
+            background-color: rgba(255,78,106,0.3);
+            color: #ff4e4e;
+            border-radius: 20px;
+            padding: 10px 18px;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 5px;
+            margin-right: 10px;
+            text-decoration: none;
+        }
+        .hide_nav_button{
+            width: 100%;
+            line-height: 1.5em;
+            text-align: center;
+            display: block;
+        }
+        /*高亮*/
+        .code{
+            border:none;
+        }
+        /* code行号字体颜色 */
+        span.line{
+            color: #666;
+            margin: 0 9px;
+            font-size: 0.5em;
+            line-height: 2.55em;
+        }
+        /* code主体字体颜色 */
+        code.plaintext{
+            color: #ABB2BF;
+            line-height: 1.25em;
+            font-size: 1em;
+        }
+        /* hljs的配色背景删掉 */
+        .hljs{
+            background-color:rgba(0, 0, 0, 0);
+        }
+        /* hljs的padding */
+        pre code.hljs{
+            padding: 0;
+        }
+    </style>
+    <body>
+        <!-- 背景板 -->
+        <div class='background' id='background'></div>
+        <!-- 背景遮罩层 -->
+        <div class='background' id='background_mask'></div>
+        <!-- 博客标题 -->
+        <div id='side_title' style='
+        position: fixed;
+        top: 0;
+        z-index: 1;
+        margin: 3px 0px 0px 3vw;
+        '>
+            <span style='font-size: 30;'>向死而生</span>
+            <span>吾于此生,竭尽所能</span>
+        </div>
+        <!-- 导航栏 -->
+        <div id='nav_center'>
+                <div id='nav'>
+                    <a class='nav_item' href='/'>首页</a>
+                    <a class='nav_item' href='/friends/'>友人帐</a>
+                    <a class='nav_item' href='/about/'>关于我</a>
+                </div>
+        </div>
+        <!--隐藏导航栏-->
+        <div id='hide_nav' style='
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width:100vw;
+        '>
+            <!--切换按钮-->
+            <a id='hide_nav_sub' style='
+                position: absolute;
+                width: 2em;
+                height: 3em;
+                right: 1em;
+                top: 0.7em;
+            '>
+                <span href='#' style='background-color: #7f8c8d;display: block;width: 2em;height: 3px;border-radius: 1px;margin-top: 6px;'></span>
+                <span href='#' style='background-color: #7f8c8d;display: block;width: 2em;height: 3px;border-radius: 1px;margin-top: 6px;'></span>
+                <span href='#' style='background-color: #7f8c8d;display: block;width: 2em;height: 3px;border-radius: 1px;margin-top: 6px;'></span>
+            </a>
+            <!--内容-->
+            <div style='height: 3.5em;'><!--占位符--></div>
+            <div id='hide_nav_list' style='
+                display: none;
+                width: 100%;
+                height: 5em;
+                background-color: rgba(88, 88, 88, 0.85);
+            '>
+                <a href='/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>首页</a>
+                <a href='/friends/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>友人帐</a>
+                <a href='/about/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>关于我</a>
+            </div>
+        </div>
+        <!-- 主体 -->
+        <div id='main'>
+            <!--文章-->
+            <div class='content' id='article'>
+                <p id='title'>natcat</p>
+                <div id='date'>2021-08-02</div>
+                <hr>
+                <p>awa，没啥说的，这个工具几乎啥都能干（加密？不存在的）……</p>
+<span id="more"></span>
+<h2 id="上参数表："><a href="#上参数表：" class="headerlink" title="上参数表："></a>上参数表：</h2><ul>
+<li>-v：显示所有过程</li>
+<li>-n: 不对输入的IP进行DNS解析</li>
+<li>-g &lt;网关&gt; 设置路由器跃程通信网关，最多可设置8个；</li>
+<li>-G &lt;指向器数目&gt; 设置来源路由指向器，其数值为4的倍数；</li>
+<li>-h 在线帮助；</li>
+<li>-i &lt;延迟秒数&gt; 设置时间间隔，以便传送信息及扫描通信端口；</li>
+<li>-l 使用监听模式，管控传入的资料；</li>
+<li>-o &lt;输出文件&gt; 指定文件名称，把往来传输的数据以16进制字码倾倒成该文件保存；</li>
+<li>-p &lt;通信端口&gt; 设置本地主机使用的通信端口；</li>
+<li>-r 乱数指定本地与远端主机的通信端口；</li>
+<li>-s &lt;来源位址&gt; 设置本地主机送出数据包的IP地址；</li>
+<li>-u 使用UDP传输协议；</li>
+<li>-w &lt;超时秒数&gt; 设置等待连线的时间；</li>
+<li>-z 使用0输入/输出模式，只在扫描通信端口时使用。</li>
+<li>-e 连接之后执行程序<h2 id="举个栗子"><a href="#举个栗子" class="headerlink" title="举个栗子:"></a>举个栗子:</h2></li>
+</ul>
+<p>监听端口444，接受到连接后把自己的shell给对面</p>
+<p><code>nc -l -p 444 -e /bin/bash</code></p>
+<p>连接到192.168.1.1:444上监听的nc</p>
+<p><code>nc -v 192.168.1.1 444</code></p>
+<p>传输文件</p>
+<p><code>nc -l -p 444 &gt; awa.txt #接收   nc -v 192.168.1.1 &lt; awa.txt #发送</code></p>
+
+                <br><br><br>
+                <script src="https://giscus.app/client.js"
+                    data-repo="smyhw/blog.smyhw.online"
+                    data-repo-id="MDEwOlJlcG9zaXRvcnkzODYyODg2MDg="
+                    data-category="Announcements"
+                    data-category-id="DIC_kwDOFwZL4M4B-hYs"
+                    data-mapping="pathname"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-theme="light"
+                    crossorigin="anonymous"
+                    async>
+                </script>
+            </div>
+            <!--侧边栏-->
+            <div id='sidebar'>
+                <div id='smyhw_int' class='content sidebar_item' style='
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                '>
+                    <img style='margin: 0px 75px 10px;' src='/images/awa.png'>
+                    <hr>
+                    <p style='margin:0 auto;font-size: 2em;'>smyhw</p>
+                    <hr>
+                    <p style='margin:0 auto;'>emmmm,大概已经是一条咸鱼了qwq...</p>
+                </div>
+                <div class='content sidebar_item'>
+                    <p class='sidebar_title'>页面</p>
+                    <a target="_blank"  href='/friends/'>友人帐</a><br>
+                    <a target="_blank"  href='/about/'>关于我</a><br>
+                    <a target="_blank"  href=''></a><br>
+                    <a target="_blank"  href=''></a><br>
+                </div>
+                <div class='content sidebar_item'>我也不知道这里该放什么[・ヘ・?]<br>所以就放个占位符好了(｀・ω・´)
+                
+                </div>
+            </div>
+        </div>
+        <div id='footer' style='
+    display: flex;
+    position: fixed;
+    flex-direction:row;
+    justify-content:center;
+    bottom:0px;
+    width:100%;
+    background-color: rgba(173, 173, 173, 0.5);
+    padding: 10px 0 10px;
+'>
+    <div style='text-align: center;line-height: 1.2em ;color: rgb(92, 92, 92);'>
+        <p>©2018-2021 smyhw</p>
+        <p>smyhw | 吾于此生，竭尽所能 </p>
+    </div>
+</div>
+    </body>
+    <script>
+        //窗口大小
+        (function(){
+            var ref = function(){
+                if(document.body.clientWidth<1331){
+                    $('#smyhw_int').css('margin-top','10em');  
+                    $('#sidebar').css('width','90vw');
+                }else{
+                    $('#sidebar').css('width','36%');
+                }
+                if(document.body.clientWidth<700){
+                    $('.nav_item').hide();
+                    $('#hide_nav').show();
+                }else{
+                    $('.nav_item').show();
+                    $('#hide_nav').hide();
+                }
+            }
+            //窗口调整
+            $(window).resize(function(){ref();});
+            ref();
+        })();
+
+        //侧边栏滚动
+        $(window).scroll(function(){
+            var tar = $(document).scrollTop();
+            if(document.body.clientWidth>1330){
+                $('#smyhw_int').animate({marginTop:tar},1);
+            }
+        });
+        //导航栏按钮
+        $('.nav_item').hover(
+            function(){
+                function get_a(target){
+                    tmp3 = $(target).css('background-color');
+                    tmp3 = tmp3.replace('\(','');
+                    tmp3 = tmp3.replace('\)','');
+                    tmp3 = tmp3.replace('rgba','');
+                    tmp2 = tmp3.split(',');
+                    if(isNaN(tmp2[3])){return 1;}
+                    return parseFloat(tmp2[3]);
+                }
+                var tmp1 = function do_it(target,num){
+                    if(get_a(target).toFixed(2) != num.toFixed(2)){return;}
+                    num = num+0.01;
+            //        num = num.toFixed(2);
+                    target.css('background-color','rgba(250,168,255,'+num+')');
+                    setTimeout(function(){tmp1(target,num)},1);
+                }
+                tmp1($(this),get_a($(this)));
+            },
+            function(){
+                function get_a(target){
+                    tmp3 = $(target).css('background-color');
+                    tmp3 = tmp3.replace('\(','');
+                    tmp3 = tmp3.replace('\)','');
+                    tmp3 = tmp3.replace('rgba','');
+                    tmp2 = tmp3.split(',');
+                    if(isNaN(tmp2[3])){return 1;}
+                    return parseFloat(tmp2[3]);
+                }
+                var tmp1 = function do_it(target,num){
+                    if(get_a(target).toFixed(2) != num.toFixed(2)){return;}
+                    num = num-0.01;
+            //        num = num.toFixed(2);
+                    target.css('background-color','rgba(250,168,255,'+num+')');
+                    setTimeout(function(){tmp1(target,num)},1);
+                }
+                tmp1($(this),get_a($(this)));
+            }
+        );
+        //隐藏导航栏按钮
+        $('#hide_nav_sub').click(function(){
+            if($('#hide_nav_list').css('display')=='none'){
+                $('#hide_nav_list').show();
+            }else{
+                $('#hide_nav_list').hide();
+            }
+        });
+        //背景加载动画
+        (function(){
+            function changeBPX(){
+                num=0.99
+                function do_it(){
+                    $("#background_mask").css("background","rgba(255,255,255,"+num+")");
+                    num=num-0.01;
+                    if(num>=0){
+                        setTimeout(do_it,1);
+                    }
+                }
+                setTimeout(do_it,1);
+            }
+            var img=new Image();
+            img.src='/images/background.jpg';
+            img.onload=function(){
+                console.log('background load finished');
+                $("#background").css("background-image","url("+this.src+")");
+                //动画
+                changeBPX();
+            };
+        })();
+
+        //TBC
+    </script>
+</html>

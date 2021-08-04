@@ -1,0 +1,48 @@
+@font-face
+{
+    font-family: SY;
+    src: url('/STHeiti-Medium-4.ttc'),
+}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td 
+{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-family: SY;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+.background{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+#background{
+    color: rgb(0, 0, 0);
+    background-image: url("/images/background.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    z-index: -2;
+}
+#background_mask{
+    color: rgb(255, 255, 255);
+    z-index: -1;
+}
+a:link{
+    color: #b854d4;
+    text-decoration: none
+}
+::selection {
+    background: #d68fe9;
+    color: #fff;
+}
