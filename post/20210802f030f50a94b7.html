@@ -19,13 +19,13 @@
             line-height: 1.5;
             color: rgb(0, 0, 0);
             border: 0;
-            font-size: 100%;
             background-color: rgba(255, 255, 255, 0.70);
             max-width: 896px;
             padding: 0 2px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
             padding: 0 27px 27px;
             overflow: auto;
+            font-size: 1.125em
         }
         #title{
             line-height: 2;
@@ -79,7 +79,7 @@
             width: 36%;
             max-width: 360px;
         }
-        #article{
+        .content{
             border-radius: 27px;
             margin: 0 20px 0 20px;
 /*            min-width: 896px; */
@@ -89,7 +89,7 @@
             padding: 30px;
             border-radius: 15px;
         }
-        .highlight{
+/*         .highlight{
             background: #2d2d2d;
             margin: 0 -20px;
             padding: 15px 20px;
@@ -99,7 +99,7 @@
             overflow: auto;
             color: #ABB2BF;
             line-height: 22px;
-        }
+        } */
         .sidebar_title{
             line-height: 1.5;
             box-sizing: border-box;
@@ -129,30 +129,10 @@
             text-align: center;
             display: block;
         }
-        /*高亮*/
-        .code{
-            border:none;
-        }
-        /* code行号字体颜色 */
-        span.line{
-            color: #666;
-            margin: 0 9px;
-            font-size: 0.5em;
-            line-height: 2.55em;
-        }
-        /* code主体字体颜色 */
-        code.plaintext{
-            color: #ABB2BF;
-            line-height: 1.25em;
-            font-size: 1em;
-        }
-        /* hljs的配色背景删掉 */
-        .hljs{
-            background-color:rgba(0, 0, 0, 0);
-        }
-        /* hljs的padding */
-        pre code.hljs{
-            padding: 0;
+
+        /* 文字颜色 */
+        html, body, span, p, h1, h2, h3, h4, h5, h6 {
+            color: #2e405b;
         }
     </style>
     <body>
@@ -214,11 +194,12 @@
         <!-- 主体 -->
         <div id='main'>
             <!--文章-->
-            <div class='content' id='article'>
+            <div class='content'>
                 <p id='title'>iptables解析</p>
                 <div id='date'>2021-08-02</div>
                 <hr>
-                <p>iptables是centOS里集成的强大，开源的防火墙软件，功能十分丰富(复杂)……</p>
+                <div id='article'>
+                    <p>iptables是centOS里集成的强大，开源的防火墙软件，功能十分丰富(复杂)……</p>
 <span id="more"></span>
 <blockquote>
 <p>emmm，反正在我看来想摸透这玩意挺难的。。。</p>
@@ -244,6 +225,7 @@ DROP(丢弃)，REJECT(拒绝)，ACCEPT(接受)，SANT(基于原地址的转换)
 </code></pre>
 <h3 id="功能实例"><a href="#功能实例" class="headerlink" title="功能实例"></a>功能实例</h3><p><strong>NAT转发</strong><br>数据包经PREROUTING修改来源IP，经POSTROUTING修改目标IP<br>修改来源IP（将内网来的数据包转到外网时使用）：<br><code>iptables –t nat –A POSTROUTING –j SNAT --to-source &lt;要改成的源IP&gt;</code><br>修改目标IP（将外网来的数据包转到内网时使用）：<br><code>iptables –t nat –A PREROUTING –j DNAT --to-destination &lt;要改成的目标IP&gt;</code><br><strong>端口转发</strong><br><code>iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080</code>  </p>
 
+                </div>
                 <br><br><br>
                 <script src="https://giscus.app/client.js"
                     data-repo="smyhw/blog.smyhw.online"
@@ -265,11 +247,11 @@ DROP(丢弃)，REJECT(拒绝)，ACCEPT(接受)，SANT(基于原地址的转换)
                     flex-direction: column;
                     justify-content: center;
                 '>
-                    <img style='margin: 0px 75px 10px;' src='/images/awa.png'>
+                    <img style='margin: 0px 75px 10px;  max-width: 150px;' src='/images/awa.png'>
                     <hr>
                     <p style='margin:0 auto;font-size: 2em;'>smyhw</p>
                     <hr>
-                    <p style='margin:0 auto;'>emmmm,大概已经是一条咸鱼了qwq...</p>
+                    <p style='margin:0 auto;'>大概已经是一条咸鱼了qwq...</p>
                 </div>
                 <div class='content sidebar_item'>
                     <p class='sidebar_title'>页面</p>
@@ -278,7 +260,7 @@ DROP(丢弃)，REJECT(拒绝)，ACCEPT(接受)，SANT(基于原地址的转换)
                     <a target="_blank"  href=''></a><br>
                     <a target="_blank"  href=''></a><br>
                 </div>
-                <div class='content sidebar_item'>我也不知道这里该放什么[・ヘ・?]<br>所以就放个占位符好了(｀・ω・´)
+                <div class='content sidebar_item'>我也不知道该放什么[・ヘ・?]<br>就放个占位符好了(｀・ω・´)
                 
                 </div>
             </div>

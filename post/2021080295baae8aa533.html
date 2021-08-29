@@ -19,13 +19,13 @@
             line-height: 1.5;
             color: rgb(0, 0, 0);
             border: 0;
-            font-size: 100%;
             background-color: rgba(255, 255, 255, 0.70);
             max-width: 896px;
             padding: 0 2px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
             padding: 0 27px 27px;
             overflow: auto;
+            font-size: 1.125em
         }
         #title{
             line-height: 2;
@@ -79,7 +79,7 @@
             width: 36%;
             max-width: 360px;
         }
-        #article{
+        .content{
             border-radius: 27px;
             margin: 0 20px 0 20px;
 /*            min-width: 896px; */
@@ -89,7 +89,7 @@
             padding: 30px;
             border-radius: 15px;
         }
-        .highlight{
+/*         .highlight{
             background: #2d2d2d;
             margin: 0 -20px;
             padding: 15px 20px;
@@ -99,7 +99,7 @@
             overflow: auto;
             color: #ABB2BF;
             line-height: 22px;
-        }
+        } */
         .sidebar_title{
             line-height: 1.5;
             box-sizing: border-box;
@@ -129,30 +129,10 @@
             text-align: center;
             display: block;
         }
-        /*高亮*/
-        .code{
-            border:none;
-        }
-        /* code行号字体颜色 */
-        span.line{
-            color: #666;
-            margin: 0 9px;
-            font-size: 0.5em;
-            line-height: 2.55em;
-        }
-        /* code主体字体颜色 */
-        code.plaintext{
-            color: #ABB2BF;
-            line-height: 1.25em;
-            font-size: 1em;
-        }
-        /* hljs的配色背景删掉 */
-        .hljs{
-            background-color:rgba(0, 0, 0, 0);
-        }
-        /* hljs的padding */
-        pre code.hljs{
-            padding: 0;
+
+        /* 文字颜色 */
+        html, body, span, p, h1, h2, h3, h4, h5, h6 {
+            color: #2e405b;
         }
     </style>
     <body>
@@ -214,11 +194,12 @@
         <!-- 主体 -->
         <div id='main'>
             <!--文章-->
-            <div class='content' id='article'>
+            <div class='content'>
                 <p id='title'>nginx+php+mysqld安装及配置</p>
                 <div id='date'>2021-08-02</div>
                 <hr>
-                <p>最近把各种web服务往nginx上迁，一度踩坑踩到心态爆炸。。。。整完了之后记录一点nginx的配置详解awa</p>
+                <div id='article'>
+                    <p>最近把各种web服务往nginx上迁，一度踩坑踩到心态爆炸。。。。整完了之后记录一点nginx的配置详解awa</p>
 <span id="more"></span>
 <h1 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h1><p>nginx可以直接yum或者apt安装，一般发行版的官方源里都有，一笔带过qwq<br>例如: <code>apt-get install nginx 或者 yum install nginx</code></p>
 <h1 id="安装php"><a href="#安装php" class="headerlink" title="安装php"></a>安装php</h1><p>php我使用的是REMI源，因为…centos官方源的版本过于古老</p>
@@ -303,6 +284,7 @@
 
 <p>你应该看到了，这个节点有俩参数，第一个参数是原始参数，第二个参数是你要自定义参数<br>该节点每行一个匹配语句，这个语句的规则同location的匹配规则，拥有匹配类型和匹配语句，唯一不同的是，这里的匹配类型和匹配语句间不能有空格<br>每一行的第二个参数是”当原始参数匹配该行的规则时，自定义变量将被赋的值”<br>这里可以使用正则表达式的”捕获”来取得变量<br>default配置行提供当每一行都不匹配时自定义变量的默认值  </p>
 
+                </div>
                 <br><br><br>
                 <script src="https://giscus.app/client.js"
                     data-repo="smyhw/blog.smyhw.online"
@@ -324,11 +306,11 @@
                     flex-direction: column;
                     justify-content: center;
                 '>
-                    <img style='margin: 0px 75px 10px;' src='/images/awa.png'>
+                    <img style='margin: 0px 75px 10px;  max-width: 150px;' src='/images/awa.png'>
                     <hr>
                     <p style='margin:0 auto;font-size: 2em;'>smyhw</p>
                     <hr>
-                    <p style='margin:0 auto;'>emmmm,大概已经是一条咸鱼了qwq...</p>
+                    <p style='margin:0 auto;'>大概已经是一条咸鱼了qwq...</p>
                 </div>
                 <div class='content sidebar_item'>
                     <p class='sidebar_title'>页面</p>
@@ -337,7 +319,7 @@
                     <a target="_blank"  href=''></a><br>
                     <a target="_blank"  href=''></a><br>
                 </div>
-                <div class='content sidebar_item'>我也不知道这里该放什么[・ヘ・?]<br>所以就放个占位符好了(｀・ω・´)
+                <div class='content sidebar_item'>我也不知道该放什么[・ヘ・?]<br>就放个占位符好了(｀・ω・´)
                 
                 </div>
             </div>

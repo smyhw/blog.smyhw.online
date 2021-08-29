@@ -19,13 +19,13 @@
             line-height: 1.5;
             color: rgb(0, 0, 0);
             border: 0;
-            font-size: 100%;
             background-color: rgba(255, 255, 255, 0.70);
             max-width: 896px;
             padding: 0 2px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
             padding: 0 27px 27px;
             overflow: auto;
+            font-size: 1.125em
         }
         #title{
             line-height: 2;
@@ -79,7 +79,7 @@
             width: 36%;
             max-width: 360px;
         }
-        #article{
+        .content{
             border-radius: 27px;
             margin: 0 20px 0 20px;
 /*            min-width: 896px; */
@@ -89,7 +89,7 @@
             padding: 30px;
             border-radius: 15px;
         }
-        .highlight{
+/*         .highlight{
             background: #2d2d2d;
             margin: 0 -20px;
             padding: 15px 20px;
@@ -99,7 +99,7 @@
             overflow: auto;
             color: #ABB2BF;
             line-height: 22px;
-        }
+        } */
         .sidebar_title{
             line-height: 1.5;
             box-sizing: border-box;
@@ -129,30 +129,10 @@
             text-align: center;
             display: block;
         }
-        /*高亮*/
-        .code{
-            border:none;
-        }
-        /* code行号字体颜色 */
-        span.line{
-            color: #666;
-            margin: 0 9px;
-            font-size: 0.5em;
-            line-height: 2.55em;
-        }
-        /* code主体字体颜色 */
-        code.plaintext{
-            color: #ABB2BF;
-            line-height: 1.25em;
-            font-size: 1em;
-        }
-        /* hljs的配色背景删掉 */
-        .hljs{
-            background-color:rgba(0, 0, 0, 0);
-        }
-        /* hljs的padding */
-        pre code.hljs{
-            padding: 0;
+
+        /* 文字颜色 */
+        html, body, span, p, h1, h2, h3, h4, h5, h6 {
+            color: #2e405b;
         }
     </style>
     <body>
@@ -214,11 +194,12 @@
         <!-- 主体 -->
         <div id='main'>
             <!--文章-->
-            <div class='content' id='article'>
+            <div class='content'>
                 <p id='title'>ubuntu上apt安装mysql踩坑</p>
                 <div id='date'>2021-08-02</div>
                 <hr>
-                <p>root账户用不了,数据目录无法更改,mysql服务起不来……各种坑整了我好几个小时</p>
+                <div id='article'>
+                    <p>root账户用不了,数据目录无法更改,mysql服务起不来……各种坑整了我好几个小时</p>
 <span id="more"></span>
 
 <h2 id="问题一-在mysql的配置目录里更改了data目录之后-mysql启动不起来"><a href="#问题一-在mysql的配置目录里更改了data目录之后-mysql启动不起来" class="headerlink" title="问题一:在mysql的配置目录里更改了data目录之后,mysql启动不起来"></a>问题一:在mysql的配置目录里更改了data目录之后,mysql启动不起来</h2><p>这个时候,看mysql的日志,发现日志显示,data目录不可读写</p>
@@ -235,6 +216,7 @@
 <h2 id="问题三-明明改了root密码-但是使用更改的密码就是登入不上去"><a href="#问题三-明明改了root密码-但是使用更改的密码就是登入不上去" class="headerlink" title="问题三:明明改了root密码,但是使用更改的密码就是登入不上去"></a>问题三:明明改了root密码,但是使用更改的密码就是登入不上去</h2><p>在mysql库的user表里面看看,root用户的默认登入方式(plugin字段)是auth-socket…而一般的密码登入,该字段的值应该是mysql_native_password<br>(为啥登入方式字段叫plugin?因为这玩意叫鉴权插件,是插件,不叫方式…)</p>
 <p><strong>解决方案:</strong><br>用问题二所描述的方法登入mysql,<br>然后执行sql语句<code>use mysql;update set plugin=”mysql_native_password” where user=”root”;</code><br>来把登入方式改成传统的密码登入</p>
 
+                </div>
                 <br><br><br>
                 <script src="https://giscus.app/client.js"
                     data-repo="smyhw/blog.smyhw.online"
@@ -256,11 +238,11 @@
                     flex-direction: column;
                     justify-content: center;
                 '>
-                    <img style='margin: 0px 75px 10px;' src='/images/awa.png'>
+                    <img style='margin: 0px 75px 10px;  max-width: 150px;' src='/images/awa.png'>
                     <hr>
                     <p style='margin:0 auto;font-size: 2em;'>smyhw</p>
                     <hr>
-                    <p style='margin:0 auto;'>emmmm,大概已经是一条咸鱼了qwq...</p>
+                    <p style='margin:0 auto;'>大概已经是一条咸鱼了qwq...</p>
                 </div>
                 <div class='content sidebar_item'>
                     <p class='sidebar_title'>页面</p>
@@ -269,7 +251,7 @@
                     <a target="_blank"  href=''></a><br>
                     <a target="_blank"  href=''></a><br>
                 </div>
-                <div class='content sidebar_item'>我也不知道这里该放什么[・ヘ・?]<br>所以就放个占位符好了(｀・ω・´)
+                <div class='content sidebar_item'>我也不知道该放什么[・ヘ・?]<br>就放个占位符好了(｀・ω・´)
                 
                 </div>
             </div>

