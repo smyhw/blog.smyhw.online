@@ -123,7 +123,7 @@
 
 
     <div class="post_list_item" style='
-        border-top-color: #193769;
+        border-top-color: #aa214d;
         
             right:100vw;
         
@@ -142,7 +142,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #0ae8b7;
+        border-top-color: #2c0947;
         
             left: 100vw;
         
@@ -161,7 +161,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #2a6256;
+        border-top-color: #9cd632;
         
             right:100vw;
         
@@ -180,7 +180,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #b4801b;
+        border-top-color: #524a77;
         
             left: 100vw;
         
@@ -199,7 +199,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #0aa66b;
+        border-top-color: #424ce7;
         
             right:100vw;
         
@@ -218,7 +218,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #33a325;
+        border-top-color: #4c23a8;
         
             left: 100vw;
         
@@ -237,7 +237,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #1cc97a;
+        border-top-color: #8dd529;
         
             right:100vw;
         
@@ -256,7 +256,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #d425bd;
+        border-top-color: #ffe18c;
         
             left: 100vw;
         
@@ -296,28 +296,23 @@
         <!-- card备份 -->
 <!--        <div id='card_backup'style='width: 0px; height: 0px;position: fixed; display: none;'></div> -->
         <!-- home返回按钮 -->
-        <div style='
+        <div id='back_button' style='
             position: fixed;
             top: 0;
-            display: flex;
-            width: 100vw;
-            flex-direction: row;
-            justify-content: center;
+            display: block;
+            height: 1.5em;
+            width: -moz-fit-content;
+            padding: 0.3em;
+            padding-left: 1em;
+            right: 0;
+            text-align: center;
+            background-color: rgba(153, 153, 153, 0.9);
+            color: rgb(255, 255, 255);
+            border-radius: 0 0 0 27px;
             z-index: 1;
+            display: none;
         '>
-            <a id='back_button' href='#' style='
-                display: none;
-                font-size: 1.5em;
-                width: 69vw;
-                height: fit-content;
-                width: -moz-fit-content;
-                text-align: center;
-                line-height: 1.5em;
-                background-color: rgba(153, 153, 153, 0.9);
-                color: rgb(255, 255, 255);
-                border-radius: 0 0 27px 27px;
-                z-index: 1;
-            '>Back // 返回</a>
+            Back // 返回
         </div>
         <!-- 背景板 -->
         <div class='background' id='background'></div>
@@ -356,19 +351,19 @@
     justify-content:center;
     bottom:0px;
     width:100%;
-    background-color: rgba(173, 173, 173, 0.5);
+    background-color: rgba(100, 100, 100, 0.9);
     padding: 10px 0 10px;
 '>
-    <div style='text-align: center;line-height: 1.2em ;color: rgb(92, 92, 92);'>
-        <p>©2018-2021 smyhw</p>
-        <p>smyhw | 吾于此生，竭尽所能 </p>
+    <div style='text-align: center;line-height: 1.2em ;color: #ddd;'>
+        <p style='color: #ddd;'>©2018-2021 smyhw</p>
+        <p style='color: #ddd;'>smyhw | 吾于此生，竭尽所能 </p>
     </div>
 </div>
     </body>
     <script>
         //界面加载完成动画
         $(document).ready(function(){
-        //card动画
+            //card动画
             $('#card').animate({'margin-top': '0vh'},2000,function(){});
             //背景加载动画
             setTimeout(function(){
@@ -393,7 +388,9 @@
                 };
             },3000);
         });
-        //按钮
+
+
+        //文章列表按钮
         $('#button_blog').click(function(){
             //旋转头像
             (function(){
@@ -413,7 +410,7 @@
             setTimeout(function(){
                     $('#card *').animate({'opacity':0},1000);
                     $('#card').css('max-width','900px');
-                    $('#card').animate({'width':'90vw','height':'800px'},2000);
+                    $('#card').animate({'width':'90vw','height':'80vh'},2000);
             },2000+360);
             //滑出返回home按钮
             setTimeout(function(){
