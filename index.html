@@ -61,14 +61,18 @@
             width: 414px;
             border-top-width: 2px;
             border-top-style: solid;
-            border-radius: 3px;
+            border-radius: 9px;
             background-color: rgba(243, 243, 243, 0.7);
             box-shadow: 0 14px 38px rgba(0,0,0,0.09),0 3px 9px rgba(0,0,0,.06);
             border-top-color: rgb(241, 148, 131);
             position: relative;
-            transition: all 0.5s ;
+            transition: all 1s ;
             height: 100px;
             overflow: hidden;
+            top: 0;
+        }
+        .post_list_item:hover{
+            top: -12;
         }
         .switch_list_button{
             background-color: rgba(0,0,0,0.09); 
@@ -78,6 +82,23 @@
             text-align: center;
             line-height: 40px;
             font-size: 25px;
+            text-shadow: 0 1px 1px #b28fce;
+        }
+        /* 滚动条  */
+        #post_list::-webkit-scrollbar {
+            width: 5px;
+            height: 3px;
+        }
+        #post_list::-webkit-scrollbar, #post_list::-webkit-scrollbar-track-piece {
+            background-color: transparent;
+        }
+        #post_list::-webkit-scrollbar-thumb {
+            border-radius: 3px;
+            background-color: #b28fce;
+            background-image: -webkit-linear-gradient(45deg,hsla(0,0%,100%,.5) 25%,transparent 0,transparent 50%,hsla(0,0%,100%,.5) 0,hsla(0,0%,100%,.5) 75%,transparent 0,transparent);
+        }
+        #post_list::-webkit-scrollbar, #post_list::-webkit-scrollbar-track-piece {
+            background-color: transparent;
         }
     </style>
     <body>
@@ -85,20 +106,20 @@
         <div id='tles' style="display: none;">
             <!--向后换页按钮-->
             <div id='switch_list_button_1' style='display: block; width: 160px; height: 40px;margin-bottom: 27px;position:absolute;bottom: 0px;'>
-                <a class='switch_list_button' href="#" style='width: 160px;'>NEXT</a>
+                <a class='switch_list_button' href="#" style='width: 160px;'>Next</a>
             </div>
             <!--向前换页按钮-->
             <div id='switch_list_button_2' style='display: block; width: 160px; height: 40px;margin-bottom: 27px;position:absolute;bottom: 0px;'>
-                <a class='switch_list_button' href="#" style='width: 160px;'>PREV</a>
+                <a class='switch_list_button' href="#" style='width: 160px;'>Prev</a>
             </div>
             <!--双向换页按钮-->
             <div id='switch_list_button_3' style='display: block; width: 160px; height: 40px;margin-bottom: 27px;position:absolute;bottom: 0px;'>
-                <a class='switch_list_button' href="#" style='width: 80;right: 0px;'>NEXT</a>
-                <a class='switch_list_button' href="#" style='width: 80;left: 0px;'>PREV</a>
+                <a class='switch_list_button' href="#" style='width: 80;right: 0px;'>Next</a>
+                <a class='switch_list_button' href="#" style='width: 80;left: 0px;'>Prev</a>
             </div>
             <!--加载换页按钮-->
             <div id='switch_list_button_4' style='display: block; width: 160px; height: 40px;margin-bottom: 27px;position:absolute;bottom: 0px;'>
-                <a class='switch_list_button' href="#" style='width: 160;background-color: #555;color: rgb(255, 255, 255);'>LOADING...</a>
+                <a class='switch_list_button' href="#" style='width: 160;background-color: #555;color: rgb(255, 255, 255);'>Loading...</a>
             </div>
             <!--文章列表内容-->
             <div id='post_list_tle'>
@@ -123,7 +144,7 @@
 
 
     <div class="post_list_item" style='
-        border-top-color: #aa214d;
+        border-top-color: #e598da;
         
             right:100vw;
         
@@ -142,7 +163,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #2c0947;
+        border-top-color: #04a13c;
         
             left: 100vw;
         
@@ -161,7 +182,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #9cd632;
+        border-top-color: #599ffb;
         
             right:100vw;
         
@@ -180,7 +201,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #524a77;
+        border-top-color: #4f19fa;
         
             left: 100vw;
         
@@ -199,7 +220,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #424ce7;
+        border-top-color: #0139ca;
         
             right:100vw;
         
@@ -218,7 +239,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #4c23a8;
+        border-top-color: #cc73bb;
         
             left: 100vw;
         
@@ -237,7 +258,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #8dd529;
+        border-top-color: #00ac23;
         
             right:100vw;
         
@@ -256,7 +277,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #ffe18c;
+        border-top-color: #863cde;
         
             left: 100vw;
         
@@ -288,7 +309,7 @@
                     right: 0;
                 '>
                     <div id='switch_list_button_1' style='display: block; width: 160px; height: 40px;margin-bottom: 27px;position:absolute;bottom: 0px;'>
-                        <a class='switch_list_button' href="#" style='width: 160px;'>NEXT</a>
+                        <a class='switch_list_button' href="#" style='width: 160px;'>Next</a>
                     </div>
                 </div>
             </div>
@@ -401,21 +422,25 @@
                     i++;
                 },1);
             })();
+
             //挪走按钮
             setTimeout(function(){
                 $('#button_blog').animate({'right':'30em'},2000);
                 $('#button_about').animate({'left':'30em'},2000);
             },360);
+
             //其余内容消失+card展开
             setTimeout(function(){
                     $('#card *').animate({'opacity':0},1000);
                     $('#card').css('max-width','900px');
                     $('#card').animate({'width':'90vw','height':'80vh'},2000);
             },2000+360);
+
             //滑出返回home按钮
             setTimeout(function(){
                 $('#back_button').slideDown(1000);
             },2000+2000+360);
+
             //恢复所有属性+保存到隐藏div
             setTimeout(function(){
                 $('#main').prepend('<div id=\'pre_card\' class=\'card\' style=\'display:none; margin-bottom:200vh\'></div>');
@@ -425,6 +450,7 @@
                 $('#button_about').css('left','0');
                 $('#pre_card *').css('opacity',1);
             },2000+2000+360);
+            
             //填充内容
             setTimeout(function(){
                 //加载列表===========================================
@@ -432,7 +458,7 @@
                 setTimeout(function(){
                     $('#card .switch_list_button').css('margin-top','0px');
                     $('#card .post_list_item').css('right','0px');
-                    setTimeout(function(){$('#card .post_list_item').css('left','0px');},500);
+                    setTimeout(function(){$('#card .post_list_item').css('left','0px');},1000);
                 },500);
                 console.log('加载post列表内容');
 //                $('#card').css('height','fit-content');
@@ -456,24 +482,15 @@
             });
         });
 
-        //文章列表选中动画
-        $('body').on('mouseover mouseout','.post_list_item',function(event){
-            if(event.type == "mouseover"){
-                $(this).css('top','-12px');
-            }else if(event.type == "mouseout"){
-                $(this).css('top','0');
-            }
-        });
-
         //文章列表切换按钮
         $('body').on('click','#card .switch_list_button',function(){
             if($('#card #post_list_data_nextURL').html()=='' && $('#card #post_list_data_prevURL').html()==''){
                 return;
             }
             url='null';
-            if($(this).html()=='NEXT'){
+            if($(this).html()=='Next'){
                 url = $('#card #post_list_data_nextURL').html();
-            }else if($(this).html()=='PREV'){
+            }else if($(this).html()=='Prev'){
                 url = $('#card #post_list_data_prevURL').html();
             }else{
                 return;
@@ -486,34 +503,36 @@
             if(url==''){console.log('[错误]:目标页不存在');return;}
             $.ajax({url:url,async:true,success:function(result,status,xhr){
                 //debug
-//                console.log('[变量监控]:\nprevURL:'+$('#card #post_list_data_prevURL').html()+'\nnextURL:'+$('#card #post_list_data_nextURL').html());
+                console.log('[变量监控]:\nprevURL:'+$('#card #post_list_data_prevURL').html()+'\nnextURL:'+$('#card #post_list_data_nextURL').html());
                 //第一页特殊处理
                 if(!result.trim().startsWith('<div')){
                     $('#card #post_list').html($('#tles #post_list').html());
                 }else{
                     $('#card #post_list').html(result);
                 }
-                //显示内容
-//                $('#card .post_list_item').css('opacity',1);
                 //第二页特殊处理
                 if($('#card #post_list_data_pageNum').html()==2){
                     $('#card #post_list_data_prevURL').html('/');
                 }
-                //显示不同的换页按钮
-                if($('#card #post_list_data_nextURL').html()==''){
-                    $('#card #switch_list_button').html($('#tles #switch_list_button_2').prop('outerHTML')); 
-                }else if($('#card #post_list_data_prevURL').html()==''){
-                    $('#card #switch_list_button').html($('#tles #switch_list_button_1').prop('outerHTML'));
-                }else if($('#card #post_list_data_nextURL').html()=='' && $('#card #post_list_data_prevURL').html()==''){
-                    console.log('err');
-                }else{
-                    $('#card #switch_list_button').html($('#tles #switch_list_button_3').prop('outerHTML'));
-                }
                 //出场动画
                 setTimeout(function(){
                         $('#card .post_list_item').css('right','0px');
-                        setTimeout(function(){$('#card .post_list_item').css('left','0px');},500);
-                },500);
+                        setTimeout(function(){$('#card .post_list_item').css('left','0px');},1000);
+                },1000);
+                //显示不同的换页按钮
+                setTimeout(function(){
+                    if($('#card #post_list_data_nextURL').html()==''){
+                        $('#card #switch_list_button').html($('#tles #switch_list_button_2').prop('outerHTML')); 
+                    }else if($('#card #post_list_data_prevURL').html()==''){
+                        $('#card #switch_list_button').html($('#tles #switch_list_button_1').prop('outerHTML'));
+                    }else if($('#card #post_list_data_nextURL').html()=='' && $('#card #post_list_data_prevURL').html()==''){
+                        //仅此一页？
+                        console.log('err');
+                    }else{
+                        //正常显示换页按钮
+                        $('#card #switch_list_button').html($('#tles #switch_list_button_3').prop('outerHTML'));
+                    }
+                },4000);
             },error:function(xhr,status,error){
                 console.log('[ajax]:切换页面请求失败(url='+url+')');
             }});
