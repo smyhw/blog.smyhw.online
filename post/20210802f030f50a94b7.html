@@ -180,7 +180,7 @@ DROP(丢弃)，REJECT(拒绝)，ACCEPT(接受)，SANT(基于原地址的转换)
             }
         });
         //背景加载动画
-        (function(){
+        setTimeout(function(){
             function changeBPX(){
                 num=0.99
                 function do_it(){
@@ -200,7 +200,7 @@ DROP(丢弃)，REJECT(拒绝)，ACCEPT(接受)，SANT(基于原地址的转换)
                 //动画
                 changeBPX();
             };
-        })();
+        },0);
 
         //TBC
     </script>
