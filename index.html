@@ -105,20 +105,20 @@
         <!--模板-->
         <div id='tles' style="display: none;">
             <!--向后换页按钮-->
-            <div id='switch_list_button_1' style='display: block; width: 160px; height: 40px;margin-bottom: 27px;position:absolute;bottom: 0px;'>
+            <div id='switch_list_button_1' style='display: block; width: 160px; height: 40px;position:absolute;bottom: 0px;'>
                 <a class='switch_list_button' href="#" style='width: 160px;'>Next</a>
             </div>
             <!--向前换页按钮-->
-            <div id='switch_list_button_2' style='display: block; width: 160px; height: 40px;margin-bottom: 27px;position:absolute;bottom: 0px;'>
+            <div id='switch_list_button_2' style='display: block; width: 160px; height: 40px;position:absolute;bottom: 0px;'>
                 <a class='switch_list_button' href="#" style='width: 160px;'>Prev</a>
             </div>
             <!--双向换页按钮-->
-            <div id='switch_list_button_3' style='display: block; width: 160px; height: 40px;margin-bottom: 27px;position:absolute;bottom: 0px;'>
+            <div id='switch_list_button_3' style='display: block; width: 160px; height: 40px;position:absolute;bottom: 0px;'>
                 <a class='switch_list_button' href="#" style='width: 80;right: 0px;'>Next</a>
                 <a class='switch_list_button' href="#" style='width: 80;left: 0px;'>Prev</a>
             </div>
             <!--加载换页按钮-->
-            <div id='switch_list_button_4' style='display: block; width: 160px; height: 40px;margin-bottom: 27px;position:absolute;bottom: 0px;'>
+            <div id='switch_list_button_4' style='display: block; width: 160px; height: 40px;position:absolute;bottom: 0px;'>
                 <a class='switch_list_button' href="#" style='width: 160;background-color: #555;color: rgb(255, 255, 255);'>Loading...</a>
             </div>
             <!--文章列表内容-->
@@ -127,7 +127,7 @@
                     <p style="font-size: 1.5em;text-align: center;">向死而生</p>
                     <p style="text-align: center;">吾于此生，竭尽所能</p>
                 </div>
-                <div id='post_list' style="overflow-y:auto;max-height: calc(100% - 9em - 65px);overflow-x:hidden; padding-top: 15px;">
+                <div id='post_list' style="overflow-y:auto;max-height: fit-content;overflow-x:hidden; padding-top: 15px;">
                     <div id='post_list_data' style="display: none;">
     <p id='post_list_data_prevURL'></p>
     <p id='post_list_data_nextURL'></p>
@@ -144,7 +144,7 @@
 
 
     <div class="post_list_item" style='
-        border-top-color: #29c2e6;
+        border-top-color: #e9ddbc;
         
             right:100vw;
         
@@ -163,7 +163,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #b2f22b;
+        border-top-color: #181fd8;
         
             left: 100vw;
         
@@ -182,7 +182,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #cb8452;
+        border-top-color: #bf2492;
         
             right:100vw;
         
@@ -201,7 +201,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #1a3baa;
+        border-top-color: #dabcdc;
         
             left: 100vw;
         
@@ -220,7 +220,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #23d4b7;
+        border-top-color: #a826cb;
         
             right:100vw;
         
@@ -239,7 +239,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #004d68;
+        border-top-color: #7307c4;
         
             left: 100vw;
         
@@ -258,7 +258,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #9fccbb;
+        border-top-color: #967d42;
         
             right:100vw;
         
@@ -277,7 +277,7 @@
     </div>
 
     <div class="post_list_item" style='
-        border-top-color: #82d6ec;
+        border-top-color: #a5d656;
         
             left: 100vw;
         
@@ -302,13 +302,9 @@
                     display: flex;
                     flex-direction:row;
                     justify-content:center;
-                    position: absolute;
-                    margin-bottom: 2em;
-                    width: 100%;
-                    bottom: 0;
-                    right: 0;
+                    margin: 2em;
                 '>
-                    <div id='switch_list_button_1' style='display: block; width: 160px; height: 40px;margin-bottom: 27px;position:absolute;bottom: 0px;'>
+                    <div id='switch_list_button_1' style='display: block; width: 160px; height: 40px;bottom: 0px;'>
                         <a class='switch_list_button' href="#" style='width: 160px;'>Next</a>
                     </div>
                 </div>
@@ -433,7 +429,9 @@
             setTimeout(function(){
                     $('#card *').animate({'opacity':0},1000);
                     $('#card').css('max-width','900px');
-                    $('#card').animate({'width':'90vw','height':'80vh'},2000);
+                    $('#card').css('height',$('#card').height());
+                    $('#card').animate({'width':'90vw'},2000);
+                    $('#card').animate({'height':'691px'},2000);
             },2000+360);
 
             //滑出返回home按钮
