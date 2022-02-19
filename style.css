@@ -60,7 +60,7 @@ a:link{
     color: #b854d4;
     text-decoration: none
 }
-::selection {
+a::selection {
     background: #d68fe9;
     color: #fff;
 }
