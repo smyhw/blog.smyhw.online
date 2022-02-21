@@ -118,7 +118,7 @@
 }
 
 #markdown figure {
-  margin: 1em 40px;
+  margin: 1em -10px;
 }
 
 #markdown hr {
@@ -657,6 +657,7 @@
 }
 
 #markdown table th {
+  width: 100vw;
   font-weight: 600;
 }
 
@@ -936,4 +937,10 @@
 
 #markdown ::-webkit-calendar-picker-indicator {
   filter: invert(50%);
+}
+
+/** something add by smyhw **/
+
+#markdown td.code{
+  width: 100vw;
 }
