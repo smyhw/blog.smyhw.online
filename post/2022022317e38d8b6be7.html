@@ -82,24 +82,19 @@
         </div>
         <!--文章-->
         <div id='article'>
-            <p id='title'>about</p>
-            <div id='date'>1970-01-01</div>
+            <p id='title'>绿色版python运行环境</p>
+            <div id='date'>2022-02-22</div>
             <hr>
             <div id='markdown'>
-                <h1 id="我"><a href="#我" class="headerlink" title="我"></a>我</h1><ul>
-<li>你可以叫咱「曦恒」或者「扫描仪」，英文id「smyhw」</li>
-<li>啥都会一点但是啥都不精通，<del>简称一事无成qwq</del></li>
-<li>完全没有艺术细胞…从这个blog的页面就能看出来</li>
-<li>空栈程序员，语言主要用java/python；其他语言也多多少少了解过一点，像c，c#和js之类的也能上手写</li>
-<li>bug制造者，debug苦手</li>
-<li>信安小白，只打过几次比赛</li>
-<li>ACG爱好者<del>老二次元了</del></li>
-<li>咱不擅长社交，没交到什么真正的朋友，所以挺羡慕那些能有好多朋友的dalao…</li>
-</ul>
+                <p>为embeddable package安装pip</p>
+<span id="more"></span>
+<p>python的发布包中有一个特殊的版本，embeddable package，也就是嵌入式版本，这个版本可以绿色运行。在需要部署多个需要不同版本python的项目时挺好使的<br><em>你甚至可以做到给每一个项目附加一份专用的python(bushi</em><br>（注意，这个包本身虽然可以绿色运行，但是你的依赖包未必支持）  </p>
 <hr>
-<h1 id="联系我"><a href="#联系我" class="headerlink" title="联系我"></a>联系我</h1><p>大部分情况下，可以用邮箱<a href="mailto:i@smyhw.online">「i@smyhw.online」</a>联系到我<br>其他：<a target="_blank" rel="noopener" href="https://github.com/smyhw">github</a></p>
+<h2 id="安装pip"><a href="#安装pip" class="headerlink" title="安装pip"></a>安装pip</h2><p>这个包默认只有python自带的系统包<br>如果你尝试给这个python安装其他依赖包，你就会发现并木得pip。<br>先从<a target="_blank" rel="noopener" href="https://github.com/pypa/get-pip">pip项目</a>获取<a target="_blank" rel="noopener" href="https://bootstrap.pypa.io/">get-pip脚本</a>，然后运行<br><em>提示：这里可以加-i参数改变下载源，例如<code>python get-pip.py -i https://pypi.tuna.tsinghua.edu.cn/simple</code></em><br><img src="https://s4.ax1x.com/2022/02/24/bFxxYQ.png" alt="图片失效">  </p>
 <hr>
-<h1 id="关于博客"><a href="#关于博客" class="headerlink" title="关于博客"></a>关于博客</h1><p>21年8月以前用的是wordpress，但是感觉太臃肿了，所以干脆换掉了。<br>现在用的是hexo框架，自己撸的主题，托管在githubPages，外头套了一层cf的cdn  </p>
+<h2 id="修改包含路径"><a href="#修改包含路径" class="headerlink" title="修改包含路径"></a>修改包含路径</h2><p>在根目录下，有一个类似于python310._pth，310取决于你的python版本，这个文件包含了python启动时扫描的路径，这个包默认注释掉了<code>import site</code>，你需要打开它并且取消注释<br><img src="https://s4.ax1x.com/2022/02/24/bkSj2j.png" alt="图片失效"></p>
+<hr>
+<p>启动python，测试pip，例如<code>python -m</code>测试pip<br>如果没有出现差错，那么你的pip已经可以正常使用了<br><img src="https://s4.ax1x.com/2022/02/24/bFxvFg.png" alt="图片失效"></p>
 
             </div>
             <br><br><br>

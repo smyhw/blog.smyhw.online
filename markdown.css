@@ -944,3 +944,7 @@
 #markdown td.code{
   width: 100vw;
 }
+
+#markdown em{
+    font-style: italic;
+}
