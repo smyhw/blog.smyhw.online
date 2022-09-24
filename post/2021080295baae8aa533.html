@@ -12,9 +12,15 @@
 <meta name="generator" content="Hexo 5.4.2"></head>
 
 <link rel="stylesheet" href="../markdown.css">
-
+ 
 
 <link rel="stylesheet" href="../content.css">
+
+
+<link rel="stylesheet" href="../prism.css">
+
+
+<script src="../prism.js"></script>
 
     <style>
         #nav_list a:hover{
@@ -100,74 +106,146 @@
 <blockquote>
 <p>在仅配置了官方源的情况下，yum install mysql就会给你安装mariadb！  </p>
 </blockquote>
-<p>这里我先mysql官方的yum源<br><code>yum install https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm</code><br>之后，你就可以直接yum安装mysql了<br>注意，<code>yum install mysql</code> 只会安装客户端<br>你需要<code>yum install mysql-server</code>来安装服务端<br>在mysql-server第一次启动时，会在log中打印默认的root账户密码<br><em>(log文件一般位于/var/log/mysqld.log)</em><br><code>[Note] [MY-010454] [Server] A temporary password is generated for root@localhost: yourPasswd</code></p>
+<p>这里我先mysql官方的yum源<br><code>yum install https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm</code><br>之后，你就可以直接yum安装mysql了<br>注意，<code>yum install mysql</code> 只会安装客户端<br>你需要<code>yum install mysql-server</code>来安装服务端<br>在mysql-server第一次启动时，会在log中打印默认的root账户密码<br><em>(log文件一般位于&#x2F;var&#x2F;log&#x2F;mysqld.log)</em><br><code>[Note] [MY-010454] [Server] A temporary password is generated for root@localhost: yourPasswd</code></p>
 <p><strong>mysql配置注意事项</strong><br>mysql8以上采用了新的密码加密算法，这是一个break change，还位于关键的鉴权机制上，导致了为以前版本编写的程序集体木大……<br>解决方案是在mysql中为用户指定使用mysql_native_password密码加密方式:<br><code>alter user user@host identified WITH mysql_native_password by passwd;</code><br>注意，请确定你的mysql版本的确含有这个问题，为旧版本的mysql指定这个加密方式将出现错误！  </p>
 <p>还有基本的创建用户并赋权。。。  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">create user &#x27;UserName&#x27;@&#x27;Host&#x27; identified WITH mysql_native_password by &#x27;PassWord&#x27;;<br>grant ALL on BaesName.* TO &#x27;UserName&#x27;@&#x27;Host&#x27;;<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">create user &#39;UserName&#39;@&#39;Host&#39; identified WITH mysql_native_password by &#39;PassWord&#39;;
+grant ALL on BaesName.* TO &#39;UserName&#39;@&#39;Host&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>别忘了刷新权限….某些情况下它还是有用的<br><code>FLUSH PRIVILEGES;</code></p>
 <h1 id="Nginx配置"><a href="#Nginx配置" class="headerlink" title="Nginx配置"></a>Nginx配置</h1><p>nginx本质上就是一个转发器，<br>它充当代理服务器时，可以将你的请求转发给不同的后端服务器，<br>它配置成php服务器时，可以将你的请求转发php-cgi，<br>他作为html静态服务器时，可以将你的请求转发给文件系统  </p>
 <p>从某种意义上来讲，nginx的配置非常简单，结构清晰、简单明了<br><em>整个配置文件加起来才几十行，想想某些软件上千行的配置文件qwq</em>  </p>
 <p>配置文件位置:<code>/etc/nginx/nginx.conf</code>  </p>
 <p>来梳理一下他的配置文件结构  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">//一般配置<br>user nginx;<br>worker_processes auto;<br>error_log /var/log/nginx/error.log;<br>pid /run/nginx.pid;<br>include /usr/share/nginx/modules/*.conf;<br><br>//工作模式及连接数上限<br>events &#123;<br>    worker_connections 1024;<br>&#125;<br><br>//http配置<br>http &#123;<br>    access_log /var/log/nginx/access.log main;<br>    sendfile on;<br>    tcp_nopush on;<br>    tcp_nodelay on;<br>    keepalive_timeout 65;<br>    types_hash_max_size 2048;<br>    include /etc/nginx/mime.types;<br>    default_type application/octet-stream;<br>    include /etc/nginx/conf.d/*.conf;<br><br>    //虚拟主机配置<br>    server &#123;<br>        listen 80 default_server;<br>        listen [::]:80 default_server;<br>        server_name _;<br>        root /usr/share/nginx/html;<br>        include /etc/nginx/default.d/*.conf;<br><br>        //路由配置<br>        location / &#123;<br>        &#125;<br>        error_page 404 /404.html;<br>        location = /40x.html &#123;<br>        &#125;<br>        error_page 500 502 503 504 /50x.html;<br>        location = /50x.html &#123;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F;一般配置
+user nginx;
+worker_processes auto;
+error_log &#x2F;var&#x2F;log&#x2F;nginx&#x2F;error.log;
+pid &#x2F;run&#x2F;nginx.pid;
+include &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;modules&#x2F;*.conf;
+
+&#x2F;&#x2F;工作模式及连接数上限
+events &#123;
+    worker_connections 1024;
+&#125;
+
+&#x2F;&#x2F;http配置
+http &#123;
+    access_log &#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log main;
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    include &#x2F;etc&#x2F;nginx&#x2F;mime.types;
+    default_type application&#x2F;octet-stream;
+    include &#x2F;etc&#x2F;nginx&#x2F;conf.d&#x2F;*.conf;
+
+    &#x2F;&#x2F;虚拟主机配置
+    server &#123;
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        server_name _;
+        root &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;
+        include &#x2F;etc&#x2F;nginx&#x2F;default.d&#x2F;*.conf;
+
+        &#x2F;&#x2F;路由配置
+        location &#x2F; &#123;
+        &#125;
+        error_page 404 &#x2F;404.html;
+        location &#x3D; &#x2F;40x.html &#123;
+        &#125;
+        error_page 500 502 503 504 &#x2F;50x.html;
+        location &#x3D; &#x2F;50x.html &#123;
+        &#125;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>我们主要需要配置的地方在于[虚拟主机配置]以及[路由配置]，其他地方一般保持默认即可<br>从上面，你应该也能看出来，nginx的[虚拟主机配置]是[http配置]的子节点，而[路由配置]则是[虚拟主机配置]的子节点<br>所以，一个nginx服务器可以有多个虚拟主机，一个虚拟主机也可以配置多个路由  </p>
 <p><strong>虚拟主机配置</strong><br>这里，你可以配置这个虚拟主机所监听的端口，ssl，和servername等<br>[虚拟主机]里的大部分配置也可以写在[路由配置]里，当一个[路由配置]里的设置和它的[虚拟主机]中的设置冲突时，将以[路由配置]里的为准<br><strong>(root,index,rewrite等指令都符合上述规则)</strong></p>
 <p>例子:  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">//配置ssl<br>listen 443 ssl;<br>server_name example.com<br>ssl_certificate “/etc/pki/nginx/server.crt”;<br>ssl_certificate_key “/etc/pki/nginx/private/server.key”;<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F;配置ssl
+listen 443 ssl;
+server_name example.com
+ssl_certificate “&#x2F;etc&#x2F;pki&#x2F;nginx&#x2F;server.crt”;
+ssl_certificate_key “&#x2F;etc&#x2F;pki&#x2F;nginx&#x2F;private&#x2F;server.key”;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>路由配置</strong><br>路由配置是nginx配置中的灵魂，它的格式如下</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">location &lt;匹配规则&gt; &#123;<br>    //配置语句<br>&#125;<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">location &lt;匹配规则&gt; &#123;
+    &#x2F;&#x2F;配置语句
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>相应的虚拟主机接收到连接时，会根据连接的URI和所有的location进行匹配，然后执行相应location内的配置语句  </p>
 <p>location的匹配规则由匹配语句类型和匹配语句组成，格式如下:<br><code>&lt;匹配语句类型&gt; &lt;匹配语句&gt;</code>  </p>
 <ul>
-<li>=    精确匹配</li>
-<li>^~    匹配uri以某个常规字符串开头(非正则)</li>
-<li>~    区分大小写的正则匹配</li>
-<li>~*    不区分大小写的正则匹配</li>
-<li>/    通用匹配, 如果没有其它匹配,任何请求都会匹配到</li>
+<li>&#x3D;	精确匹配</li>
+<li>^~	匹配uri以某个常规字符串开头(非正则)</li>
+<li>~	区分大小写的正则匹配</li>
+<li>~*	不区分大小写的正则匹配</li>
+<li>&#x2F;	通用匹配, 如果没有其它匹配,任何请求都会匹配到</li>
 </ul>
 <p>你也可以不使用&lt;匹配语句类型&gt;而直接填写&lt;匹配语句&gt;，这时,你的匹配语句相当于^~</p>
 <p>例子:  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">//匹配所有php文件<br>location ~ .php$ &#123;&#125;<br>//匹配所有对robot.txt的访问<br>location = /robot.txt &#123;&#125;<br>//匹配所有上面都不满足的请求<br>location / &#123;&#125;<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F;匹配所有php文件
+location ~ .php$ &#123;&#125;
+&#x2F;&#x2F;匹配所有对robot.txt的访问
+location &#x3D; &#x2F;robot.txt &#123;&#125;
+&#x2F;&#x2F;匹配所有上面都不满足的请求
+location &#x2F; &#123;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>如果一个请求不符合任何location，则会得到nginx的404响应<br>如果一个请求同时满足多个location，则按照下面的规则选取第一个location  </p>
-<p>&lt;匹配语句类型&gt; 为 =<br>没有&lt;语句类型&gt;时，RUI和&lt;匹配语句&gt;完全符合<br>&lt;匹配语句类型&gt; 为 ^~<br>&lt;匹配语句类型&gt; 为 正则表达式(<del>或</del>*) ,具体按location在配置文件中的顺序<br>没有&lt;语句类型&gt;时，RUI和&lt;匹配语句&gt;符合部分起始路径<br>通用匹配 (/)<br>接下来是配置语句，<br>上面说了，nginx本质上是个转发器，那么，在默认情况下(匹配的location里啥也没有)，那么nginx默认从网站跟目录中读取静态文件，网站目录由配置项”root”定义，如果这个配置也没有(location里没有,server里也没有)，那么默认是”<code>/usr/share/nginx/html</code>”  </p>
-<p>如果你需要将请求转发给后端的其他服务器，那么可以像这样<br><code>proxy_pass: https://example.com;</code><br>注意，这里的URL后头有没有”/”来结尾是有讲究的<br>例子:  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">server_name: test2.example.com;<br>location /dir/ &#123;<br>    proxy_pass: https://test1.example.com;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>&lt;匹配语句类型&gt; 为 &#x3D;<br>没有&lt;语句类型&gt;时，RUI和&lt;匹配语句&gt;完全符合<br>&lt;匹配语句类型&gt; 为 ^~<br>&lt;匹配语句类型&gt; 为 正则表达式(<del>或</del>*) ,具体按location在配置文件中的顺序<br>没有&lt;语句类型&gt;时，RUI和&lt;匹配语句&gt;符合部分起始路径<br>通用匹配 (&#x2F;)<br>接下来是配置语句，<br>上面说了，nginx本质上是个转发器，那么，在默认情况下(匹配的location里啥也没有)，那么nginx默认从网站跟目录中读取静态文件，网站目录由配置项”root”定义，如果这个配置也没有(location里没有,server里也没有)，那么默认是”<code>/usr/share/nginx/html</code>”  </p>
+<p>如果你需要将请求转发给后端的其他服务器，那么可以像这样<br><code>proxy_pass: https://example.com;</code><br>注意，这里的URL后头有没有”&#x2F;”来结尾是有讲究的<br>例子:  </p>
+<pre class="line-numbers language-none"><code class="language-none">server_name: test2.example.com;
+location &#x2F;dir&#x2F; &#123;
+    proxy_pass: https:&#x2F;&#x2F;test1.example.com;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>这时,你访问<code>test2.example.com/dir/</code>,那么你实际访问的是<code>https://test1.example.com/dir</code>,它把location匹配到的部分也加上去了  </p>
 <p>但是，如果你的配置长这样</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">server_name: test2.example.com;<br>location /dir/ &#123;<br>    proxy_pass: https://test1.example.com/;<br>&#125;<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">server_name: test2.example.com;
+location &#x2F;dir&#x2F; &#123;
+    proxy_pass: https:&#x2F;&#x2F;test1.example.com&#x2F;;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>同样访问<code>test2.example.com/dir/</code>,那么你实际访问的是<code>https://test1.example.com/</code>,没有加上location匹配到的部分  </p>
 <p>再加一个例子，将请求转发给php-cgi处理  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">location ~ .php$ &#123;<br>    astcgi_pass 127.0.0.1:9000;<br>    fastcgi_param SCRIPT_FILENAME $document_root/$uri;<br>    include fastcgi_params<br>&#125;<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">location ~ .php$ &#123;
+    astcgi_pass 127.0.0.1:9000;
+    fastcgi_param SCRIPT_FILENAME $document_root&#x2F;$uri;
+    include fastcgi_params
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>nginx还有许多配置项目可供使用，这里我在讲解nginx处理一个请求的顺序中进行讲解  </p>
-<p>nginx处理一个请求的过程/顺序<br>nginx处理一请求一共分为11个阶段<code>(post-read、server-rewrite、find-config、rewrite、post-rewrite、preaccess、access、post-access、try-files、content、log)</code><br>各种配置项目在不同的阶段生效并处理请求，这也是为啥某些配置项目会覆盖掉之前配置项目的操作  </p>
+<p>nginx处理一个请求的过程&#x2F;顺序<br>nginx处理一请求一共分为11个阶段<code>(post-read、server-rewrite、find-config、rewrite、post-rewrite、preaccess、access、post-access、try-files、content、log)</code><br>各种配置项目在不同的阶段生效并处理请求，这也是为啥某些配置项目会覆盖掉之前配置项目的操作  </p>
 <p>先来一个例外，set指令<br>例如:set $a 2333;<br>这个指令可以创建或者赋值一个变量，它在所有阶段前运行  </p>
 <p><strong>1.post-read阶段</strong><br>ngx_realip模块提供的配置项目再此阶段执行，例如set_real_ip_from 和real_ip_header<br>这些配置可以更改请求的来源IP<br>这里仅执行server节点中的配置，location中的指令会在阶段6中执行<br>(推荐在这里配置，不要拖到阶段6)  </p>
 <p><strong>2.server-rewrite阶段</strong><br>在server节点中的rewrite配置项在此阶段生效(注意,定义在location节点中的rewrite在阶段4执行)<br>rewrite配置项，使用方式如下:<br>rewrite &lt;正则表达式&gt; &lt;目标URL&gt; &lt;附加选项&gt;<br>正则表达式匹配当前请求的uri，把匹配成功的uri重写成目标uri<br>附加选项有俩:<br><last>如果匹配成功，则根据&lt;目标URL&gt;进行”内部跳转”(即转到find-config阶段继续执行)<br><break>如果匹配成功，则不再匹配当前同级别的其他rewrite指令<br>(注意，其实在本阶段执行的rewrite不会涉及到”内部跳转”,因为没有必要，此阶段的下一阶段就是find-config)  </p>
 <p><strong>3.find-config阶段</strong><br>此阶段将uri和location进行匹配，<br>名词”内部重定向”的意思就是返回这一步以重新匹配location  </p>
 <p><em>4.rewrite阶段</em>*<br>该阶段执行location节点中的rewrite的匹配  </p>
 <p><strong>5.post-rewrite阶段</strong><br>执行上一阶段匹配成功的rewrite所需的”内部跳转”<br>本阶段和上一阶段一起构成完整的rewrite指令执行步骤  </p>
-<p><strong>6.preaccess阶段</strong><br>allow和deny指令在此阶段工作<br>这两个指令的作用是访问控制，允许/拒绝某(些)来源IP的访问<br>例如:  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">location / &#123;<br>allow 192.168.1.0/24;<br>allow 127.0.0.1;<br>deny all;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>6.preaccess阶段</strong><br>allow和deny指令在此阶段工作<br>这两个指令的作用是访问控制，允许&#x2F;拒绝某(些)来源IP的访问<br>例如:  </p>
+<pre class="line-numbers language-none"><code class="language-none">location &#x2F; &#123;
+allow 192.168.1.0&#x2F;24;
+allow 127.0.0.1;
+deny all;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>这样配置可以仅允许192.168.0.0/24和本机访问，因为其余IP都被deny all了<br>nginx中,如果存在多个allow/deny,那么他们将按照顺序执行<br>如果来源IP匹配第一条allow规则，那么接下来的allow和deny都不会去匹配了  </p>
+<p>这样配置可以仅允许192.168.0.0&#x2F;24和本机访问，因为其余IP都被deny all了<br>nginx中,如果存在多个allow&#x2F;deny,那么他们将按照顺序执行<br>如果来源IP匹配第一条allow规则，那么接下来的allow和deny都不会去匹配了  </p>
 <p>此阶段还包含了nginx的限流限频配置，支持令牌桶算法和漏斗算法，这里不再详述…<br>注意，其实第一阶段的ngx_realip模块也在本阶段注册处理程序….但是这都开始判断allow和deny了，你还搁着改来源IP算啥事嘛。。。推荐尽量在server节点中配置ngx_realip相关的项目  </p>
 <p><strong>7.post-access阶段</strong><br>这个阶段啥也没有，是nginx核心自己处理一些工作的阶段  </p>
-<p><strong>8.try-files阶段</strong><br>顾名思义，该阶段专门处理try_files配置项<br>try_files 指令接受两个以上任意数量的参数，每个参数都指定了一个 URI,nginx会从第一个参数开始,从文件系统检查该对象是否存在，一旦 某个对象存在，当前URI就会被更改为这个对象所对应的参数 URI,注意，这里不会发生”内部跳转”,如果除最后一个参数外的对象全部不存在，则根据最后一个参数进行”内部跳转”<br>检查对象是否存在时，由root配置项目指定根目录，然后接上参数URi，如果参数uri不以/结尾，则判断是否存在该文件，如果以/结尾，则判断是否存在该文件夹<br>举个栗子  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">root=/web/root_dir;<br>try_files /testfile /testdir/ /final_page;<br></code></pre></td></tr></table></figure>
+<p><strong>8.try-files阶段</strong><br>顾名思义，该阶段专门处理try_files配置项<br>try_files 指令接受两个以上任意数量的参数，每个参数都指定了一个 URI,nginx会从第一个参数开始,从文件系统检查该对象是否存在，一旦 某个对象存在，当前URI就会被更改为这个对象所对应的参数 URI,注意，这里不会发生”内部跳转”,如果除最后一个参数外的对象全部不存在，则根据最后一个参数进行”内部跳转”<br>检查对象是否存在时，由root配置项目指定根目录，然后接上参数URi，如果参数uri不以&#x2F;结尾，则判断是否存在该文件，如果以&#x2F;结尾，则判断是否存在该文件夹<br>举个栗子  </p>
+<pre class="line-numbers language-none"><code class="language-none">root&#x3D;&#x2F;web&#x2F;root_dir;
+try_files &#x2F;testfile &#x2F;testdir&#x2F; &#x2F;final_page;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<p>那么，nginx会先检查/web/root_dir/testfile这个文件是否存在，<br>若不存在，则检查/web/root_dir/testdir/这个文件夹是否存在，<br>若不存在，则根据/final_page这个uri发起”内部跳转”  </p>
-<p><strong>8.content阶段</strong><br>该阶段负责向后端(可能是另外的web服务器，也可能是php-cgi)进行连接，<br>执行配置项proxy_pass和fastcgi_pass等配置项目<br>index配置项也在此阶段生效<br>index接收若干个参数，每个参数指定一个默认文件名<br>如果执行到index配置项时，uri以/结尾，那么index会从第一个参数开始尝试，探测每一个参数所指定的默认文件是否存在，若存在，则将该参数接到uri后面并发起”内部重定向”  </p>
+<p>那么，nginx会先检查&#x2F;web&#x2F;root_dir&#x2F;testfile这个文件是否存在，<br>若不存在，则检查&#x2F;web&#x2F;root_dir&#x2F;testdir&#x2F;这个文件夹是否存在，<br>若不存在，则根据&#x2F;final_page这个uri发起”内部跳转”  </p>
+<p><strong>8.content阶段</strong><br>该阶段负责向后端(可能是另外的web服务器，也可能是php-cgi)进行连接，<br>执行配置项proxy_pass和fastcgi_pass等配置项目<br>index配置项也在此阶段生效<br>index接收若干个参数，每个参数指定一个默认文件名<br>如果执行到index配置项时，uri以&#x2F;结尾，那么index会从第一个参数开始尝试，探测每一个参数所指定的默认文件是否存在，若存在，则将该参数接到uri后面并发起”内部重定向”  </p>
 <p><strong>9.log阶段</strong><br>执行和log相关的处理<br>配置项acces_log和error_log在此阶段生效  </p>
 <p><em>MAP节点</em><br>在上文中，我提到set配置项可以提供一个变量，但是这个配置项是简陋的，很多时候达不到我们的需求，这时，nginx提供一个http节点下的，和server节点同级的——MAP，使用它可以实现更复杂的定义变量<br>例子:  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">map $uri $smyhw &#123;<br>    ~(?(?&lt;=/)\w+$) $smyhw_name;<br>    default &quot;&quot;;<br>&#125;<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">map $uri $smyhw &#123;
+    ~(?(?&lt;&#x3D;&#x2F;)\w+$) $smyhw_name;
+    default &quot;&quot;;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>你应该看到了，这个节点有俩参数，第一个参数是原始参数，第二个参数是你要自定义参数<br>该节点每行一个匹配语句，这个语句的规则同location的匹配规则，拥有匹配类型和匹配语句，唯一不同的是，这里的匹配类型和匹配语句间不能有空格<br>每一行的第二个参数是”当原始参数匹配该行的规则时，自定义变量将被赋的值”<br>这里可以使用正则表达式的”捕获”来取得变量<br>default配置行提供当每一行都不匹配时自定义变量的默认值  </p>
 
@@ -194,7 +272,7 @@
                 align-items: center;
                 /* width: fit-content; */
                 background-color: #f5f5f5;
-                margin: 0 auto;
+                margin: 0 auto 2em;
                 padding: 0.5rem;
                 border-radius: 1rem;
                 border: azure;

@@ -12,9 +12,15 @@
 <meta name="generator" content="Hexo 5.4.2"></head>
 
 <link rel="stylesheet" href="../markdown.css">
-
+ 
 
 <link rel="stylesheet" href="../content.css">
+
+
+<link rel="stylesheet" href="../prism.css">
+
+
+<script src="../prism.js"></script>
 
     <style>
         #nav_list a:hover{
@@ -97,18 +103,17 @@
 <p>如你所料，novnc无法，也不可能建立TCP连接，它只能建立websocket连接，所以无法直接连接传统的，基于TCP的VNC服务端。<br>所以，我们需要一个转发程序，将websocket转换为TCP连接。<br><em>某些VNC服务端原生支持websocket连接，但是tightvnc应该是没有这个功能的…</em><br>所以咱们使用novnc的姊妹项目——<a target="_blank" rel="noopener" href="https://github.com/novnc/websockify">websockify</a>  </p>
 <hr>
 <h2 id="安装tightvnc"><a href="#安装tightvnc" class="headerlink" title="安装tightvnc"></a>安装tightvnc</h2><ol>
-<li>双击安装包，下一步，下一步，下一步……  </li>
+<li>双击安装包，下一步，下一步，下一步……<br><em>如果没有特殊需要，咱还是推荐在安装的时候取消勾选注册为服务</em><br><code>primary passwd</code>，即VNC登入密码务必设置，否则你的VNC将会裸奔（  </li>
+<li>安装完成后，任务栏将会显示图标，右键图标–&gt;configuration，打开控制面板<br>在<code>Access Control</code>选项卡中，右下角勾选<code>Allow loopback connections</code>，允许本地连接<br>如果你没有特殊需要，为了安全性也推荐勾选<code>Allow only loopback connections</code>，仅允许本地连接<br><em>因为咱们要使用websocket反代连接，所以所有的连接都会被视为从本地访问，所以……</em></li>
 </ol>
-<p><em>如果没有特殊需要，咱还是推荐在安装的时候取消勾选注册为服务</em><br><code>primary passwd</code>，即VNC登入密码务必设置，否则你的VNC将会裸奔（<br>2. 安装完成后，任务栏将会显示图标，右键图标–&gt;configuration，打开控制面板<br>在<code>Access Control</code>选项卡中，右下角勾选<code>Allow loopback connections</code>，允许本地连接<br>如果你没有特殊需要，为了安全性也推荐勾选<code>Allow only loopback connections</code>，仅允许本地连接<br><em>因为咱们要使用websocket反代连接，所以所有的连接都会被视为从本地访问，所以……</em></p>
 <hr>
 <h2 id="安装websockify"><a href="#安装websockify" class="headerlink" title="安装websockify"></a>安装websockify</h2><p>websockify的原生语言是python，其他语言的实现都或多或少没有原生的维护频繁，所以咱们就使用python版。  </p>
 <ol>
 <li>首先，我们需要一个可以用的python环境，这里咱使用<a href="/post/2022022317e38d8b6be7.html">嵌入式的python</a>  </li>
 <li>如websockify的readme中所说，它需要numpy库来获得更好的性能，在python环境中执行<code>pip install numpy</code><br>如果想简单一点，或者不需要这个库，也可以去setup.py里把<code>install_requires=[&#39;numpy&#39;]</code>这行删掉。  </li>
 <li>在python环境中执行<code>python setup.py install</code>  </li>
-<li>如果没有出什么差错，现在随便可以在cmd中执行<code>websockify</code>命令了。  </li>
+<li>如果没有出什么差错，现在随便可以在cmd中执行<code>websockify</code>命令了。<br><em>注意：这个安装如你所料，无法绿色运行，即你执行安装命令后，就不能再移动你的python安装文件夹位置了</em></li>
 </ol>
-<p><em>注意：这个安装如你所料，无法绿色运行，即你执行安装命令后，就不能再移动你的python安装文件夹位置了</em>  </p>
 <h3 id="准备证书和密钥文件-可选"><a href="#准备证书和密钥文件-可选" class="headerlink" title="准备证书和密钥文件(可选)"></a>准备证书和密钥文件(可选)</h3><p>如果需要基于ssl的加密连接，那么你需要一个证书文件和一个密钥文件，就和配置一个https站点一样(对，这必须要有一个域名)  </p>
 <ul>
 <li>使用<code>--cert=&lt;路径&gt;</code>来指定证书文件路径(默认为当前目录下的self.pem)</li>
@@ -120,7 +125,7 @@
 <h2 id="在web中访问"><a href="#在web中访问" class="headerlink" title="在web中访问"></a>在web中访问</h2><p>如果一切没有差错，现在咱们应该已经一切准备就绪，只差最后一步<br>打开novnc网页，在url中加入参数<code>host</code>和<code>port</code>，代表websockify所监听的地址<br>例如<code>https://example.com/vnc.html?host=test.smyhw.online&amp;port=25565</code></p>
 <hr>
 <h2 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h2><ul>
-<li><p>因为VNC是屏幕捕捉，所以使用VNC至少需要一个可以输出的显示设备/会话<br>如果你的VNC打开黑屏的话，大概率就是这个原因。<br>如果是阿里腾讯这类云服务器，那么可以在服务器里开一个应急连接，他们的应急连接也是VNC，但是会在更底层模拟一个显示设备<br>或者，RDP也算作一个会话，所以也可以被VNC捕捉</p>
+<li><p>因为VNC是屏幕捕捉，所以使用VNC至少需要一个可以输出的显示设备&#x2F;会话<br>如果你的VNC打开黑屏的话，大概率就是这个原因。<br>如果是阿里腾讯这类云服务器，那么可以在服务器里开一个应急连接，他们的应急连接也是VNC，但是会在更底层模拟一个显示设备<br>或者，RDP也算作一个会话，所以也可以被VNC捕捉</p>
 </li>
 <li><p>如果novnc通过https加载，那么websocket也必须配置ssl，否则浏览器会拒绝连接</p>
 </li>
@@ -151,7 +156,7 @@
                 align-items: center;
                 /* width: fit-content; */
                 background-color: #f5f5f5;
-                margin: 0 auto;
+                margin: 0 auto 2em;
                 padding: 0.5rem;
                 border-radius: 1rem;
                 border: azure;

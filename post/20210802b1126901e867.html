@@ -12,9 +12,15 @@
 <meta name="generator" content="Hexo 5.4.2"></head>
 
 <link rel="stylesheet" href="../markdown.css">
-
+ 
 
 <link rel="stylesheet" href="../content.css">
+
+
+<link rel="stylesheet" href="../prism.css">
+
+
+<script src="../prism.js"></script>
 
     <style>
         #nav_list a:hover{
@@ -102,10 +108,10 @@
 <li>-s &lt;来源位址&gt; 设置本地主机送出数据包的IP地址；</li>
 <li>-u 使用UDP传输协议；</li>
 <li>-w &lt;超时秒数&gt; 设置等待连线的时间；</li>
-<li>-z 使用0输入/输出模式，只在扫描通信端口时使用。</li>
-<li>-e 连接之后执行程序<h2 id="举个栗子"><a href="#举个栗子" class="headerlink" title="举个栗子:"></a>举个栗子:</h2></li>
+<li>-z 使用0输入&#x2F;输出模式，只在扫描通信端口时使用。</li>
+<li>-e 连接之后执行程序</li>
 </ul>
-<p>监听端口444，接受到连接后把自己的shell给对面</p>
+<h2 id="举个栗子"><a href="#举个栗子" class="headerlink" title="举个栗子:"></a>举个栗子:</h2><p>监听端口444，接受到连接后把自己的shell给对面</p>
 <p><code>nc -l -p 444 -e /bin/bash</code></p>
 <p>连接到192.168.1.1:444上监听的nc</p>
 <p><code>nc -v 192.168.1.1 444</code></p>
@@ -135,7 +141,7 @@
                 align-items: center;
                 /* width: fit-content; */
                 background-color: #f5f5f5;
-                margin: 0 auto;
+                margin: 0 auto 2em;
                 padding: 0.5rem;
                 border-radius: 1rem;
                 border: azure;

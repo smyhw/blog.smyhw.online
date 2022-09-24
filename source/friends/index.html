@@ -4,23 +4,23 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <title>smyhw'blog | 意志</title>
     
-<script src="../jquery.js"></script>
+<script src="../../jquery.js"></script>
 
     
-<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../../style.css">
 
 <meta name="generator" content="Hexo 5.4.2"></head>
 
-<link rel="stylesheet" href="../markdown.css">
+<link rel="stylesheet" href="../../markdown.css">
  
 
-<link rel="stylesheet" href="../content.css">
+<link rel="stylesheet" href="../../content.css">
 
 
-<link rel="stylesheet" href="../prism.css">
+<link rel="stylesheet" href="../../prism.css">
 
 
-<script src="../prism.js"></script>
+<script src="../../prism.js"></script>
 
     <style>
         #nav_list a:hover{
@@ -88,26 +88,41 @@
         </div>
         <!--文章-->
         <div id='article'>
-            <p id='title'>ubuntu上apt安装mysql踩坑</p>
-            <div id='date'>2021-08-02</div>
+            <p id='title'>friends</p>
+            <div id='date'>1970-01-01</div>
             <hr>
             <div id='markdown'>
-                <p>root账户用不了,数据目录无法更改,mysql服务起不来……各种坑整了我好几个小时</p>
-<span id="more"></span>
-
-<h2 id="问题一-在mysql的配置目录里更改了data目录之后-mysql启动不起来"><a href="#问题一-在mysql的配置目录里更改了data目录之后-mysql启动不起来" class="headerlink" title="问题一:在mysql的配置目录里更改了data目录之后,mysql启动不起来"></a>问题一:在mysql的配置目录里更改了data目录之后,mysql启动不起来</h2><p>这个时候,看mysql的日志,发现日志显示,data目录不可读写</p>
-<p>原因:ubuntu server有一个预装软件叫<code>apparmor</code>,你去百度一下就知道这货是干啥的了…,他会限制mysql的data目录位置,如果mysql试图向它不允许的位置进行读写,它就会阻止…</p>
-<p><strong>解决方案:</strong>  </p>
+                <h1 id="友人帐"><a href="#友人帐" class="headerlink" title="友人帐"></a>友人帐</h1><table>
+<thead>
+<tr>
+<th align="left">sites</th>
+<th align="left">qwq</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://blog.andychuck.cn/">熊窝</a></td>
+<td align="left">技术少年</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://chanshiyu.com/">蝉时雨</a></td>
+<td align="left">蝉鸣如雨，花宵道中</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://9bie.org/">⑨BIE</a></td>
+<td align="left">伪技术宅的迷之地</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://5ime.cn/">I Am I</a></td>
+<td align="left">永远相信美好的事情即将发生</td>
+</tr>
+</tbody></table>
+<hr>
+<p>欢迎交换友链！<br>可以向我发送邮件或者在下面评论：<br>告诉咱你的：</p>
 <ol>
-<li><code>apt-get remove apparmor</code> #还有什么比直接删掉更彻底呢….</li>
-<li>更改apparmor的配置文件,位置在<code>/etc/apparmor.d/usr.sbin.mysqld</code><br>搜索你mysql原来的data目录位置,然后把它替换为新的地址</li>
-<li><code>ln -s 源目录 目标目录 </code>创建一个软连接,在你原先的data目录位置创建一个到新data目录的软连接,apparmor不会拦截这种情况</li>
+<li>站点名字</li>
+<li>一句话介绍</li>
+<li>地址<br><em>最好是个人博客类型的，咱可能不会接收一些转载站之类的qwq</em></li>
 </ol>
-<hr>
-<h2 id="问题二-root密码呢"><a href="#问题二-root密码呢" class="headerlink" title="问题二:root密码呢?"></a>问题二:root密码呢?</h2><p>ubuntu server 在使用apt-get安装mysql的时候,会默认创建一个具有管理员权限的账户,用户名和密码保存在<code>/etc/mysql/debian.cnf</code>文件中,登入后拥有全部权限.<br><em>还有,root用户直接输入mysql指令,不需要任何参数,直接可以登入mysq,并拥有管理员权限</em></p>
-<hr>
-<h2 id="问题三-明明改了root密码-但是使用更改的密码就是登入不上去"><a href="#问题三-明明改了root密码-但是使用更改的密码就是登入不上去" class="headerlink" title="问题三:明明改了root密码,但是使用更改的密码就是登入不上去"></a>问题三:明明改了root密码,但是使用更改的密码就是登入不上去</h2><p>在mysql库的user表里面看看,root用户的默认登入方式(plugin字段)是auth-socket…而一般的密码登入,该字段的值应该是mysql_native_password<br>(为啥登入方式字段叫plugin?因为这玩意叫鉴权插件,是插件,不叫方式…)</p>
-<p><strong>解决方案:</strong><br>用问题二所描述的方法登入mysql,<br>然后执行sql语句<code>use mysql;update set plugin=”mysql_native_password” where user=”root”;</code><br>来把登入方式改成传统的密码登入</p>
 
             </div>
             <br><br><br>

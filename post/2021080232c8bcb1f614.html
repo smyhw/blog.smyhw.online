@@ -12,9 +12,15 @@
 <meta name="generator" content="Hexo 5.4.2"></head>
 
 <link rel="stylesheet" href="../markdown.css">
-
+ 
 
 <link rel="stylesheet" href="../content.css">
+
+
+<link rel="stylesheet" href="../prism.css">
+
+
+<script src="../prism.js"></script>
 
     <style>
         #nav_list a:hover{
@@ -91,7 +97,7 @@
 
 <h2 id="报文格式"><a href="#报文格式" class="headerlink" title="报文格式:"></a>报文格式:</h2><p>报文由 <strong>头部</strong> 和 <strong>数据部分</strong> 组成,无论是在查询包还是返回包中,头部字段始终存在且长度和格式都不变,数据部分是否存在及其大小则由头部数据决定</p>
 <blockquote>
-<p>注意: 1字节(byte)=8比特(bit)*</p>
+<p>注意: 1字节(byte)&#x3D;8比特(bit)*</p>
 </blockquote>
 <h2 id="报文头部"><a href="#报文头部" class="headerlink" title="报文头部"></a>报文头部</h2><table>
 <thead>
@@ -119,7 +125,7 @@
 <li>回答区域</li>
 <li>授权区域</li>
 <li>附加区域</li>
-<li>会话标识  </li>
+<li>会话标识</li>
 </ul>
 <p>每一个DNS请求都有唯一的会话标识,该标识由客户端(查询发起端)发送查询数据包时生成,服务器返回响应包时的会话标识应与对应的查询包一致  </p>
 <h4 id="标志"><a href="#标志" class="headerlink" title="标志"></a>标志</h4><p>标志记录了该请求包的各个参数,具体如下<br>注意,各个参数的顺序即按下表的顺序从上至下</p>
@@ -134,7 +140,7 @@
 <tbody><tr>
 <td align="left">1比特</td>
 <td align="left">QR</td>
-<td align="left">查询/响应标志，0为查询，1为响应</td>
+<td align="left">查询&#x2F;响应标志，0为查询，1为响应</td>
 </tr>
 <tr>
 <td align="left">4比特</td>
@@ -164,7 +170,7 @@
 <tr>
 <td align="left">4比特</td>
 <td align="left">rcode</td>
-<td align="left">返回码(0=没有差错，2=服务器错误，3=域名差错)</td>
+<td align="left">返回码(0&#x3D;没有差错，2&#x3D;服务器错误，3&#x3D;域名差错)</td>
 </tr>
 </tbody></table>
 <h4 id="数据部分数量"><a href="#数据部分数量" class="headerlink" title="数据部分数量"></a>数据部分数量</h4><p>该部分8个字节,每两字节记录一个数字,每一个数字记录了4个报文数据部分的数据数量</p>
@@ -239,7 +245,7 @@
 <ul>
 <li>数字2 ,表示CSNET</li>
 <li>数字3, 表示Chaos</li>
-<li>数字4,表示 MIT Athena Hesiod  </li>
+<li>数字4,表示 MIT Athena Hesiod</li>
 </ul>
 <h3 id="报文数据-gt-其他区域"><a href="#报文数据-gt-其他区域" class="headerlink" title="报文数据&gt;其他区域"></a>报文数据&gt;其他区域</h3><p>其他区域包含了问题区域的所有内容,并附加了一些区域,如下表:</p>
 <table>
@@ -306,7 +312,7 @@
                 align-items: center;
                 /* width: fit-content; */
                 background-color: #f5f5f5;
-                margin: 0 auto;
+                margin: 0 auto 2em;
                 padding: 0.5rem;
                 border-radius: 1rem;
                 border: azure;

@@ -12,9 +12,15 @@
 <meta name="generator" content="Hexo 5.4.2"></head>
 
 <link rel="stylesheet" href="../markdown.css">
-
+ 
 
 <link rel="stylesheet" href="../content.css">
+
+
+<link rel="stylesheet" href="../prism.css">
+
+
+<script src="../prism.js"></script>
 
     <style>
         #nav_list a:hover{
@@ -93,13 +99,23 @@
 </blockquote>
 <p>默认表<code>filter nat|raw|mangle</code><br>数据包进表顺序<code>raw-mangle-nat-filter</code></p>
 <p>各个表包含的链：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">raw: PREROUTING OUTPUT<br>mangle: PREROUTING POSTROUTING INPUT OUTPUT FORWARD<br>nat: PREROUTING POSTROUTING OUTPUT<br>filter: INPUT FORWARD OUTPUT<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">raw: PREROUTING OUTPUT
+mangle: PREROUTING POSTROUTING INPUT OUTPUT FORWARD
+nat: PREROUTING POSTROUTING OUTPUT
+filter: INPUT FORWARD OUTPUT<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>各个表的作用 :<br>raw:确定是否对该数据包进行状态跟踪<br>mangle:为数据包设置标记（较少使用）<br>nat:修改数据包中的源、目标IP地址或端口<br>filter:确定是否放行该数据包（过滤）</p>
 <p>[命令结构]</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">iptables [-t table] COMMAND chain CRETIRIA -j ACTION<br>-t table ：3个表<br>COMMAND：定义如何对规则进行管理<br>chain：指定你接下来的规则到底是在哪个链上操作的，当定义策略的时候，是可以省略的<br>CRETIRIA:指定匹配标准<br>-j ACTION :指定如何进行处理<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">iptables [-t table] COMMAND chain CRETIRIA -j ACTION
+-t table ：3个表
+COMMAND：定义如何对规则进行管理
+chain：指定你接下来的规则到底是在哪个链上操作的，当定义策略的时候，是可以省略的
+CRETIRIA:指定匹配标准
+-j ACTION :指定如何进行处理<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>[其他参数列表]<br>-V 查看版本<br>-L &lt;链名&gt; 查看链中的规则<br>-P &lt;链名&gt; &lt;数据包处理方式&gt; 修改链中默认的数据包处理方式<br>–line-number 显示行号<br>[规则操作]</p>
-<figure class="highlight plaintext"><figcaption><span><表名称> <操作(添加/插入/删除)> <链名称> <匹配规则> -j <处理措施></span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs iptables">-A 添加到末尾<br>-D 删除<br>-I &lt;链名&gt; &lt;行数&gt; 添加到指定位置（注意，添加到哪一行，那么原来那一行的规则就会向后顺延）<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-iptables" data-language="iptables"><div class="caption"><span><表名称> <操作(添加/插入/删除)> <链名称> <匹配规则> -j <处理措施></span></div><code class="language-iptables">-A 添加到末尾
+-D 删除
+-I &lt;链名&gt; &lt;行数&gt; 添加到指定位置（注意，添加到哪一行，那么原来那一行的规则就会向后顺延）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>匹配数据的规则</p>
 <pre><code>-i &lt;网卡名称(eth0)&gt; 匹配入口网卡
 -o &lt;网卡名称(eth0)&gt; 匹配出口网卡
@@ -135,7 +151,7 @@ DROP(丢弃)，REJECT(拒绝)，ACCEPT(接受)，SANT(基于原地址的转换)
                 align-items: center;
                 /* width: fit-content; */
                 background-color: #f5f5f5;
-                margin: 0 auto;
+                margin: 0 auto 2em;
                 padding: 0.5rem;
                 border-radius: 1rem;
                 border: azure;

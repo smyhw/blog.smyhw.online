@@ -12,9 +12,15 @@
 <meta name="generator" content="Hexo 5.4.2"></head>
 
 <link rel="stylesheet" href="../markdown.css">
-
+ 
 
 <link rel="stylesheet" href="../content.css">
+
+
+<link rel="stylesheet" href="../prism.css">
+
+
+<script src="../prism.js"></script>
 
     <style>
         #nav_list a:hover{
@@ -92,14 +98,30 @@
 <hr>
 <h2 id="GPG和PGP"><a href="#GPG和PGP" class="headerlink" title="GPG和PGP"></a>GPG和PGP</h2><p>pgp就是咱们常说的“优良保密协议”，目前来说，它代指一个标准，即<a target="_blank" rel="noopener" href="https://www.ietf.org/rfc/rfc4880.txt">RFC4880</a>标准，<br>而GPG是”GnuPG”的缩写，是一个实现了pgp标准的开源软件。</p>
 <h2 id="生成密钥"><a href="#生成密钥" class="headerlink" title="生成密钥"></a>生成密钥</h2><p>一切从这里开始，输入<code>gpg -h</code>可以看到帮助信息，一共有三个选项和生成密钥有关</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">--generate-key                 generate a new key pair<br>--quick-generate-key           quickly generate a new key pair<br>--full-generate-key            full featured key pair generation<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">--generate-key                 generate a new key pair
+--quick-generate-key           quickly generate a new key pair
+--full-generate-key            full featured key pair generation<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>这里推荐使用<code>--full-generate-key</code>，这应该是最常用的选项  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">S:\work_temp\ayw&gt;gpg --full-generate-key<br>gpg (GnuPG) 2.3.6; Copyright (C) 2021 g10 Code GmbH<br>This is free software: you are free to change and redistribute it.<br>There is NO WARRANTY, to the extent permitted by law.<br><br>Please select what kind of key you want:<br>   (1) RSA and RSA<br>   (2) DSA and Elgamal<br>   (3) DSA (sign only)<br>   (4) RSA (sign only)<br>   (9) ECC (sign and encrypt) *default*<br>  (10) ECC (sign only)<br>  (14) Existing key from card<br>Your selection?<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">S:<span class="token punctuation">\</span>work_temp<span class="token punctuation">\</span>ayw<span class="token operator">></span>gpg --full-generate-key
+gpg <span class="token punctuation">(</span>GnuPG<span class="token punctuation">)</span> <span class="token number">2.3</span>.6<span class="token punctuation">;</span> Copyright <span class="token punctuation">(</span>C<span class="token punctuation">)</span> <span class="token number">2021</span> g10 Code GmbH
+This is <span class="token function">free</span> software: you are <span class="token function">free</span> to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Please <span class="token keyword">select</span> what kind of key you want:
+   <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> RSA and RSA
+   <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> DSA and Elgamal
+   <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> DSA <span class="token punctuation">(</span>sign only<span class="token punctuation">)</span>
+   <span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span> RSA <span class="token punctuation">(</span>sign only<span class="token punctuation">)</span>
+   <span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">)</span> ECC <span class="token punctuation">(</span>sign and encrypt<span class="token punctuation">)</span> *default*
+  <span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> ECC <span class="token punctuation">(</span>sign only<span class="token punctuation">)</span>
+  <span class="token punctuation">(</span><span class="token number">14</span><span class="token punctuation">)</span> Existing key from card
+Your selection?<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这里选择要生成的密钥种类，你可能发现了，条目前的序号似乎并不连续；如果查阅过其他教程，更会发现，几乎每个教程，这一步显示出来的种类都不一样  </p>
 <p><em>其实咱也不清楚为啥会这样.jpg</em> ，但是这里只需要关心密钥所采用的算法即可，这里列出了你需要生成的密钥所采用的算法(RSA&#x2F;DSA&#x2F;ECC&#x2F;…)。</p>
 <h3 id="如何选择密钥算法？"><a href="#如何选择密钥算法？" class="headerlink" title="如何选择密钥算法？"></a>如何选择密钥算法？</h3><blockquote>
-<p>在业界，这仍然没有确定的答案，GPG所支持的所有算法都足够强大且不易被破解，所以给出“最佳算法”往往带有很强的主观成分<br><strong>GPG给出的默认值</strong></p>
+<p>在业界，这仍然没有确定的答案，GPG所支持的所有算法都足够强大且不易被破解，所以给出“最佳算法”往往带有很强的主观成分  </p>
 </blockquote>
+<p><strong>GPG给出的默认值</strong></p>
 <ul>
 <li>在十年前，GPG在这里给出了RSA作为推荐的默认算法，因为RSA具有最强的兼容性，并且被认为“在未来的数年里可以提供合理的安全性”，  </li>
 <li>但是现在，再这里的默认算法是ECC，因为ECC在256位密钥下就可以达到媲美RSA在3072位密钥下的表现，<del>（未来属于椭圆曲线bushi）</del></li>
@@ -107,19 +129,43 @@
 <p>如此看来，ECC应当领先于RSA很多对吧？但是为什么如今RSA仍然没有被ECC取代呢？<br>第一是因为相比于RSA，ECC的兼容性还是差了不少<br>第二是因为专利问题</p>
 <p>言归正传，咱们在这里推荐先选择<code>RSA (sign only)</code>条目，简单一点  </p>
 <ul>
-<li>注意：带and的条目，都是生成一个主密钥和一个子秘钥，新手可以先别选它们  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">RSA keys may be between 1024 and 4096 bits long.<br>What keysize do you want? (2048) <br></code></pre></td></tr></table></figure>
-这里询问你需要生成的密钥长度，当然是越长越安全，但是越长的密钥在生成和使用时会耗费更长的时间，这里咱填了4096。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Requested keysize is 4096 bits<br>Please specify how long the key should be valid.<br>         0 = key does not expire<br>      &lt;n&gt;  = key expires in n days<br>      &lt;n&gt;w = key expires in n weeks<br>      &lt;n&gt;m = key expires in n months<br>      &lt;n&gt;y = key expires in n years<br>Key is valid for? (0)<br></code></pre></td></tr></table></figure>
+<li>注意：带and的条目，都是生成一个主密钥和一个子秘钥，新手可以先别选它们  <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">RSA keys may be between <span class="token number">1024</span> and <span class="token number">4096</span> bits long.
+What keysize <span class="token keyword">do</span> you want? <span class="token punctuation">(</span><span class="token number">2048</span><span class="token punctuation">)</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+这里询问你需要生成的密钥长度，当然是越长越安全，但是越长的密钥在生成和使用时会耗费更长的时间，这里咱填了4096。<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Requested keysize is <span class="token number">4096</span> bits
+Please specify how long the key should be valid.
+         <span class="token number">0</span> <span class="token operator">=</span> key does not expire
+      <span class="token operator">&lt;</span>n<span class="token operator">></span>  <span class="token operator">=</span> key expires <span class="token keyword">in</span> n days
+      <span class="token operator">&lt;</span>n<span class="token operator">></span>w <span class="token operator">=</span> key expires <span class="token keyword">in</span> n weeks
+      <span class="token operator">&lt;</span>n<span class="token operator">></span>m <span class="token operator">=</span> key expires <span class="token keyword">in</span> n months
+      <span class="token operator">&lt;</span>n<span class="token operator">></span>y <span class="token operator">=</span> key expires <span class="token keyword">in</span> n years
+Key is valid for? <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 这里选择密钥的有效期  </li>
 <li>输入0则永久有效</li>
-<li>在生成后可以随时更改有效期。<em>但是在实际使用中，更有效期后，你可能需要非常麻烦地重新发布你的公钥</em><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Key does not expire at all<br>Is this correct? (y/N)<br></code></pre></td></tr></table></figure></li>
+<li>在生成后可以随时更改有效期。<em>但是在实际使用中，更有效期后，你可能需要非常麻烦地重新发布你的公钥</em><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Key does not expire at all
+Is this correct? <span class="token punctuation">(</span>y/N<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
 </ul>
 <p>问你是否正确，输入y确定  </p>
 <p>接下来，PGP将询问你三条信息来建立这个密钥的身份信息，<br>PGP依靠一个<code>用户ID</code>来确定一个唯一的身份信息，这个用户ID由<code>真实名字(Real name)</code>、<code>邮箱(Email address)</code>、<code>备注(Comment)</code>三个部分组成，  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">GnuPG needs to construct a user ID to identify your key.<br><br>Real name: test<br>Email address: test@smyhw.online<br>Comment:<br>You selected this USER-ID:<br>    &quot;test &lt;test@smyhw.online&gt;&quot;<br><br>Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit?<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">GnuPG needs to construct a user ID to identify your key.
+
+Real name: <span class="token builtin class-name">test</span>
+Email address: test@smyhw.online
+Comment:
+You selected this <span class="token environment constant">USER</span>-ID:
+    <span class="token string">"test &lt;test@smyhw.online>"</span>
+
+Change <span class="token punctuation">(</span>N<span class="token punctuation">)</span>ame, <span class="token punctuation">(</span>C<span class="token punctuation">)</span>omment, <span class="token punctuation">(</span>E<span class="token punctuation">)</span>mail or <span class="token punctuation">(</span>O<span class="token punctuation">)</span>kay/<span class="token punctuation">(</span>Q<span class="token punctuation">)</span>uit?<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>备注(Comment)字段可以为空<br>最后使用<code>O</code>确认</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">We need to generate a lot of random bytes. It is a good idea to perform<br>some other action (type on the keyboard, move the mouse, utilize the<br>disks) during the prime generation; this gives the random number<br>generator a better chance to gain enough entropy.<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">We need to generate a lot of random bytes. It is a good idea to perform
+some other action <span class="token punctuation">(</span>type on the keyboard, move the mouse, utilize the
+disks<span class="token punctuation">)</span> during the prime generation<span class="token punctuation">;</span> this gives the random number
+generator a better chance to gain enough entropy.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这里的意思是，程序正在收集随机值（从硬盘操作，鼠标移动，键盘输入等），但是请注意，<strong>不要</strong>在这个命令窗口中随机敲击键盘，你的输入会在随机值生成完毕后作为正常输入被敲进下一行命令。<br>同时，这里会弹出窗口让你输入私钥的密码，会弹两次（一次输入，一次验证是否正确）。  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Note that this key cannot be used for encryption.  You may want to use<br>the command &quot;--edit-key&quot; to generate a subkey for this purpose.<br>pub   rsa4096 2022-06-09 [SC]<br>      95A32031500EC67D8060F9236715CC3A19CC6770<br>uid                      test &lt;test@smyhw.online&gt;<br></code></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Note that this key cannot be used <span class="token keyword">for</span> encryption.  You may want to use
+the <span class="token builtin class-name">command</span> <span class="token string">"--edit-key"</span> to generate a subkey <span class="token keyword">for</span> this purpose.
+pub   rsa4096 <span class="token number">2022</span>-06-09 <span class="token punctuation">[</span>SC<span class="token punctuation">]</span>
+      95A32031500EC67D8060F9236715CC3A19CC6770
+uid                      <span class="token builtin class-name">test</span> <span class="token operator">&lt;</span>test@smyhw.online<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>最后，你现在应该已经拥有了一个pgp密钥</p>
 <h2 id="导出-x2F-导入密钥"><a href="#导出-x2F-导入密钥" class="headerlink" title="导出&#x2F;导入密钥"></a>导出&#x2F;导入密钥</h2><h3 id="导出"><a href="#导出" class="headerlink" title="导出"></a>导出</h3><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;密钥id&gt;</code><br>这样会导出指定密钥的公钥，这包括主密钥的公钥和所有的子秘钥的公钥<br>参数解释：</p>
 <ul>
@@ -157,7 +203,7 @@
                 align-items: center;
                 /* width: fit-content; */
                 background-color: #f5f5f5;
-                margin: 0 auto;
+                margin: 0 auto 2em;
                 padding: 0.5rem;
                 border-radius: 1rem;
                 border: azure;

