@@ -88,45 +88,146 @@
         </div>
         <!--文章-->
         <div id='article'>
-            <p id='title'>iptables解析</p>
-            <div id='date'>2021-08-02</div>
+            <p id='title'>SCREEN食用指北</p>
+            <div id='date'>2022-10-17</div>
             <hr>
             <div id='markdown'>
-                <p>iptables是centOS里集成的强大，开源的防火墙软件，功能十分丰富(复杂)……</p>
+                <p>命令行下的工具，是一只实用linux的终端管理程序</p>
 <span id="more"></span>
-<blockquote>
-<p>emmm，反正在我看来想摸透这玩意挺难的。。。</p>
-</blockquote>
-<p>默认表<code>filter nat|raw|mangle</code><br>数据包进表顺序<code>raw-mangle-nat-filter</code></p>
-<p>各个表包含的链：</p>
-<pre class="line-numbers language-none"><code class="language-none">raw: PREROUTING OUTPUT
-mangle: PREROUTING POSTROUTING INPUT OUTPUT FORWARD
-nat: PREROUTING POSTROUTING OUTPUT
-filter: INPUT FORWARD OUTPUT<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<h1 id="它可以做到什么呢"><a href="#它可以做到什么呢" class="headerlink" title="它可以做到什么呢"></a>它可以做到什么呢</h1><ul>
+<li><strong>防止事务中断</strong><br>例如，在下载文件，下到一半ssh断了，但是因为进程跑在screen里，所以任务仍在继续，可以重新连接并切换为相应screen会话继续操作</li>
+</ul>
+<br>
 
-<p>各个表的作用 :<br>raw:确定是否对该数据包进行状态跟踪<br>mangle:为数据包设置标记（较少使用）<br>nat:修改数据包中的源、目标IP地址或端口<br>filter:确定是否放行该数据包（过滤）</p>
-<p>[命令结构]</p>
-<pre class="line-numbers language-none"><code class="language-none">iptables [-t table] COMMAND chain CRETIRIA -j ACTION
--t table ：3个表
-COMMAND：定义如何对规则进行管理
-chain：指定你接下来的规则到底是在哪个链上操作的，当定义策略的时候，是可以省略的
-CRETIRIA:指定匹配标准
--j ACTION :指定如何进行处理<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>[其他参数列表]<br>-V 查看版本<br>-L &lt;链名&gt; 查看链中的规则<br>-P &lt;链名&gt; &lt;数据包处理方式&gt; 修改链中默认的数据包处理方式<br>–line-number 显示行号<br>[规则操作]</p>
-<pre class="line-numbers language-iptables" data-language="iptables"><div class="caption"><span><表名称> <操作(添加/插入/删除)> <链名称> <匹配规则> -j <处理措施></span></div><code class="language-iptables">-A 添加到末尾
--D 删除
--I &lt;链名&gt; &lt;行数&gt; 添加到指定位置（注意，添加到哪一行，那么原来那一行的规则就会向后顺延）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>匹配数据的规则</p>
-<pre><code>-i &lt;网卡名称(eth0)&gt; 匹配入口网卡
--o &lt;网卡名称(eth0)&gt; 匹配出口网卡
---dport &lt;端口号&gt; 匹配目的端口
--d 匹配目的地址
--s 匹配源IP
--p &lt;协议名称(tcp/udp/icmp)&gt; 匹配协议
--j 如何处理匹配的数据
-DROP(丢弃)，REJECT(拒绝)，ACCEPT(接受)，SANT(基于原地址的转换)
-</code></pre>
-<h3 id="功能实例"><a href="#功能实例" class="headerlink" title="功能实例"></a>功能实例</h3><p><strong>NAT转发</strong><br>数据包经PREROUTING修改来源IP，经POSTROUTING修改目标IP<br>修改来源IP（将内网来的数据包转到外网时使用）：<br><code>iptables –t nat –A POSTROUTING –j SNAT --to-source &lt;要改成的源IP&gt;</code><br>修改目标IP（将外网来的数据包转到内网时使用）：<br><code>iptables –t nat –A PREROUTING –j DNAT --to-destination &lt;要改成的目标IP&gt;</code><br><strong>端口转发</strong><br><code>iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080</code>  </p>
+<ul>
+<li><strong>在命令行下实现多窗口同屏</strong><br>是的,你可以在命令行下实现这个功能，就像这样</li>
+</ul>
+<p><img src="https://webstatic.smyhw.online/2cea476d204746a3d321e994bbe17402.png" alt="图片失效qwq"></p>
+<h1 id="常用命令行参数"><a href="#常用命令行参数" class="headerlink" title="常用命令行参数"></a>常用命令行参数</h1><p><strong>这是咱常用的功能，不是完整的表单，完整的列表超~级长，在<a target="_blank" rel="noopener" href="https://www.gnu.org/software/screen/manual/screen.html">这里</a></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">————————————–</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">-d &lt;会话名称&gt;</td>
+<td align="left">如果某会话显示已经被连接(<code>screen -ls</code>显示<code>Attached</code>)，你可以用这个选项强制断开它，这样你就可以在稍后自己连接它</td>
+</tr>
+<tr>
+<td align="left">-r &lt;会话名称&gt;</td>
+<td align="left">连接到指定的会话</td>
+</tr>
+<tr>
+<td align="left">-R &lt;会话名称&gt;</td>
+<td align="left">它和上面的<code>-r</code>的区别是，如果指定的会话名不存在，则自动建一个新的</td>
+</tr>
+<tr>
+<td align="left">-v</td>
+<td align="left">显示版本信息。</td>
+</tr>
+<tr>
+<td align="left">-ls</td>
+<td align="left">显示当前用户所有的会话</td>
+</tr>
+</tbody></table>
+<h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><ul>
+<li><strong>窗口和会话</strong><br>screen可以创建多个”<strong>会话</strong>“(session)，每一个会话包含若干个”<strong>窗口</strong>“(window)，<br>你的程序(通常是<code>/bin/bash</code>)就运行在窗口中。</li>
+</ul>
+<br>
+
+<ul>
+<li><strong>每个用户只能访问自己创建的会话</strong></li>
+</ul>
+<br>
+
+<ul>
+<li><strong>一个会话同时只能被一个终端连接</strong><br>就是说，你没法同时在两个ssh连接里使用同一个screen会话<br>已经被连接的会话在<code>screen -ls</code>里以<code>Attached</code>标记，反之，未连接的以<code>Detached</code>标记</li>
+</ul>
+<br>
+
+<ul>
+<li><strong>标记为<code>Detached</code>并不代表里面运行的进程已经终止，只是没有人连接到它而已！</strong></li>
+</ul>
+<h1 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h1><ul>
+<li><strong>需要安装screen?</strong><br>它应该已经存在于各大发行版的软件源中,<code>apt-get install</code>或者<code>yum install screen</code>可以解决大部分问题</li>
+</ul>
+<br>
+
+<ul>
+<li><strong>创建一个“会话”</strong><br>使用<code>screen -R test</code>即可创建一个会话，然后，在当前终端中的所有操作都不会在ssh断开时被一并终止了</li>
+</ul>
+<br>
+
+<ul>
+<li><strong>需要暂时离开这个会话？</strong><br>使用命令<code>screen -d</code>，或者，如果你的操作正在进行中，按<code>Ctrl+a</code>+<code>d</code>，即可断开当前会话，不用担心，你的操作仍然在screen中运行着</li>
+</ul>
+<br>
+
+<ul>
+<li><strong>需要同时运行多个程序？</strong><br>当然可以，使用<code>Ctrl+a</code>+<code>c</code>可以在当前会话里创建一个新的窗口，之后，可以通过<code>Ctrl+a</code>+<code>“</code>在多个窗口中来回切换</li>
+</ul>
+<br>
+
+<ul>
+<li><strong>需要在一个屏幕上同时显示多个窗口？</strong><br>使用<code>Ctrl+a</code>+<code>S</code>或<code>Ctrl+a</code>+<code>|</code>来创建分屏，并使用<code>Ctrl+a</code>+<code>tab</code>在这些分屏里切换（<strong>注意</strong>：切换到一个新的分屏后，可能需要<code>Ctrl+a</code>+<code>c</code>来初始化它，然后才可以输入命令）</li>
+</ul>
+<h1 id="操作screen"><a href="#操作screen" class="headerlink" title="操作screen"></a>操作screen</h1><p>在一个”会话”里可以使用<code>ctrl+a</code>作为菜单按键中来对窗口的操作，这大概相当于vi&#x2F;vim的末行模式<br><strong>注意</strong>：区分大小写！</p>
+<h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><p><strong>不是完整的表单！完整列表在<a target="_blank" rel="noopener" href="https://www.gnu.org/software/screen/manual/screen.html">这里</a></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">按键</th>
+<th align="left">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Ctrl + a + <strong>c</strong></td>
+<td align="left">创建一个新的窗口</td>
+</tr>
+<tr>
+<td align="left">Ctrl + a + <strong>n</strong></td>
+<td align="left">切换到下一个窗口</td>
+</tr>
+<tr>
+<td align="left">Ctrl + a + <strong>p</strong></td>
+<td align="left">切换到上一个窗口</td>
+</tr>
+<tr>
+<td align="left">Ctrl + a + <strong>“</strong></td>
+<td align="left">打开窗口列表，并让你选择切换到哪一个</td>
+</tr>
+<tr>
+<td align="left">Ctrl + a + <strong>S</strong></td>
+<td align="left"><strong>大写S</strong>，将当前屏幕分成上下两屏</td>
+</tr>
+<tr>
+<td align="left">Ctrl + a + <strong>|</strong></td>
+<td align="left">这不是字母，是逻辑或的竖线，将当前屏幕分为左右两屏</td>
+</tr>
+<tr>
+<td align="left">Ctrl + a + <strong>tab</strong></td>
+<td align="left">在当前屏幕的分屏里切换</td>
+</tr>
+<tr>
+<td align="left">Ctrl + a + <strong>d</strong></td>
+<td align="left">断开与当前<strong>会话</strong>的连接</td>
+</tr>
+<tr>
+<td align="left">Ctrl + a + <strong>A</strong></td>
+<td align="left"><strong>大写A</strong>，重命名当前窗口</td>
+</tr>
+<tr>
+<td align="left">Ctrl + a + <strong>?</strong></td>
+<td align="left">显示按键帮助信息</td>
+</tr>
+</tbody></table>
 
             </div>
             <br><br><br>

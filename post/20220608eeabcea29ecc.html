@@ -64,7 +64,7 @@
             <!-- 导航按钮 -->
             <div id='nav_list'>
                 <a class='nav_item' href='/'>首页</a>
-                <a class='nav_item' href='/friends/'>友人帐</a>
+                <a class='nav_item' href='/friends/'>朋友们</a>
                 <a class='nav_item' href='/about/'>关于我</a>
             </div>
         </div>
@@ -82,7 +82,7 @@
 
             '>
                 <a href='/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>首页</a>
-                <a href='/friends/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>友人帐</a>
+                <a href='/friends/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>朋友们</a>
                 <a href='/about/' style="color: rgb(240, 240, 240);" class='hide_nav_button'>关于我</a>
             </div>
         </div>
@@ -126,7 +126,7 @@ Your selection?<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <li>在十年前，GPG在这里给出了RSA作为推荐的默认算法，因为RSA具有最强的兼容性，并且被认为“在未来的数年里可以提供合理的安全性”，  </li>
 <li>但是现在，再这里的默认算法是ECC，因为ECC在256位密钥下就可以达到媲美RSA在3072位密钥下的表现，<del>（未来属于椭圆曲线bushi）</del></li>
 </ul>
-<p>如此看来，ECC应当领先于RSA很多对吧？但是为什么如今RSA仍然没有被ECC取代呢？<br>第一是因为相比于RSA，ECC的兼容性还是差了不少<br>第二是因为专利问题</p>
+<p>P.S. : 咱的看法，目前是不推荐RSA了，越来越多的迹象表明，计算机科学的发展已经逼近RSA的安全阈值，破解一份RSA密钥的成本也将在可预期的未来变得可以被接受</p>
 <p>言归正传，咱们在这里推荐先选择<code>RSA (sign only)</code>条目，简单一点  </p>
 <ul>
 <li>注意：带and的条目，都是生成一个主密钥和一个子秘钥，新手可以先别选它们  <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">RSA keys may be between <span class="token number">1024</span> and <span class="token number">4096</span> bits long.
@@ -177,9 +177,16 @@ uid                      <span class="token builtin class-name">test</span> <spa
 <h2 id="子秘钥"><a href="#子秘钥" class="headerlink" title="子秘钥"></a>子秘钥</h2><ul>
 <li>子秘钥的算法和主密钥无关，可以选择和主密钥不同的算法和长度</li>
 </ul>
-<h3 id="如何使用子秘钥"><a href="#如何使用子秘钥" class="headerlink" title="如何使用子秘钥"></a>如何使用子秘钥</h3><p>事实上，没有办法指定使用哪个子秘钥，在执行操作(签名&#x2F;加密&#x2F;…)时，你只能指定你的主密钥id，然后gpg会<strong>自动</strong>选择选择使用哪一个子密钥（会根据密钥长度，你指定的密钥用途等参数），<br>你可以指定每一个子秘钥有什么用途（C&#x2F;S&#x2F;A&#x2F;E标志），但是如果有两个子秘钥都具有相同的用途，比如你需要加密一个文件，而你指定的主密钥下有多个子秘钥均拥有E标志，则具体使用哪一个子秘钥取决与gpg的实现， <em>你不能自己指定</em> 。</p>
-<h2 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h2><p>WIP</p>
-<h3 id="在邮件中使用"><a href="#在邮件中使用" class="headerlink" title="在邮件中使用"></a>在邮件中使用</h3><h3 id="在git提交中使用"><a href="#在git提交中使用" class="headerlink" title="在git提交中使用"></a>在git提交中使用</h3>
+<h3 id="如何使用子秘钥"><a href="#如何使用子秘钥" class="headerlink" title="如何使用子秘钥"></a>如何使用子秘钥</h3><p>事实上，没有办法指定使用哪个子秘钥，在执行操作(签名&#x2F;加密&#x2F;…)时，你只能指定你的主密钥id，然后gpg会<strong>自动</strong>选择选择使用哪一个子密钥（会根据密钥长度，你指定的密钥用途等参数），<br>你可以指定每一个子秘钥有什么用途（C&#x2F;S&#x2F;A&#x2F;E标志），但是如果有两个子秘钥都具有相同的用途，比如你需要加密一个文件，而你指定的主密钥下有多个子秘钥均拥有E标志，则具体使用哪一个子秘钥取决与gpg的实现， <strong>你无法自己指定</strong> 。</p>
+<h2 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h2><ul>
+<li><strong>证明你的唯一身份</strong><br>不少开源社区的用法，你的密钥代表了你在互联网上的身份，它和你的声誉、信用绑定</li>
+</ul>
+<h3 id="在邮件中使用"><a href="#在邮件中使用" class="headerlink" title="在邮件中使用"></a>在邮件中使用</h3><p>你可以为你的邮件加密、或者签名<br>加密可以做到</p>
+<h3 id="在git提交中使用"><a href="#在git提交中使用" class="headerlink" title="在git提交中使用"></a>在git提交中使用</h3><h2 id="密钥过渡"><a href="#密钥过渡" class="headerlink" title="密钥过渡"></a>密钥过渡</h2><blockquote>
+<p>如果你需要更换你的主密钥，无论是它的有效期临近，或是它使用的算法已经不再安全</p>
+</blockquote>
+<p>通过编写并签名一份 <strong>“GPG Key Transition”</strong> 来向他人说明你已经更新了你的主密钥<br>TIP -&gt; 以<code>GPG Key Transition</code>为关键词，可以在google上找到不少例子<br>在<a target="_blank" rel="noopener" href="https://wiki.ubuntu.com/SecurityTeam/GPGMigration">这里</a>有一份ubuntu的GPG迁移实践，这应该较为权威</p>
+
             </div>
             <br><br><br>
             <!-- 评论 -->
