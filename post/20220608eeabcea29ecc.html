@@ -126,8 +126,8 @@ Your selection?<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <li>在十年前，GPG在这里给出了RSA作为推荐的默认算法，因为RSA具有最强的兼容性，并且被认为“在未来的数年里可以提供合理的安全性”，  </li>
 <li>但是现在，再这里的默认算法是ECC，因为ECC在256位密钥下就可以达到媲美RSA在3072位密钥下的表现，<del>（未来属于椭圆曲线bushi）</del></li>
 </ul>
-<p>P.S. : 咱的看法，目前是不推荐RSA了，越来越多的迹象表明，计算机科学的发展已经逼近RSA的安全阈值，破解一份RSA密钥的成本也将在可预期的未来变得可以被接受</p>
-<p>言归正传，咱们在这里推荐先选择<code>RSA (sign only)</code>条目，简单一点  </p>
+<p>P.S.:咱的看法，目前是不推荐RSA了，越来越多的迹象表明，计算机的发展已经逼近RSA的安全阈值，破解一份RSA密钥的成本也将在可预期的未来变得可以被接受</p>
+<p>言归正传，咱们在这里还是先选择<code>RSA (sign only)</code>条目，简单一点  </p>
 <ul>
 <li>注意：带and的条目，都是生成一个主密钥和一个子秘钥，新手可以先别选它们  <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">RSA keys may be between <span class="token number">1024</span> and <span class="token number">4096</span> bits long.
 What keysize <span class="token keyword">do</span> you want? <span class="token punctuation">(</span><span class="token number">2048</span><span class="token punctuation">)</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
@@ -181,7 +181,7 @@ uid                      <span class="token builtin class-name">test</span> <spa
 <h2 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h2><ul>
 <li><strong>证明你的唯一身份</strong><br>不少开源社区的用法，你的密钥代表了你在互联网上的身份，它和你的声誉、信用绑定</li>
 </ul>
-<h3 id="在邮件中使用"><a href="#在邮件中使用" class="headerlink" title="在邮件中使用"></a>在邮件中使用</h3><p>你可以为你的邮件加密、或者签名<br>加密可以做到</p>
+<h3 id="在邮件中使用"><a href="#在邮件中使用" class="headerlink" title="在邮件中使用"></a>在邮件中使用</h3><p>你可以为你的邮件加密、或者签名</p>
 <h3 id="在git提交中使用"><a href="#在git提交中使用" class="headerlink" title="在git提交中使用"></a>在git提交中使用</h3><h2 id="密钥过渡"><a href="#密钥过渡" class="headerlink" title="密钥过渡"></a>密钥过渡</h2><blockquote>
 <p>如果你需要更换你的主密钥，无论是它的有效期临近，或是它使用的算法已经不再安全</p>
 </blockquote>
