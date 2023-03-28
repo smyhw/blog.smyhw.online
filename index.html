@@ -1,551 +1,150 @@
-
+<!DOCTYPE html>
 <html>
-    <head>
+
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <title>smyhw'blog | 意志</title>
-    
-<script src="jquery.js"></script>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <!-- 手动引入固定库 -->
+    <script src="/libs/jquery.js"></script>
+    <script src="/libs/prism.js"></script>
+    <link href="/libs/prism.css" rel="stylesheet" />
+    <!-- 不做成SPA的原因是咱想每个页面拥有单独的直连URL -->
+    <script type="module" crossorigin src="/index.js"></script>
+    <link rel="stylesheet" href="/assets/index.css">
+  <meta name="generator" content="Hexo 5.4.2"></head>
 
-    
-<link rel="stylesheet" href="style.css">
-
-<meta name="generator" content="Hexo 5.4.2"></head>
-    <style>
-        .card{
-            background-color: rgba(255, 255, 255, 0.75);
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 125vh;
-            position: relative;
-            overflow: hidden;
-        }
-        .center{
-            margin: 0 auto;
-            width: fit-content;
-            width: -moz-fit-content;
-        }
-        .button{
-            line-height: 1;
-            display: inline-block;
-            padding: 0.5em;
-            margin: 0.5em 0.5em;
-            width: 16em;
-            border-radius: 8px;
-            border: 0;
-            box-shadow: inset 0 0 0 3px #cccccc;
-            color: #555;
-            text-align: center;
-            font-weight: bold;
-            transition: all 1s ease 0s;
-            position: relative;
-        }
-        a:link.button{
-            color: #555;
-        }
-        a:visited.button{
-            color: #555;
-        }
-        a:hover.button,a:hover.switch_list_button{
-            background-color: #555;
-            color: rgb(255, 255, 255);
-        }
-        .post_list_item{
-            font-weight: 400;
-            color: #444;
-            line-height: 1.6;
-            user-select: text;
-            padding: 0;
-            box-sizing: border-box;
-            margin: 0 auto 16px;
-            width: 414px;
-            border-top-width: 2px;
-            border-top-style: solid;
-            border-radius: 9px;
-            background-color: rgba(243, 243, 243, 0.7);
-            box-shadow: 0 14px 38px rgba(0,0,0,0.09),0 3px 9px rgba(0,0,0,.06);
-            border-top-color: rgb(241, 148, 131);
-            position: relative;
-            transition: all 1s ;
-            height: 100px;
-            overflow: hidden;
-            top: 0;
-        }
-        .post_list_item:hover{
-            top: -12;
-        }
-        .switch_list_button{
-            background-color: rgba(0,0,0,0.09); 
-            height: 40px;
-            position: absolute;
-            transition: all 0.5s ;
-            text-align: center;
-            line-height: 40px;
-            font-size: 25px;
-            text-shadow: 0 1px 1px #b28fce;
-        }
-        /* 滚动条  */
-        #post_list::-webkit-scrollbar {
-            width: 5px;
-            height: 3px;
-        }
-        #post_list::-webkit-scrollbar, #post_list::-webkit-scrollbar-track-piece {
-            background-color: transparent;
-        }
-        #post_list::-webkit-scrollbar-thumb {
-            border-radius: 3px;
-            background-color: #b28fce;
-            background-image: -webkit-linear-gradient(45deg,hsla(0,0%,100%,.5) 25%,transparent 0,transparent 50%,hsla(0,0%,100%,.5) 0,hsla(0,0%,100%,.5) 75%,transparent 0,transparent);
-        }
-        #post_list::-webkit-scrollbar, #post_list::-webkit-scrollbar-track-piece {
-            background-color: transparent;
-        }
-    </style>
-    <body>
-        <!--模板-->
-        <div id='tles' style="display: none;">
-            <!--向后换页按钮-->
-            <div id='switch_list_button_1' style='display: block; width: 160px; height: 40px;bottom: 0px;'>
-                <a class='switch_list_button' href="#" style='width: 160px;'>Next</a>
-            </div>
-            <!--向前换页按钮-->
-            <div id='switch_list_button_2' style='display: block; width: 160px; height: 40px;bottom: 0px;'>
-                <a class='switch_list_button' href="#" style='width: 160px;'>Prev</a>
-            </div>
-            <!--双向换页按钮-->
-            <div id='switch_list_button_3' style='display: block; width: 160px; height: 40px;bottom: 0px;'>
-                <a class='switch_list_button' href="#" style='width: 80;right: 0px;'>Next</a>
-                <a class='switch_list_button' href="#" style='width: 80;left: 0px;'>Prev</a>
-            </div>
-            <!--加载换页按钮-->
-            <div id='switch_list_button_4' style='display: block; width: 160px; height: 40px;bottom: 0px;'>
-                <a class='switch_list_button' href="#" style='width: 160;background-color: #555;color: rgb(255, 255, 255);'>Loading...</a>
-            </div>
-            <!--文章列表内容-->
-            <div id='post_list_tle'>
-                <div id='post_list_banner' style="margin: 1.5em auto 2em auto;opacity:0">
-                    <p style="font-size: 1.5em;text-align: center;">向死而生</p>
-                    <p style="text-align: center;">一个人的博客，一个人的意志</p>
-                </div>
-                <div id='post_list' style="overflow-y:auto;max-height: fit-content;overflow-x:hidden; padding-top: 15px;">
-                    <div id='post_list_data' style="display: none;">
-    <p id='post_list_data_prevURL'></p>
-    <p id='post_list_data_nextURL'>page/2/</p>
-    <p id='post_list_data_pageNum'>1</p>
-</div>
-<div id='post_list_con' style='
-    display: flex;
-    flex-direction:row;
-    flex-wrap:wrap;
-    justify-content:center;
-    width: 100%;
-    position: relative;
-    max-height: calc(691px - 15rem);
-'>
-
-
-    <div class="post_list_item" style='
-        border-top-color: #750eaa;
-        
-            right:100vw;
-        
-        
-    '>
-        <a target="_blank" href='post/20221018a83aab0cd1e6.html'>
-            <span style='padding: 12px 14px 12px 14px;font-size: 1.2em; color: rgb(68 68 68);white-space: nowrap;text-overflow: ellipsis;'>SCREEN食用指北</span><span style='white-space: nowrap;text-overflow: ellipsis;'>2022-10-17</span>
-            <div style='
-                color: rgb(167 167 167);
-                padding: 12px 14px;
-                border-top: 1px solid rgba(0,0,0,.1);
-            '>
-            <p>命令行下的工具，是一只实用linux的终端管理程序</p>
-            </div>
-        </a>
-    </div>
-
-    <div class="post_list_item" style='
-        border-top-color: #85d725;
-        
-            left: 100vw;
-        
-        
-    '>
-        <a target="_blank" href='post/20220608eeabcea29ecc.html'>
-            <span style='padding: 12px 14px 12px 14px;font-size: 1.2em; color: rgb(68 68 68);white-space: nowrap;text-overflow: ellipsis;'>使用GPG处理PGP初探</span><span style='white-space: nowrap;text-overflow: ellipsis;'>2022-06-08</span>
-            <div style='
-                color: rgb(167 167 167);
-                padding: 12px 14px;
-                border-top: 1px solid rgba(0,0,0,.1);
-            '>
-            <p>从入门到放弃(bushi</p>
-            </div>
-        </a>
-    </div>
-
-    <div class="post_list_item" style='
-        border-top-color: #25315f;
-        
-            right:100vw;
-        
-        
-    '>
-        <a target="_blank" href='post/2022022323c791ccf939.html'>
-            <span style='padding: 12px 14px 12px 14px;font-size: 1.2em; color: rgb(68 68 68);white-space: nowrap;text-overflow: ellipsis;'>纯WEB可访问的VNC</span><span style='white-space: nowrap;text-overflow: ellipsis;'>2022-02-22</span>
-            <div style='
-                color: rgb(167 167 167);
-                padding: 12px 14px;
-                border-top: 1px solid rgba(0,0,0,.1);
-            '>
-            <p>在windows上部署的，仅在网页上就可以访问的加密VNC服务</p>
-            </div>
-        </a>
-    </div>
-
-    <div class="post_list_item" style='
-        border-top-color: #db4600;
-        
-            left: 100vw;
-        
-        
-    '>
-        <a target="_blank" href='post/2022022363ac4f877820.html'>
-            <span style='padding: 12px 14px 12px 14px;font-size: 1.2em; color: rgb(68 68 68);white-space: nowrap;text-overflow: ellipsis;'>绿色版python运行环境</span><span style='white-space: nowrap;text-overflow: ellipsis;'>2022-02-22</span>
-            <div style='
-                color: rgb(167 167 167);
-                padding: 12px 14px;
-                border-top: 1px solid rgba(0,0,0,.1);
-            '>
-            <p>为embeddable package安装pip</p>
-            </div>
-        </a>
-    </div>
-
-    <div class="post_list_item" style='
-        border-top-color: #f0bd76;
-        
-            right:100vw;
-        
-        
-    '>
-        <a target="_blank" href='post/2021082294cda8dac8b8.html'>
-            <span style='padding: 12px 14px 12px 14px;font-size: 1.2em; color: rgb(68 68 68);white-space: nowrap;text-overflow: ellipsis;'>fiora在线聊天室</span><span style='white-space: nowrap;text-overflow: ellipsis;'>2021-08-22</span>
-            <div style='
-                color: rgb(167 167 167);
-                padding: 12px 14px;
-                border-top: 1px solid rgba(0,0,0,.1);
-            '>
-            <p>docker单容器部署fiora,包含mongodb和redis</p>
-            </div>
-        </a>
-    </div>
-
-    <div class="post_list_item" style='
-        border-top-color: #f5a63b;
-        
-            left: 100vw;
-        
-        
-    '>
-        <a target="_blank" href='post/20210803cb9ae6dfd6ff.html'>
-            <span style='padding: 12px 14px 12px 14px;font-size: 1.2em; color: rgb(68 68 68);white-space: nowrap;text-overflow: ellipsis;'>ubuntu上apt安装mysql踩坑</span><span style='white-space: nowrap;text-overflow: ellipsis;'>2021-08-02</span>
-            <div style='
-                color: rgb(167 167 167);
-                padding: 12px 14px;
-                border-top: 1px solid rgba(0,0,0,.1);
-            '>
-            <p>root账户用不了,数据目录无法更改,mysql服务起不来……各种坑整了我好几个小时</p>
-            </div>
-        </a>
-    </div>
-
-    <div class="post_list_item" style='
-        border-top-color: #67f9c2;
-        
-            right:100vw;
-        
-        
-    '>
-        <a target="_blank" href='post/2021080295baae8aa533.html'>
-            <span style='padding: 12px 14px 12px 14px;font-size: 1.2em; color: rgb(68 68 68);white-space: nowrap;text-overflow: ellipsis;'>nginx+php+mysqld安装及配置</span><span style='white-space: nowrap;text-overflow: ellipsis;'>2021-08-02</span>
-            <div style='
-                color: rgb(167 167 167);
-                padding: 12px 14px;
-                border-top: 1px solid rgba(0,0,0,.1);
-            '>
-            <p>最近把各种web服务往nginx上迁，一度踩坑踩到心态爆炸。。。。整完了之后记录一点nginx的配置详解awa</p>
-            </div>
-        </a>
-    </div>
-
-    <div class="post_list_item" style='
-        border-top-color: #d37a4e;
-        
-            left: 100vw;
-        
-        
-    '>
-        <a target="_blank" href='post/2021080232c8bcb1f614.html'>
-            <span style='padding: 12px 14px 12px 14px;font-size: 1.2em; color: rgb(68 68 68);white-space: nowrap;text-overflow: ellipsis;'>dns协议报文格式详解</span><span style='white-space: nowrap;text-overflow: ellipsis;'>2021-08-02</span>
-            <div style='
-                color: rgb(167 167 167);
-                padding: 12px 14px;
-                border-top: 1px solid rgba(0,0,0,.1);
-            '>
-            <p>做实验环境的时候，发现一堆特别烦人的dns要求，就想着一直撸一个dns的服务器…</p>
-            </div>
-        </a>
-    </div>
-
-</div>
-                </div>
-                <!--文章列表换页按钮-->
-                <div id='switch_list_button' style='
-                    display: flex;
-                    flex-direction:row;
-                    justify-content:center;
-                    margin: 2em 0 0 -15px;
-                    position: absolute;
-                    width: 100%;
-                    bottom: -5em;
-                '>
-                    <div id='switch_list_button_1' style='display: block; width: 160px; height: 40px;bottom: 0px;'>
-                        <a class='switch_list_button' href="#" style='width: 160px;'>Next</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- card备份 -->
-<!--        <div id='card_backup'style='width: 0px; height: 0px;position: fixed; display: none;'></div> -->
-        <!-- home返回按钮 -->
-        <div id='back_button' style='
-            position: fixed;
-            top: 0;
-            display: block;
-            height: 1.5em;
-            width: -moz-fit-content;
-            padding: 0.3em;
-            padding-left: 1em;
-            right: 0;
-            text-align: center;
-            background-color: rgba(153, 153, 153, 0.9);
-            color: rgb(255, 255, 255);
-            border-radius: 0 0 0 27px;
-            z-index: 1;
-            display: none;
-        '>
-            Back // 返回
-        </div>
-        <!-- 背景板 -->
-        <div class='background' id='background'></div>
-        <!-- 背景遮罩层 -->
-        <div class='background' id='background_mask' style='background-color: rgb(100, 100, 100);'></div>
-        <div id='main' style='
-            display: flex;
-            flex-direction:column;
-            justify-content:center;
-            margin: 0 auto;
-            width: fit-content;
-            width: -moz-fit-content;
-            height: 100vh;
-            overflow: hidden;
-        '>
-            <!-- 内容卡片 -->
-            <div id='card' class='card'>
-                <div style='display: flex;flex-direction:row;justify-content:center;'>
-                    <img id='awa' src ='/images/awa.png' style='width: 122px;height: 122px; z-index: 1;'>
-                </div>
-                <div style='position:relative; bottom: 55px;height: 0px;width:100%;border: rgb(154 154 154) 1px solid;box-shadow: 1px 1px 0px rgb(255 255 255)'></div>
-                <p class='center' style='font-size: 1.5em;'>Hi,I am smyhw</p>
-                <div class='center' style='width:6em;'><hr></div>
-                <p class='center' style='font-size: 1em;'>吾于此生,竭尽所能。</p>
-                <div style='text-align: center; margin-top: 2em;'>
-                    <a id='button_blog' class='button' href='#'>BLOG / 文章</a>
-                    <br>
-                    <a id='button_about' class='button' target="_blank" href='friends/'>FRIENDS / 友链</a>
-                    <br>
-                    <a id='button_about' class='button' target="_blank" href='about/'>ABOUT / 关于</a>
-                </div>
-            </div>
-        </div>
-        <div id='footer' style='
-    display: flex;
-    position: fixed;
-    flex-direction:row;
-    justify-content:center;
-    bottom:0px;
-    width:100%;
-    background-color: rgba(100, 100, 100, 0.9);
-    padding: 10px 0 10px;
-'>
-    <div style='text-align: center;line-height: 1.2em ;color: #ddd;'>
-        <p style='color: #ddd;'>©2018-2022 smyhw</p>
-        <p style='color: #ddd;'>smyhw | 吾于此生，竭尽所能 </p>
-    </div>
-</div>
-    </body>
-    <script>
-        //界面加载完成动画
-        $(document).ready(function(){
-            //card动画
-            $('#card').animate({'margin-top': '0vh'},2000,function(){});
-            //背景加载动画
-            setTimeout(function(){
-                function changeBPX(){
-                    num=0.99
-                    function do_it(){
-                        $("#background_mask").css("background","rgba(125,125,125,"+num+")");
-                        num=num-0.01;
-                        if(num>=0){
-                            setTimeout(do_it,25);
-                        }
-                    }
-                    setTimeout(do_it,1);
-                }
-                var img=new Image();
-                img.src='/images/background.jpg';
-                img.onload=function(){
-                    console.log('background load finished');
-                    $("#background").css("background-image","url("+this.src+")");
-                    //动画
-                    changeBPX();
-                };
-            },3000);
-        });
-
-
-        //文章列表按钮
-        $('#button_blog').click(function(){
-            //旋转头像并消失衬线
-            (function(){
-                var i = 0;
-                ii = window.setInterval(function(){
-                    if(i>=360){window.clearInterval(ii);}
-                    $("#awa").css("transform","rotate("+i+"deg)");
-                    i++;
-                },1);
-                $('#card > div:nth-child(2)').animate({'opacity':0},1500);
-            })();
-
-            //挪走按钮
-            setTimeout(function(){
-                $('#button_blog').animate({'right':'30em'},2000);
-                $('#button_about').animate({'left':'30em'},2000);
-            },360);
-
-            //其余内容消失+card展开
-            setTimeout(function(){                
-                    //所有内容透明
-                    $('#card *').animate({'opacity':0},1000);
-                    $('#card').css('max-width','900px');
-                    $('#card').css('height',$('#card').height());
-                    $('#card').animate({'width':'90vw','height':'691px'},2000).animate({},1500);
-            },2000+360);
-
-            //滑出返回home按钮
-            setTimeout(function(){
-                $('#back_button').slideDown(1000);
-            },2000+2000+360);
-
-            //恢复所有属性+保存到隐藏div
-            setTimeout(function(){
-                $('#main').prepend('<div id=\'pre_card\' class=\'card\' style=\'display:none; margin-bottom:200vh\'></div>');
-                $('#card > *').appendTo('#pre_card');
-                $("#awa").css("transform","rotate(0deg)");
-                $('#button_blog').css('right','0');
-                $('#button_about').css('left','0');
-                $('#pre_card *').css('opacity',1);
-            },2000+2000+360);
+  <body>
+    <div id="data" page_type="index">
+        [
             
-            //填充内容
-            setTimeout(function(){
-                //加载列表===========================================
-                $('#card').html($('#post_list_tle').html());
-                setTimeout(function(){
-                    //加载换页按钮
-                    setTimeout(function(){$('#card #switch_list_button').animate({'bottom':'3em'},1000);},1500);
-                    //加载banner
-                    $('#card #post_list_banner').animate({'opacity':'1'},1000);
-                    //加载内容条目
-                    $('#card .post_list_item').css('right','0px');
-                    setTimeout(function(){$('#card .post_list_item').css('left','0px');},1000);
-                },500);
-                console.log('加载post列表内容');
-//                $('#card').css('height','fit-content');
-            },2000+2000+360+100);
-        });
-
-        //home返回按钮
-        $('#back_button').click(function(){
-            //隐藏返回按钮
-            $('#back_button').slideUp(1000);
-            //退出内容card
-            $('#card').animate({'margin-top': '200vh'},1000,function(){
-                //删除内容card
-                $('#card').remove();
-                //重命名
-                $('#pre_card').attr('id','card');
-                $('#card').css('margin-top','0');
-                $('#card').css('display','block');
-                //滑入首页card
-                $('#card').animate({'margin-bottom': '0vh'},1000);
-            });
-        });
-
-        //文章列表切换按钮
-        $('body').on('click','#card .switch_list_button',function(){
-            if($('#card #post_list_data_nextURL').html()=='' && $('#card #post_list_data_prevURL').html()==''){
-                return;
-            }
-            url='null';
-            if($(this).html()=='Next'){
-                url = $('#card #post_list_data_nextURL').html();
-            }else if($(this).html()=='Prev'){
-                url = $('#card #post_list_data_prevURL').html();
-            }else{
-                return;
-            }
-            //显示加载按钮
-            $('#card #switch_list_button').html($('#tles #switch_list_button_4').prop('outerHTML'));
-            //让原来的内容消失
-            $('#card .post_list_item').css('opacity',0);
-            //执行ajax
-            if(url==''){console.log('[错误]:目标页不存在');return;}
-            $.ajax({url:url,async:true,success:function(result,status,xhr){
-                //debug
-                console.log('[变量监控]:\nprevURL:'+$('#card #post_list_data_prevURL').html()+'\nnextURL:'+$('#card #post_list_data_nextURL').html());
-                //第一页特殊处理
-                if(!result.trim().startsWith('<div')){
-                    $('#card #post_list').html($('#tles #post_list').html());
-                }else{
-                    $('#card #post_list').html(result);
+                {
+                    "title": "在git中使用GPG",
+                    "url": "post/2023032955b6407f032c.html",
+                    "date": "2023-03-28",
+                    "excerpt": "<p>用GPG签名汝的提交</p>"
                 }
-                //第二页特殊处理
-                if($('#card #post_list_data_pageNum').html()==2){
-                    $('#card #post_list_data_prevURL').html('/');
+                
+                ,
+                
+            
+                {
+                    "title": "SCREEN食用指北",
+                    "url": "post/20221018a83aab0cd1e6.html",
+                    "date": "2022-10-17",
+                    "excerpt": "<p>命令行下的工具，是一只实用linux的终端管理程序</p>"
                 }
-                //出场动画
-                setTimeout(function(){
-                        $('#card .post_list_item').css('right','0px');
-                        setTimeout(function(){$('#card .post_list_item').css('left','0px');},1000);
-                },1000);
-                //显示不同的换页按钮
-                setTimeout(function(){
-                    if($('#card #post_list_data_nextURL').html()==''){
-                        $('#card #switch_list_button').html($('#tles #switch_list_button_2').prop('outerHTML')); 
-                    }else if($('#card #post_list_data_prevURL').html()==''){
-                        $('#card #switch_list_button').html($('#tles #switch_list_button_1').prop('outerHTML'));
-                    }else if($('#card #post_list_data_nextURL').html()=='' && $('#card #post_list_data_prevURL').html()==''){
-                        //仅此一页？
-                        console.log('err');
-                    }else{
-                        //正常显示换页按钮
-                        $('#card #switch_list_button').html($('#tles #switch_list_button_3').prop('outerHTML'));
-                    }
-                },4000);
-            },error:function(xhr,status,error){
-                console.log('[ajax]:切换页面请求失败(url='+url+')');
-            }});
-        });
-        //TBC
-    </script>
+                
+                ,
+                
+            
+                {
+                    "title": "使用GPG处理PGP初探",
+                    "url": "post/20220608eeabcea29ecc.html",
+                    "date": "2022-06-08",
+                    "excerpt": "<p>从入门到放弃(bushi</p>"
+                }
+                
+                ,
+                
+            
+                {
+                    "title": "纯WEB可访问的VNC",
+                    "url": "post/2022022323c791ccf939.html",
+                    "date": "2022-02-22",
+                    "excerpt": "<p>在windows上部署的，仅在网页上就可以访问的加密VNC服务</p>"
+                }
+                
+                ,
+                
+            
+                {
+                    "title": "绿色版python运行环境",
+                    "url": "post/2022022363ac4f877820.html",
+                    "date": "2022-02-22",
+                    "excerpt": "<p>为embeddable package安装pip</p>"
+                }
+                
+                ,
+                
+            
+                {
+                    "title": "fiora在线聊天室",
+                    "url": "post/2021082294cda8dac8b8.html",
+                    "date": "2021-08-22",
+                    "excerpt": "<p>docker单容器部署fiora,包含mongodb和redis</p>"
+                }
+                
+                ,
+                
+            
+                {
+                    "title": "ubuntu上apt安装mysql踩坑",
+                    "url": "post/20210803cb9ae6dfd6ff.html",
+                    "date": "2021-08-02",
+                    "excerpt": "<p>root账户用不了,数据目录无法更改,mysql服务起不来……各种坑整了我好几个小时</p>"
+                }
+                
+                ,
+                
+            
+                {
+                    "title": "nginx+php+mysqld安装及配置",
+                    "url": "post/2021080295baae8aa533.html",
+                    "date": "2021-08-02",
+                    "excerpt": "<p>最近把各种web服务往nginx上迁，一度踩坑踩到心态爆炸。。。。整完了之后记录一点nginx的配置详解awa</p>"
+                }
+                
+                ,
+                
+            
+                {
+                    "title": "dns协议报文格式详解",
+                    "url": "post/2021080232c8bcb1f614.html",
+                    "date": "2021-08-02",
+                    "excerpt": "<p>做实验环境的时候，发现一堆特别烦人的dns要求，就想着一直撸一个dns的服务器…</p>"
+                }
+                
+                ,
+                
+            
+                {
+                    "title": "msf木马实用操作",
+                    "url": "post/20210802ab153fbc2c33.html",
+                    "date": "2021-08-02",
+                    "excerpt": "<p>后渗透阶段的简单笔记….TBC</p>"
+                }
+                
+                ,
+                
+            
+                {
+                    "title": "iptables解析",
+                    "url": "post/20210802f030f50a94b7.html",
+                    "date": "2021-08-02",
+                    "excerpt": "<p>iptables是centOS里集成的强大，开源的防火墙软件，功能十分丰富(复杂)……</p>"
+                }
+                
+                ,
+                
+            
+                {
+                    "title": "natcat",
+                    "url": "post/20210802b1126901e867.html",
+                    "date": "2021-08-02",
+                    "excerpt": "<p>awa，没啥说的，这个工具几乎啥都能干（加密？不存在的）……</p>"
+                }
+                
+            
+        ]
+    </div>
+    <div id="qwq" \>
+  </body>
+
 </html>
+
+
+
+

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>smyhw'blog | 意志</title>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <!-- 手动引入固定库 -->
+    <script src="/libs/jquery.js"></script>
+    <script src="/libs/prism.js"></script>
+    <link href="/libs/prism.css" rel="stylesheet" />
+    <!-- 不做成SPA的原因是咱想每个页面拥有单独的直连URL -->
+    <script type="module" crossorigin src="/index.js"></script>
+    <link rel="stylesheet" href="/assets/index.css">
+  <meta name="generator" content="Hexo 5.4.2"></head>
+
+  <body>
+    <div id="data" page_type="contents" title="在git中使用GPG" date="2023-03-28">
+        <p>用GPG签名汝的提交</p>
+<span id="more"></span>
+<hr>
+<blockquote>
+<p>众所周知，使用git提交一次代码，需要提供用户名和邮箱</p>
+</blockquote>
+<p><strong>但是，如果汝换掉邮箱会怎么样awa</strong><br>去github上捏一个空白项目试一试，汝就会发现，更换邮箱并不会影响提交代码，而且的确变更了提交身份</p>
+<p>那么，有木有发现，这实际上可以让汝以任何用户的身份提交代码，即使是在github这种平台上？</p>
+<p>是这样！这是git当初的设计，但是现在它显然可以被滥用:(</p>
+<p><strong>如何解决？</strong><br>git支持使用GPG密钥来签名提交，这样就可以确保一个提交真正来自它申明的提交者</p>
+<h1 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h1><ul>
+<li>汝需要一个可用的GPG密钥对<br>可以参考咱的另外一篇文章<em>GPG从入门到入坟</em></li>
+</ul>
+<h1 id="签名提交"><a href="#签名提交" class="headerlink" title="签名提交"></a>签名提交</h1><p>在<code>git commit</code>中使用<code>-S</code>选项来签名这个提交，例如<code>git commit -S -m &quot;test123&quot;</code>，不加任何其他参数，这时候使用<strong>默认GPG密钥</strong>签名<br><em>这个默认是由opengpg定义的</em></p>
+<h2 id="更改默认密钥"><a href="#更改默认密钥" class="headerlink" title="更改默认密钥"></a>更改默认密钥</h2><blockquote>
+<p>如果汝的opengpg里有多个私钥，那汝可能需要使用非默认密钥签名提交</p>
+</blockquote>
+<p>使用<code>git config --global user.signingkey &lt;key_id&gt;</code>设置默认密钥，这样git在签名时会传递给gpg以使用给定的密钥</p>
+<p><strong>windows平台注意</strong><br>在windows中，指定签名密钥后，在签名提交时可能会收到类似于<code>gpg: signing failed: No secret key</code>这样的报错，<br>使用<code>git config --global gpg.program &quot;C:\Program Files (x86)\GnuPG\bin\gpg.exe&quot;</code>手动指定gpg可执行文件位置可以解决</p>
+<h2 id="默认进行签名"><a href="#默认进行签名" class="headerlink" title="默认进行签名"></a>默认进行签名</h2><p>让git在提交时默认就对提交进行签名，那么可以尝试<code>git config --global commit.gpgsign true</code></p>
+<h1 id="GITHUB特供"><a href="#GITHUB特供" class="headerlink" title="GITHUB特供"></a>GITHUB特供</h1><p>GITHUB会给可以被验证的提交打上标记，像是这样：<br><a target="_blank" rel="noopener" href="https://webstatic.smyhw.online/FC7D302E0490C18EA8A84AB7901FC897C27A95A86D2E29D6E8B084F9A1ECB56F.png">图片</a></p>
+<h2 id="提交公钥"><a href="#提交公钥" class="headerlink" title="提交公钥"></a>提交公钥</h2><p>只有github知道汝的公钥，才能校验提交中的签名<br>在这里<a target="_blank" rel="noopener" href="https://github.com/settings/keys">https://github.com/settings/keys</a> 提交汝的公钥</p>
+<h2 id="警惕模式"><a href="#警惕模式" class="headerlink" title="警惕模式"></a>警惕模式</h2><p>在上面提交公钥的地方，可以看到<code>Vigilant mode</code>选项，这是<em>警惕模式</em><br>开启这个模式，github会将所有无法验证签名的，但是使用了汝的邮箱的提交标记为<code>未被签名</code><br><strong>这包括以前的提交</strong></p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ul>
+<li>为什么git在签名提交时没有要求输入私钥密码？<br>因为gpg-agent会缓存密码，可以在进程中干掉gpg-agent.exe，下次调用gpg时它会自己重启，并要求汝输入密码</li>
+</ul>
+
+    </div>
+    <div id="qwq" \>
+  </body>
+
+</html>
+
+
+

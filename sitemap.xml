@@ -2,9 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.smyhw.online/post/2023032955b6407f032c.html</loc>
+    
+    <lastmod>2023-03-28</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.smyhw.online/post/20220608eeabcea29ecc.html</loc>
     
-    <lastmod>2022-10-19</lastmod>
+    <lastmod>2023-02-20</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -13,34 +22,7 @@
   <url>
     <loc>http://blog.smyhw.online/post/20221018a83aab0cd1e6.html</loc>
     
-    <lastmod>2022-10-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.smyhw.online/friends/index.html</loc>
-    
-    <lastmod>2022-10-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.smyhw.online/source/friends/index.html</loc>
-    
-    <lastmod>2022-09-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.smyhw.online/source/about/index.html</loc>
-    
-    <lastmod>2022-09-24</lastmod>
+    <lastmod>2023-02-20</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -101,6 +83,15 @@
   </url>
   
   <url>
+    <loc>http://blog.smyhw.online/post/2021082294cda8dac8b8.html</loc>
+    
+    <lastmod>2022-07-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.smyhw.online/post/2022022323c791ccf939.html</loc>
     
     <lastmod>2022-07-15</lastmod>
@@ -118,28 +109,10 @@
     <priority>0.6</priority>
   </url>
   
-  <url>
-    <loc>http://blog.smyhw.online/post/2021082294cda8dac8b8.html</loc>
-    
-    <lastmod>2022-07-15</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.smyhw.online/about/index.html</loc>
-    
-    <lastmod>2022-07-15</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
 
   <url>
     <loc>http://blog.smyhw.online/</loc>
-    <lastmod>2022-10-19</lastmod>
+    <lastmod>2023-03-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
