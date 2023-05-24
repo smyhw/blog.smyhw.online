@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>smyhw'blog | 意志</title>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <!-- 手动引入固定库 -->
+    <script src="/libs/jquery.js"></script>
+    <script src="/libs/prism.js"></script>
+    <link href="/libs/prism.css" rel="stylesheet" />
+    <!-- 不做成SPA的原因是咱想每个页面拥有单独的直连URL -->
+    <script type="module" crossorigin src="/index.js"></script>
+    <link rel="stylesheet" href="/assets/index.css">
+  <meta name="generator" content="Hexo 5.4.2"></head>
+
+  <body>
+    <div id="data" page_type="contents" title="证书体系入门指北" date="2023-05-20">
+        <p>W.I.P 简介互联网证书体系</p>
+<span id="more"></span>
+<hr>
+<blockquote>
+<p>这里假定诸位至少了解公私钥加密相关知识qwq <em>(咱的GPG相关文章也有介绍的说！)</em></p>
+</blockquote>
+<h1 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h1><p>众所周知，公私钥体系中存在一个问题，如何确定一个公钥确实属于它所申明的那个实体（人，组织，公司）呢？<br>在GPG中，咱们根据密钥串中其他实体的签名来判断该密钥是否值得信任，<br>在爱好者之间也有通过线下见面会来签名密钥的存在<br>但这在互联网中显然不现实，由此，证书体系出现：  </p>
+<ul>
+<li>一张证书可以理解为一个文件</li>
+<li>一张证书对应一枚公钥(证书文件直接包含这枚公钥)</li>
+<li>证书证明该公钥属于（证书中）所指定的实体</li>
+<li>证书由一个第三方机构的私钥签名（可以由这个第三方机构的公钥校验）<br><em>(这个第三方机构被称为<strong>证书颁发机构</strong>，即<code>CA</code>)</em></li>
+</ul>
+<h1 id="证书颁发机构-CA"><a href="#证书颁发机构-CA" class="headerlink" title="证书颁发机构(CA)"></a>证书颁发机构(CA)</h1><blockquote>
+<p>这些机构会负责确认一个<a href="#%E8%AF%81%E4%B9%A6%E9%A2%81%E5%8F%91%E8%AF%B7%E6%B1%82">证书签发请求(CSR)</a>是否真的来自于它所申明的实体</p>
+</blockquote>
+<p>例如，如果需要给一个域名签发证书，则通常需要该域名所有者设置特定的DNS，或在网站目录下放置特定的文件来确认所有权</p>
+<p>CA拥有一对公私钥，并自己为自己的公钥进行<strong>签名</strong>，以生成一张<strong>自签名证书</strong>，这张证书被称为<strong>CA根证书</strong><br>CA使用自己的私钥对需要签发证书的公钥进行签名，以生成一张证书。这张证书就证明了该公钥属于指定的实体，由CA保证  </p>
+<p>当然喽，CA作为证书体系的根源，它的公钥也存在这样的问题：即使咱们信任这个机构，也不能确定它的公钥是否真的属于它<br><strong>于是</strong>，它们的公钥被内置在了操作系统中（windows应该有内置几十家这样的CA机构）</p>
+<p>所以，默认情况下，系统是否信任一个CA，其实取决于操作系统的发布者</p>
+<ul>
+<li>CA的根证书本身也有有效期！<br>很多win7以及之前的系统现在会出现访问部分网站报告证书无效的情况，因为这些系统中的CA证书列表没有得到维护，有些已经过期了</li>
+</ul>
+<h1 id="证书链"><a href="#证书链" class="headerlink" title="证书链"></a>证书链</h1><p>证书颁发机构签发了一张证书，那么这张证书的私钥也可以拿去签发证书，签发出来的证书的私钥也可以继续签发下一级证书。。。<br>那么在实际使用校验时，会根据最后签发的这张终端证书，去查找签发它的上一级证书，然后根据签发它的实体的证书再去找上一级的签发证书，直到找到的证书为自签名证书（CA证书），或者找不到上一级证书（即证书链不完整，完整的证书链始终应该以根证书结尾）</p>
+<ul>
+<li>证书链也是一个文件，包含了从末端证书一直到CA证书的整个链条上的所有证书</li>
+<li>在这个链条中，处于根证书和终端证书之间的都叫做<code>中间证书</code></li>
+<li>实际上证书中会指定该证书能否签发下一级证书（证书用途字段），所以不用想申请一张证书然后自己往下签了.jpg</li>
+</ul>
+<h1 id="证书吊销列表-CRL-x2F-OCSP"><a href="#证书吊销列表-CRL-x2F-OCSP" class="headerlink" title="证书吊销列表(CRL&#x2F;OCSP)"></a>证书吊销列表(CRL&#x2F;OCSP)</h1><p>一张证书有自己的有效期，到期后或生效期前都被认为是无效的<br>有些时候，例如证书的私钥泄漏，咱们会需要提前让这份证书失效，这称之为<strong>吊销</strong></p>
+<p>CA会维护一份列表，里面记录了所有提前被吊销的证书，客户端在校验证书时，应检查这个列表，以检查证书是否已经被吊销</p>
+<p>目前有两种标准&#x2F;方式来提供这个列表</p>
+<ul>
+<li>第一种老旧的，叫<strong>证书吊销列表（CRL）</strong></li>
+<li>另一种更新的，叫<strong>在线证书状态协议（OCSP）</strong></li>
+</ul>
+<p>一张证书的吊销列表位置应该包含在证书当中，如果一个证书不包含这样的字段，则应查询其父证书中包含的吊销列表地址</p>
+<h1 id="证书颁发请求-CSR"><a href="#证书颁发请求-CSR" class="headerlink" title="证书颁发请求(CSR)"></a>证书颁发请求(CSR)</h1><p>还有一个概念是<strong>证书颁发请求（CSR）</strong>，这玩意也是一个文件，相当于需要证书的实体填写的一个申请表格，包含了例如名字，地址，要这张证书干啥之类的信息，填完了扔给证书颁发机构，机构认为没问题，就签发证书给这个实体。这玩意就是一张申请表一样的东西，和证书体系没有密切的关系，没有这张表CA也能给签出证书。</p>
+
+    </div>
+    <div id="qwq" \>
+  </body>
+
+</html>
+
+
+

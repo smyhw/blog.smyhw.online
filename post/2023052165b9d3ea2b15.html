@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>smyhw'blog | 意志</title>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <!-- 手动引入固定库 -->
+    <script src="/libs/jquery.js"></script>
+    <script src="/libs/prism.js"></script>
+    <link href="/libs/prism.css" rel="stylesheet" />
+    <!-- 不做成SPA的原因是咱想每个页面拥有单独的直连URL -->
+    <script type="module" crossorigin src="/index.js"></script>
+    <link rel="stylesheet" href="/assets/index.css">
+  <meta name="generator" content="Hexo 5.4.2"></head>
+
+  <body>
+    <div id="data" page_type="contents" title="为RDP会话加上安全锁" date="2023-05-20">
+        <p>创建CA，签发证书，建立OCSP！<br>让RDP连接时不再弹出证书校验提示！</p>
+<span id="more"></span>
+<hr>
+<blockquote>
+<p>唔，要看懂这篇文章可能需要一点关于证书体系的基础知识，参考咱的上一篇文章w</p>
+</blockquote>
+<hr>
+<p>连接RDP的时候，估计诸位都会无视这个界面，直接继续连接<br><img src="https://webstatic.smyhw.online/4337994280a2af2333678d58d8b26fed.png" alt="证书错误"><br>这个界面的出现是因为RDP使用证书对连接进行身份认证和数据加密<br>（这里认证的是服务器的身份，即确定汝连接到的服务器就是它所申明的名字）<br>而在没有配置证书的默认情况下，服务器将生成并使用一张自签名证书</p>
+<p>这样当然是<strong>非常</strong>不安全的，基于中间人劫持的攻击可以截获大部分信息，包括：</p>
+<ul>
+<li>登入服务器的用户名和密码</li>
+<li>传输给客户端的服务器屏幕视频流</li>
+<li>用户的输入</li>
+</ul>
+<p>对于客户端本身，劫持者则可以：</p>
+<ul>
+<li>篡改剪切板数据<br>-&gt;例如把剪切板里的exe写入附加木马</li>
+<li><em>直接向客户端任意目录写入任意文件</em><br>-&gt;例如,直接往启动文件夹里写马<br>-&gt;(在较新的系统中已被修复，CVE-2019-0887)</li>
+</ul>
+<p>（更多操作详见<a target="_blank" rel="noopener" href="https://research.checkpoint.com/2019/reverse-rdp-attack-code-execution-on-rdp-clients/">这里的研究</a>）</p>
+<hr>
+<p>如果是在公网部署，可以使用真正的PKI（公钥基础设施）<br>那么本文中的建立CA、OCSP，根证书安装等就可以跳过</p>
+<p><strong>言归正传……</strong></p>
+<blockquote>
+<p>唔，咱这里拿xca演示，毕竟直观一点awa<br><em>dalao们当然可以openssl一把梭qwq</em></p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/chris2511/xca/">XCA项目github地址</a></p>
+<p>拿到XCA，汝需要先建立一个数据库，来存档生成的各种证书和密钥<br><img src="https://webstatic.smyhw.online/29c64ad81f7ad65ffc4c8861591fd41e.png" alt="xca主页面"></p>
+<h2 id="建立CA"><a href="#建立CA" class="headerlink" title="建立CA"></a>建立CA</h2><p>对于一个证书体系来说，首先得有一个CA，这个CA其实就是一张自签名的证书,<br>一张证书又需要一对密钥，所以先<strong>生成一对密钥</strong>:<br><img src="https://webstatic.smyhw.online/6db6a1c5b10ca27c19e3fc3f5d73052a.png" alt="生成密钥"><br><em>无所谓密钥的类型和长度，默认即可</em><br>然后<strong>签出CA证书</strong>:<br><img src="https://webstatic.smyhw.online/d7fc824d2869e5e268b30fee4606786b.png" alt="建立CA图1"><br>这里别忘了第四步，不要选了模板不应用(<br><img src="https://webstatic.smyhw.online/f1a41c609028cd375fa010d3c6885635.png" alt="建立CA图2"><br>commonName必填！</p>
+<hr>
+<p>TIPs:</p>
+<ul>
+<li>对于XCA，所有的<code>内部名称</code>都是必填项</li>
+<li>对于XCA，所有的内部名称都不会参与到实际证书或密钥的生成中，只要自己能认识就行！</li>
+<li>对于扩展页面的时间跨度，选择<code>未明确到期日期</code>会导致windows始终认为这个证书失效！</li>
+<li>对于扩展页面的时间跨度，起始日期至少是1970年1月1日凌晨0时0分<strong>01秒</strong>，否则时间校验也会失败(</li>
+<li>对于后文签发的证书，在<code>来源-&gt;签名</code>栏目，需要使用上一步签发的CA证书进行签名，不能使用<code>自签名证书</code></li>
+</ul>
+<hr>
+<h2 id="签发终端证书"><a href="#签发终端证书" class="headerlink" title="签发终端证书"></a>签发终端证书</h2><p>终端证书是签给RDP服务器的。这是一个简单的例子，所以咱就不签中间证书啦，CA直接签出终端证书<br><img src="https://webstatic.smyhw.online/5ee27a921c7486b7fe7efbb9e62d55c0.png" alt="签出终端证书1"></p>
+<ul>
+<li>签名得选之前签出来的CA证书</li>
+<li>这里不要再选模板了<br><img src="https://webstatic.smyhw.online/98663826144838ac4e020e92e10afcca.png" alt="签出终端证书2"><br>生成证书需要密钥，这里新生成一个即可<br>这里的commonName是连接RDP的ip或域名（没有端口）（必填项）<br><img src="https://webstatic.smyhw.online/c0326dbfe601e3c1393acb557ae93195.png" alt="签出终端证书3"><br><strong>特别注意：</strong><br>Authority Info Access指定的是OCSP服务的地址，这里必填，否则RDP连接时会报告无法检查证书吊销！<br><img src="https://webstatic.smyhw.online/4337994280a2af2333678d58d8b26fed.png" alt="证书吊销检查失败"><br>关于建立OCSP，见<a href="#%E5%BB%BA%E7%AB%8Bocsp">后文</a><br>这里必须是<code>http://</code>开头，例如<code>http://127.0.0.1:8081</code></li>
+</ul>
+<p><img src="https://webstatic.smyhw.online/5d4c82e6b1db64d0eeaad49f5423f9f8.png" alt="签出终端证书4"><br>这里密钥用途选中<code>Key Encipherment</code>和<code>Data Encipherment</code>(因为RDP自签的证书就选中这两个用途)</p>
+<h2 id="安装终端证书"><a href="#安装终端证书" class="headerlink" title="安装终端证书"></a>安装终端证书</h2><p><strong>注意</strong>：终端证书是给RDP服务端安装的！</p>
+<h3 id="从XCA导出文件"><a href="#从XCA导出文件" class="headerlink" title="从XCA导出文件"></a>从XCA导出文件</h3><p><img src="https://webstatic.smyhw.online/becf4c738aaa6c8df8979d32632d6d14.png" alt="导出带私钥的终端证书1"><br>需要安装的是证书和私钥<br><img src="https://webstatic.smyhw.online/cd6c13ce110ef0d3efa2a0a525e64f96.png" alt="导出带私钥的终端证书2"><br>这里导出<code>PKCS #12</code>格式，这会包含证书和私钥</p>
+<h3 id="安装证书"><a href="#安装证书" class="headerlink" title="安装证书"></a>安装证书</h3><p>windows支持直接读取并安装PKCS #12格式的文件，双击即可启动导入向导<br><img src="https://webstatic.smyhw.online/4b6bba2f7af950dde1c8d0128e2ab025.png" alt="导入终端证书1"><br>这里需要注意：安装位置要选择<strong>本地计算机</strong><br><img src="https://webstatic.smyhw.online/f1acd4a2e01bd4d234de4857030dc4fa.png" alt="导入终端证书2"><br>手动选择证书存储，并选择安装在<strong>个人</strong>存储位置</p>
+<h3 id="让RDP使用这张证书"><a href="#让RDP使用这张证书" class="headerlink" title="让RDP使用这张证书"></a>让RDP使用这张证书</h3><p>首先，获取证书的hash，使用<code>运行</code>打开<code>certlm.msc</code><br>(<code>certmgr.msc</code>打开的是当前用户的证书管理，但是咱们上一步应该安装在了当前计算机的位置中)<br>找到刚刚安装的证书，位于<code>个人</code>位置中:<br><img src="https://webstatic.smyhw.online/e00108316228e5596096283bb92b2037.png" alt="查看证书哈希"><br>打开powershell，<br><code>wmic /namespace:\\root\cimv2\TerminalServices PATH Win32_TSGeneralSetting Set SSLCertificateSHA1Hash=&quot;&lt;证书哈希&gt;&quot;</code><br>正常输出应该如下</p>
+<pre class="line-numbers language-none"><code class="language-none">正在更新“\\INIT-HOST\root\cimv2\TerminalServices:Win32_TSGeneralSetting.TerminalName&#x3D;&quot;RDP-Tcp&quot;”的属性
+属性更新成功。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>如果出现这样的输出</p>
+<pre class="line-numbers language-none"><code class="language-none">正在更新“\\INIT-HOST\root\cimv2\TerminalServices:Win32_TSGeneralSetting.TerminalName&#x3D;&quot;RDP-Tcp&quot;”的属性
+错误:
+描述 &#x3D; 无效的参数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>则表示hash有误，检查证书是否成功导入、导入位置是否正确，hash是否复制漏了几位</p>
+<h2 id="安装CA证书"><a href="#安装CA证书" class="headerlink" title="安装CA证书"></a>安装CA证书</h2><p>咱们自己建立的CA显然不在windows自带的可信任根证书列表中，所以在客户端需要导入这张CA根证书<br><strong>导出CA证书文件</strong><br><img src="https://webstatic.smyhw.online/477e4620b03c5dabb2ad96614190bd3b.png" alt="导出CA证书1"><br>这里不需要私钥，默认格式即可<br><img src="https://webstatic.smyhw.online/24650641f70e361c3e04f0683eb48d8f.png" alt="导出CA证书2"><br><strong>安装证书</strong><br>同终端证书,安装位置要选择<strong>本地计算机</strong><br>务必手动选择存入<code>受信任的根证书颁发机构</code>中<br><img src="https://webstatic.smyhw.online/66bc87517563499a2f3e0457a712c1de.png" alt="导入CA证书"></p>
+<h2 id="建立OCSP"><a href="#建立OCSP" class="headerlink" title="建立OCSP"></a>建立OCSP</h2><p>目前的RDP会(且仅会)使用OCSP校验证书吊销，所以咱们需要一个OCSP服务端，XCA显然没有这个功能，所以这里还是得用一下openssl</p>
+<h3 id="获取openssl"><a href="#获取openssl" class="headerlink" title="获取openssl"></a>获取openssl</h3><p>各大linux发行版显然拥有各自的预编译包，对于windows平台，可以在<a target="_blank" rel="noopener" href="https://wiki.openssl.org/index.php/Binaries">这里</a>找一个看着顺眼的</p>
+<h3 id="签发OCSP证书"><a href="#签发OCSP证书" class="headerlink" title="签发OCSP证书"></a>签发OCSP证书</h3><p>一个OCSP需要有自己证书，且这张证书需要拥有<code>OCSP Signing</code>的密钥用途:</p>
+<ul>
+<li>为了生成一张证书，必须先生成一对密钥（参考前文）</li>
+</ul>
+<p><em>(注意使用前面咱们生成的CA证书签名，其他设置不需要额外注意。包括commonName,任意名称即可)</em><br><img src="https://webstatic.smyhw.online/e7b78b76a023ec62b0352f5ec24ffcea.png" alt="OCSP证书"></p>
+<h3 id="导出所需文件"><a href="#导出所需文件" class="headerlink" title="导出所需文件"></a>导出所需文件</h3><p>运行一个简单的OCSP将需要：</p>
+<ul>
+<li>OCSP自己的私钥和证书文件</li>
+<li>ocsp证书索引文件</li>
+<li>从OCSP证书到CA根证书的证书链文件</li>
+</ul>
+<p><strong>导出私钥</strong><br><img src="https://webstatic.smyhw.online/0e3839c03901ae2b0e2065eb625f0bc1.png" alt="导出OCSP私钥1"><br>注意是OCSP的私钥，不要导出错了<br><img src="https://webstatic.smyhw.online/f3646c6257baf7bf8f80b695f07f44fe.png" alt="导出OCSP私钥2"><br>默认格式没有问题<br><strong>导出证书</strong><br><img src="https://webstatic.smyhw.online/49332d51daf9700ae52526c6480f8e1e.png" alt="导出OCSP证书"><br><em>参考前文</em><br><strong>导出证书链</strong><br><img src="https://webstatic.smyhw.online/d84c02b44a20a67682452a252ec47a69.png" alt="导出OCSP证书链"><br>和导出OCSP证书一样，右键OCSP的证书并选择导出-&gt;文件，但是文件格式选择<code>PEM证书链</code><br>最好包含从CA根证书一直到OCSP的完整证书链文件，<br><em>只有CA证书似乎也可以加载？(存疑)</em><br><strong>导出(生成)证书索引</strong><br><img src="https://webstatic.smyhw.online/05b3227c366fd54c47c3f373b118af28.png" alt="生成OCSP证书索引"><br><em>不要试图建立空文件来替代索引文件，没用的…</em></p>
+<h2 id="运行OCSP"><a href="#运行OCSP" class="headerlink" title="运行OCSP"></a>运行OCSP</h2><p><code>openssl ocsp -index ./证书索引.txt -port 8081 -rsigner OCSP证书.crt -rkey OCSP密钥.pem -CA OCSP证书链.pem -text</code></p>
+<ul>
+<li><code>-port</code> 指定服务端口</li>
+<li><code>-text</code> 将日志打印到控制台</li>
+</ul>
+<p>其他的参数应该是不言自明的  </p>
+<p>在RDP连接时，会查询OCSP，这时应该会有日志输出，如果没有，检查地址和端口的可用性<br>OCSP日志输出示例:<br><img src="https://webstatic.smyhw.online/de884c993141ca7499bcbc072d169f54.png" alt="OCSP日志"></p>
+<hr>
+<p><strong>到了这里</strong><br>如果没有什么差错的话，这时连接RDP，应该不会再弹出证书错误页面，并且连接后会显示安全锁<br><img src="https://webstatic.smyhw.online/557e89e4348a369f92bbebf8db863538.png" alt="最终效果"></p>
+
+    </div>
+    <div id="qwq" \>
+  </body>
+
+</html>
+
+
+

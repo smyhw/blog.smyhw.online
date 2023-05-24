@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.smyhw.online/post/2023052165b9d3ea2b15.html</loc>
+    
+    <lastmod>2023-05-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.smyhw.online/post/20230521c6194b2db404.html</loc>
+    
+    <lastmod>2023-05-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.smyhw.online/post/2023032955b6407f032c.html</loc>
     
     <lastmod>2023-03-28</lastmod>
@@ -112,7 +130,7 @@
 
   <url>
     <loc>http://blog.smyhw.online/</loc>
-    <lastmod>2023-03-28</lastmod>
+    <lastmod>2023-05-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
