@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>smyhw'blog | 意志</title>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <!-- 手动引入固定库 -->
+    <script src="/libs/jquery.js"></script>
+    <script src="/libs/prism.js"></script>
+    <link href="/libs/prism.css" rel="stylesheet" />
+    <!-- 不做成SPA的原因是咱想每个页面拥有单独的直连URL -->
+    <script type="module" crossorigin src="/index.js"></script>
+    <link rel="stylesheet" href="/assets/index.css">
+  <meta name="generator" content="Hexo 5.4.2"></head>
+
+  <body>
+    <div id="data" page_type="contents" title="随身wifi指导手册之一—入门" date="2023-12-31">
+        <p>没错，这是个随身wifi</p>
+<span id="more"></span>
+<hr>
+<p>唔，趁咱脱坑之后还没忘光光，把这些都记下来的说  </p>
+<hr>
+<p>这只是一篇入坑介绍，详细的刷机教程咱之后应该会有几篇文章 <del><em>(如果没有鸽子的话qwq)</em></del></p>
+<h1 id="这是些什么玩意？"><a href="#这是些什么玩意？" class="headerlink" title="这是些什么玩意？"></a>这是些什么玩意？</h1><blockquote>
+<p>9.9包邮到家的linux开发板了解一下？</p>
+</blockquote>
+<p>随身wifi，各大平台一搜一大把的那种，<br>很多这种设备非常便宜，因为这类商家赚取的是汝充值流量的费用<br>（比起高通、移远等提供的正规蜂窝模块，即使考虑上性能之间差距，这些wifi棒子的售价仍然低到离谱）<br>但是，如果仔细研究这类设备，会发现这些廉价的3G&#x2F;4G设备运行一些android或linux作为其嵌入式系统，并且基本没有构建反刷写&#x2F;反调试机制，<br><em>这意味着咱们可以将其作为linux开发板或软路由使用</em></p>
+<blockquote>
+<p>这个系列主要关注使用<code>MSM8916</code>，即高通410作为处理器的随身wifi(对，小米2上就用的高通410)  </p>
+</blockquote>
+<h1 id="为什么是高通410？"><a href="#为什么是高通410？" class="headerlink" title="为什么是高通410？"></a>为什么是高通410？</h1><p>作为高通的早期型号，其基带似乎曾经被泄漏或故意放出，使得目前第三方固件可以更有效地驱动其蜂窝网络部分，包括短信和lte。<br>但是无论如何，现在该soc受到社区的广泛支持，从linux主线移植，到为其定制的openwrt发行版*(简直豪华待遇)*</p>
+<p>同时，使用该芯片的随身wifi目前在市面上最常见，也最便宜：</p>
+<ul>
+<li>比起其他方案，高通410作为手机soc，并没有内置ram和rom，所以，这类随身wifi还会有一个flash芯片，大部分都是512M内存+4GB存储<em>也有少部分具有8G存储</em></li>
+<li><em>从丝印上看，这些flash大都是来自海力士或金士顿的古董。(并且寿命都被淦得差不多了)</em></li>
+<li>这些芯片明显是回收料，鬼知道之前是什么设备上的</li>
+</ul>
+<hr>
+<h1 id="系列和型号"><a href="#系列和型号" class="headerlink" title="系列和型号"></a>系列和型号</h1><p>这是咱手上的部分设备，左边一排都是410<br><img src="https://webstatic.smyhw.online/ca6ad980a388e188a6aa1f66cc6fefd9.jpg" alt="照片2"></p>
+<h2 id="电池机"><a href="#电池机" class="headerlink" title="电池机"></a>电池机</h2><p>首先，汝可以看到有几块大一号的板子，这些是所谓的<code>电池机</code>板子，<br>所谓电池机，则是自带一块电池，不需要插着USB也可以启动，<br>(注意：这类板子的电池可能并不可靠，大部分不支持浮冲，这意味着插着电使用可能会导致电池出现问题)<br>比它更进一步的，咱们管它叫<code>充电宝</code>，这类随身wifi拥有更大的电池，可以给其他设备反向充电，不过咱手上倒是没有这类设备</p>
+<ul>
+<li>该类随身wifi有时会配屏幕，即使没有，也可以在主板上看到预留的屏幕排线焊点</li>
+<li>该类随身wifi除了sim卡槽外，基本都有一个tf卡槽位(可能只有焊盘)，不过似乎大部分型号需要飞线才能正常使用(咱没做过这个改装，存疑)</li>
+<li>该类随身wifi部分批次体质奇差，可能导致刷openwrt或debian后直接不开机或cpu频率一高就重启</li>
+<li>板子上除了两个reset键之外似乎留有WPS按键焊盘</li>
+</ul>
+<h2 id="410棒子"><a href="#410棒子" class="headerlink" title="410棒子"></a>410棒子</h2><p>对于高通410棒子，PCB型号基本由UFI开头，并且都是绿色pcb<br>在上文的图中，左边从下往上，分别是</p>
+<ul>
+<li>UFI003_MB_V02</li>
+<li>UFI103S_V05</li>
+<li>UFI103S_V03</li>
+<li>UFI103S_V02</li>
+<li>MF601SL_CT_V07</li>
+</ul>
+<p>这些板子可玩性都很高，目前有现成的固件包可以刷入openwrt或debian，并且可以使用wifi，板载esim&#x2F;sim卡槽，部分支持短信转发和蓝牙</p>
+<p>另，高通410芯片的web页面通常都长这样:<br><img src="https://webstatic.smyhw.online/3eeb879f1b64b1e4b1d0d36962e94781.png" alt="web截图1"><br>密码通常为admin<br><img src="https://webstatic.smyhw.online/b340fd061006661f5c47e9b559358c70.png" alt="web截图2"></p>
+<h2 id="其他类型"><a href="#其他类型" class="headerlink" title="其他类型"></a>其他类型</h2><p>也有很多其他方案的随身wifi，例如紫光展锐，中兴微，ASR等，这些随身wifi仍具有一定可玩性，<br>但是由于采用只读rom，固件系统开放性差等原因<em>（有时候玩砸了得拿编程器才能淦开）</em>，几乎没法像410这样完全定制系统，咱也没有折腾这类设备。<br>不过，社区中仍有这些棒子基于原始固件修改的方案，例如解除商家速率控制，添加更多路由功能等。</p>
+<blockquote>
+<p>这类棒子的实际使用速度往往比410要快（甚至快得多）</p>
+</blockquote>
+<h1 id="关于卡槽"><a href="#关于卡槽" class="headerlink" title="关于卡槽"></a>关于卡槽</h1><ul>
+<li>大部分都是只有焊盘没有卡槽，只有少部分会自带</li>
+<li>也有部分商家会撬烂焊盘，涂黑胶等手段防止用户自己焊卡槽(点名紫*猫)</li>
+<li>如果需要自己焊接卡槽，注意电池鸡和棒子的卡槽制式不一样，别买错了</li>
+</ul>
+<p><strong>即使有卡槽或者自己焊了卡槽也不一定能直接用，默认系统很可能会自带后门或切卡密码以阻止用户使用卡槽</strong><br>这种情况仍然需要破解或刷入新系统来使用卡槽</p>
+<h1 id="关于esim"><a href="#关于esim" class="headerlink" title="关于esim"></a>关于esim</h1><p>这些棒子99%都使用板载esim芯片，这些芯片和商家的流量池绑定<br>除非使用例如阿里云或者华为这种大厂的esim，否则<strong>不推荐使用商家流量</strong>!<br>标称100G，商家可以在使用10G后限速到100k，并且双倍甚至多倍计算流量<br>并且商家可以在汝购买后随时涨价甚至跑路  </p>
+<h2 id="移植esim"><a href="#移植esim" class="headerlink" title="移植esim"></a>移植esim</h2><p>这种操作很普遍，例如阿里云的esim很稳，但是其搭配的棒子汝并不满意，那确实可以将它移植到其他棒子上<br>一般来说，社区有两种方案可以实现：</p>
+<ul>
+<li>直接调换esim芯片</li>
+<li>如果目标设备可以插卡，则esim可以被包装为普通esim卡</li>
+</ul>
+<h2 id="关于串号"><a href="#关于串号" class="headerlink" title="关于串号"></a>关于串号</h2><p>圈内俗称的串号，改串，即代表IMEI，该串号存在于设备上，并且在规范上不能更改<br><em>（规范是规范，实际上咱们仍然有办法更改这个值）</em></p>
+<p>esim芯片会绑定一个串号，并在串号不匹配的情况下拒绝入网。  </p>
+<p>部分esim，例如阿里云卡，在设备第一次通电时才会绑定串号，这使得海鲜市场上甚至有卖成品阿里云sim卡<br>(未实名的，封装为标准sim卡的阿里云esim，可以在任何兼容设备上激活使用)  </p>
+<p>部分esim则在出厂时就已经绑定设备串号，移植这些esim需要目标设备将串号更改为原始设备的串号才能正常使用</p>
+<h2 id="关于实名"><a href="#关于实名" class="headerlink" title="关于实名"></a>关于实名</h2><p>这些棒子的流量卡都是物联网卡，需要实名才可以使用<br>咱目前知道的，</p>
+<ul>
+<li>电信限制一个身份最多实名10张卡，可以注销，注销后就不占用10张卡的份额了</li>
+<li>联通也是10张卡，但是无论是否注销都占用份额（即一辈子只能10张卡）</li>
+<li>目前所有运营商都是3个月没有任何操作即自动注销</li>
+</ul>
+<h1 id="社区相关"><a href="#社区相关" class="headerlink" title="社区相关"></a>社区相关</h1><p>MSM8916的linux移植在这里<a target="_blank" rel="noopener" href="https://github.com/msm8916-mainline">github.com&#x2F;msm8916-mainline</a>  </p>
+<p>openwrt的一个fork，专门为了适配MSM8916，在这里<a target="_blank" rel="noopener" href="https://github.com/OpenStick/">github.com&#x2F;OpenStick</a></p>
+<p>现成的固件包基本都是酷安dalao提供的，咱最早用到的，<a target="_blank" rel="noopener" href="https://www.kancloud.cn/a813630449/ufi_car/2795165">苏苏小亮亮的openwrt和debian</a></p>
+<p>还有<code>酷安水遍</code>dalao做了一个万能工具箱，集成了大部分棒子刷机的工具链和资源，但是目前似乎只在QQ群传播，279330634</p>
+<h1 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h1><h2 id="刷过系统之后，自带的esim卡还能使用嘛？"><a href="#刷过系统之后，自带的esim卡还能使用嘛？" class="headerlink" title="刷过系统之后，自带的esim卡还能使用嘛？"></a>刷过系统之后，自带的esim卡还能使用嘛？</h2><p>能，部分默认使用卡槽的固件可能需要切卡</p>
+<h2 id="不刷系统能用卡槽嘛？"><a href="#不刷系统能用卡槽嘛？" class="headerlink" title="不刷系统能用卡槽嘛？"></a>不刷系统能用卡槽嘛？</h2><p>取决于商家固件里有没有暗桩。<del><em>不过汝可以给esim芯片吹了，然后跳线到卡槽</em></del></p>
+<h2 id="上网速度怎么样？"><a href="#上网速度怎么样？" class="headerlink" title="上网速度怎么样？"></a>上网速度怎么样？</h2><p>不要对速度有任何期待，这东西能正常跑起来已经很厉害了.jpg</p>
+<h2 id="怎么确保买到的棒子是410？"><a href="#怎么确保买到的棒子是410？" class="headerlink" title="怎么确保买到的棒子是410？"></a>怎么确保买到的棒子是410？</h2><p>嗯，好问题，<strong>没法确保</strong>。<br>商家一般不会写明使用了什么方案，并且直接去问客服的话，商家会直接发现汝不是正常用户，导致不发货等应对策略。<br>所以，最好找几个社群，跟着群友一块发车；或者买带运费险的，这样发现不对还能退货.jpg</p>
+
+    </div>
+    <div id="qwq" \>
+  </body>
+
+</html>
+
+
+

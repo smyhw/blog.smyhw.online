@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>smyhw'blog | 意志</title>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <!-- 手动引入固定库 -->
+    <script src="/libs/jquery.js"></script>
+    <script src="/libs/prism.js"></script>
+    <link href="/libs/prism.css" rel="stylesheet" />
+    <!-- 不做成SPA的原因是咱想每个页面拥有单独的直连URL -->
+    <script type="module" crossorigin src="/index.js"></script>
+    <link rel="stylesheet" href="/assets/index.css">
+  <meta name="generator" content="Hexo 5.4.2"></head>
+
+  <body>
+    <div id="data" page_type="contents" title="随身wifi指导手册之二—备份" date="2024-01-20">
+        <p>备份固件以便在搞砸之后可以救砖</p>
+<span id="more"></span>
+<hr>
+<h1 id="请在任何刷机操作前务必备份"><a href="#请在任何刷机操作前务必备份" class="headerlink" title="请在任何刷机操作前务必备份"></a>请在任何刷机操作前务必备份</h1><p>取决于这些棒子的体质，即使是正确的操作也有出错的可能。所以，无论如何，在任何危险操作前备份！！！</p>
+<p>汝也很有可能漏掉一些事情，比如棒子原始系统里的一些信息(IMEI,配置项)，这时只能刷回原系统查看，如果没有备份，即使同一型号的其他棒子也未必拥有一样的内容</p>
+<h1 id="工具链"><a href="#工具链" class="headerlink" title="工具链"></a>工具链</h1><p>这些工具在互联网上都能找到，酷安水遍的刷机工具箱里也都提供了集成。</p>
+<p><strong>注意查毒</strong></p>
+<h2 id="miko-service-tool"><a href="#miko-service-tool" class="headerlink" title="miko service tool"></a>miko service tool</h2><p>通常使用这个工具将整个固件打包为单个bin文件，很多渠道中提到的<code>miko包</code>就是指这个</p>
+<p><strong>写在前面，据咱的实际经验，该工具的备份&#x2F;还原在某些情况下并不可靠，建议同时使用下文的Qualcomm Premium Tool进行备份，以防救砖的时候被气死:(</strong></p>
+<p><img src="https://webstatic.smyhw.online/3382152feb612421dbb4f97bde568687.png" alt="miko首页截图"></p>
+<h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><ol>
+<li><p><strong>进入9008模式</strong><br>参考后文<a href="#9008%E6%A8%A1%E5%BC%8F">9008模式</a>章节</p>
+</li>
+<li><p><strong>备份</strong><br>如图，点击<code>Read</code> -&gt; <code>Partition Backup/Erase</code>，再点击<code>Load Parition Structure</code>读取分区列表<br><img src="https://webstatic.smyhw.online/46cc586b72150a2d016a7f92ecbc12c8.png" alt="miko备份示例1"></p>
+</li>
+</ol>
+<p>然后，全选分区，点击<code>Read Full Image</code>，弹出文件保存框，选择一个保存路径，确定后开始备份，进度标注在界面下方的进度条。<br><img src="https://webstatic.smyhw.online/8653c0113d4dbe8770e07ee7f5efb345.png" alt="miko备份示例2"><br><img src="https://webstatic.smyhw.online/0d207eeb84a51e1e49b5746219432b02.png" alt="miko备份示例3"><br>确认输出的是<code>Success</code>这个备份即完成。<br><img src="https://webstatic.smyhw.online/3d734a164adf78a61527e180f35bba92.png" alt="miko备份示例4"><br>注意：这个备份文件会和设备的emmc一样大，如果备份的是4G的棒子，则会生成4G大小左右的文件。但是该文件作为硬盘镜像，存在大量重复的空数据，所以对其进行压缩是一个好注意，这可以将一个默认的4G安卓固件压缩为300MB左右</p>
+<ol start="3">
+<li><strong>还原</strong></li>
+</ol>
+<p>如图，选择<code>Flash</code> -&gt; <code>emmc block0 flasher</code>,然后<strong>双击</strong>中间的框选择备份文件，然后点击<code>FLASH</code>，开始刷入，进度条在界面下放展示<br><img src="https://webstatic.smyhw.online/feace3b5bf76334039fe73c7f615f9d3.png" alt="miko还原示例"></p>
+<p>注意：如果这里没有<code>Success</code>，则表示刷入失败，这时即使能进系统，那大概率也是部分损坏的系统。这里可以多试几次，但如果始终失败，那么汝最好有QPT备份并尝试使用QPT的9006还原进行恢复<br><img src="https://webstatic.smyhw.online/31110c4701898ee1cf9f347bbd341188.png" alt="miko失败示例"></p>
+<h2 id="Qualcomm-Premium-Tool"><a href="#Qualcomm-Premium-Tool" class="headerlink" title="Qualcomm Premium Tool"></a>Qualcomm Premium Tool</h2><p>这就是所谓的QPT工具<br>通常使用这个工具可以打出单个分区的备份包，同时它的两个功能<code>9008 to 9006 </code>和<code>9006 Block 0 Write</code>两个功能可以几乎百分百成功救砖(至少咱没失败过)</p>
+<p><img src="https://webstatic.smyhw.online/3291cdf47f2ff51a5a13007c9160f413.png" alt="qpt首页截图"></p>
+<h2 id="常规备份"><a href="#常规备份" class="headerlink" title="常规备份"></a>常规备份</h2><p>这将备份每一个分区为单独的文件，以便之后可以单独还原特定分区</p>
+<p>注意：这不是全量备份&#x2F;还原的法子，它确实备份了每一个分区，但是汝不会想一个一个地还原回去的，一个棒子可能会有几十个分区的说</p>
+<ol>
+<li><p>进入9008模式</p>
+</li>
+<li><p>点击<code>Qualcomm</code> -&gt; <code>partition</code>，首先缺点单选框在<code>Scan</code>位置，即扫描分区，然后点击<code>Do Job</code><br><img src="https://webstatic.smyhw.online/9b293b6a6bff6a70ec42778b8ee5212b.png" alt="QPT截图4"></p>
+</li>
+<li><p>扫描分区后，单选框应自动跳到<code>Backup</code>，即备份位置，这时勾选右侧<code>Backup ALL</code>复选框，然后点击<code>Do Job</code>，这时应弹出<strong>文件夹</strong>选择框，选择一个干净的文件夹。<br><img src="https://webstatic.smyhw.online/e50a2bb65b5f4a467e1f5e665094fccc.png" alt="QPT截图5"><br>当左下角显示<code>Backup finished</code>的时候，即完成备份</p>
+</li>
+</ol>
+<h3 id="保底救砖"><a href="#保底救砖" class="headerlink" title="保底救砖"></a>保底救砖</h3><p>这就是咱前文提到的，使用<code>9008 to 9006 </code>和<code>9006 Block 0 Write</code>两个功能进行救砖</p>
+<p><strong>备份</strong><br>首先进入9008模式，然后选择<code>Qualcomm</code> -&gt; <code>Block 0</code> -&gt; <code>Block0 Read</code>，点击<code>Read（9008）</code><br>这里的路径选择框似乎没有意义，保存路径在下一步中选择<br><img src="https://webstatic.smyhw.online/07b4629ade9d4fdd1780e65d9d2e4eb0.png" alt="QPT截图6"><br>之后在弹出的窗口中<strong>拖动滚动条到最底下</strong>，并点击最后一个分区，最后点击<code>backup now</code>，这时选择保存路径，然后开始备份<br><img src="https://webstatic.smyhw.online/7a7890049ea22a56ffbaef111d8a9543.png" alt="QPT截图7"><br>如下图，备份完成<br><img src="https://webstatic.smyhw.online/7b3fb6050532466d0a8f2bedf87547ae.png" alt="QPT截图8"></p>
+<p><strong>还原</strong><br>首先进入9008模式，然后如图，选择<code>General</code> -&gt; <code>Reboot Options</code> -&gt; <code>9008 to 9006</code>，注意复选框一定选择到MSM8916。<br>注意：如果是酷安水遍的刷机工具箱自带的QPT，这里很有可能被精简掉了，汝可能需要google一个完整版来用<br>点击go，过一会设备应自动重启，进入9006模式<br><img src="https://webstatic.smyhw.online/e57b8e8cb52abe93761519283d213a80.png" alt="QPT截图1"></p>
+<p>点击<code>Qualcomm</code> -&gt; <code>Block 0</code>，找到<code>9006 Block 0 Write</code></p>
+<ol>
+<li>首先点击最右边的<code>Refresh</code>刷新设备列表，并在左侧下拉栏中选择正确的设备</li>
+<li>点击左侧<code>Select Block0</code>功能的文件选择按钮，找到备份的QPT Block0备份包</li>
+<li>点击<code>Write</code>开始刷入<br><img src="https://webstatic.smyhw.online/e2f2356a26080006847a040d4adf626c.png" alt="QPT截图2"><br>注意：只有左侧开始这样刷新显示才是正常开始刷入，并可以看到百分比<br><img src="https://webstatic.smyhw.online/061ee59aedbb251392725760b1ada926.png" alt="QPT截图3"><br>如果提示错误，多按几次<code>Write</code>重试几次(或者几十次)，还是不行重新刷新&#x2F;选择设备，再不行重启QPT<br>总之这东西很容易启动报错，而且原因未知，但是总是能重试解决，并且一旦开始读条，咱就没见它失败过<br><img src="https://webstatic.smyhw.online/c34e0a8f5a729486eb413f8bcc50ea28.png" alt="QPT截图4"><br>如上图所示，刷入完成，拔出棒子并重新插入，恢复&#x2F;救砖完成</li>
+</ol>
+<h1 id="9008模式"><a href="#9008模式" class="headerlink" title="9008模式"></a>9008模式</h1><p>这是高通的soc提供的功能，只要没有硬件损坏，无论软件层面如何，都能启动该模式来操作&#x2F;覆写整个flash</p>
+<p>一般，棒子上都会提供一个复位按钮，在按住它的同时，对设备进行上电（上电后即可松开），这时应进入9008模式</p>
+<p>注：对于410电池机，可能需要通过短接触点来进入9008模式，这些触点一般标注为<code>FB</code></p>
+<p>注注：如果短接触点不好使，试试拿镊子或刀片刮一刮它们，上面可能存在一层较厚的绝缘涂层</p>
+<ul>
+<li>进入9008模式后，所有指示灯不应被点亮，如果上电后发现指示灯被点亮，则代表没有成功进入9008模式，尝试下电重新操作</li>
+<li>每次使用9008后，建议下电并重新进入9008模式，即使是统一软件的不同功能，9008似乎在部分情况下不可在一次上电后被多次使用</li>
+</ul>
+<h1 id="9006模式"><a href="#9006模式" class="headerlink" title="9006模式"></a>9006模式</h1><p>还有有一种类似的模式叫9006，在这个模式下，设备将作为一个块设备(硬盘)被识别，可以直接使用其他硬盘工具对设备进行分区<del>(当u盘用)</del>,<br>但是注意，该模式依赖引导分区启动，如果在该模式下删除了所有分区，那么下一次下电重启就会因为啥也启动不了而进9008了</p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>刷过系统后，也可以进行全量备份，以便之后直接还原为自定义的系统<br>同一型号的备份包(甚至少部分不同型号的)可以通刷，但是大概率基带不通用导致4g异常（即使是统一型号的，也有概率出现该问题）。总之，建议为每一根棒子单独进行备份。</p>
+
+    </div>
+    <div id="qwq" \>
+  </body>
+
+</html>
+
+
+

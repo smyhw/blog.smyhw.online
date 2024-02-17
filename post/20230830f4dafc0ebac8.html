@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>smyhw'blog | 意志</title>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <!-- 手动引入固定库 -->
+    <script src="/libs/jquery.js"></script>
+    <script src="/libs/prism.js"></script>
+    <link href="/libs/prism.css" rel="stylesheet" />
+    <!-- 不做成SPA的原因是咱想每个页面拥有单独的直连URL -->
+    <script type="module" crossorigin src="/index.js"></script>
+    <link rel="stylesheet" href="/assets/index.css">
+  <meta name="generator" content="Hexo 5.4.2"></head>
+
+  <body>
+    <div id="data" page_type="contents" title="x86上的openwrt安装" date="2023-08-29">
+        <p>在通用设备上安装原生openwrt</p>
+<span id="more"></span>
+
+<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>咱前阵子从海鲜市场淘了块收银机的主板来当软路由，打算上openwrt，但是突然发现，以前安装openwrt总是一些路由器或者其他嵌入式平台，x86上还真不知道怎么给这镜像装进去<br><br></p>
+<blockquote>
+<p>所谓原生openwrt指的是直接从<code>openwrt.org</code>上获取的原始镜像</p>
+</blockquote>
+<h1 id="如何选择镜像"><a href="#如何选择镜像" class="headerlink" title="如何选择镜像"></a>如何选择镜像</h1><h2 id="选择版本"><a href="#选择版本" class="headerlink" title="选择版本"></a>选择版本</h2><p>如果汝不想自己编译的话，咱建议<strong>无论如何</strong>选择<strong>稳定版</strong>构建！！！<br>这在之后安装额外的内核模块时（例如各种驱动）非常重要<br><em>因为虽然可以通过安装额外的内核ipk来兼容其他编译版本的软件包，但是内核模块不能这么干，无论如何内核模块都不能跨编译版本运行</em><br><br><br>在下载站点(<a target="_blank" rel="noopener" href="https://downloads.openwrt.org/">downloads.openwrt.org</a>) 选择需要的版本</p>
+<h2 id="选择目标平台"><a href="#选择目标平台" class="headerlink" title="选择目标平台"></a>选择目标平台</h2><p>openwrt的最终镜像文件是分类为各个平台的:</p>
+<pre class="line-numbers language-none"><code class="language-none">File Name	File Size	Date
+apm821xx&#x2F;	-	Wed Nov 15 02:18:11 2023
+armsr&#x2F;	-	Wed Nov 15 01:30:35 2023
+at91&#x2F;	-	Wed Nov 15 03:10:28 2023
+ath79&#x2F;	-	Wed Nov 15 02:46:31 2023
+bcm27xx&#x2F;	-	Wed Nov 15 03:23:35 2023
+bcm47xx&#x2F;	-	Wed Nov 15 03:14:38 2023
+bcm4908&#x2F;	-	Wed Nov 15 02:23:36 2023
+bcm53xx&#x2F;	-	Wed Nov 15 01:33:44 2023
+bcm63xx&#x2F;	-	Wed Nov 15 03:03:27 2023
+bmips&#x2F;	-	Wed Nov 15 03:10:00 2023
+gemini&#x2F;	-	Wed Nov 15 00:53:01 2023
+imx&#x2F;	-	Wed Nov 15 04:58:33 2023
+ipq40xx&#x2F;	-	Wed Nov 15 03:06:47 2023
+ipq806x&#x2F;	-	Wed Nov 15 01:39:29 2023
+ipq807x&#x2F;	-	Wed Nov 15 01:43:37 2023
+kirkwood&#x2F;	-	Wed Nov 15 00:50:33 2023
+lantiq&#x2F;	-	Wed Nov 15 02:10:12 2023
+layerscape&#x2F;	-	Wed Nov 15 02:52:41 2023
+malta&#x2F;	-	Wed Nov 15 01:37:37 2023
+mediatek&#x2F;	-	Wed Nov 15 03:00:12 2023
+mpc85xx&#x2F;	-	Wed Nov 15 03:43:40 2023
+mvebu&#x2F;	-	Wed Nov 15 02:51:17 2023
+mxs&#x2F;	-	Wed Nov 15 02:32:16 2023
+octeon&#x2F;	-	Wed Nov 15 03:51:20 2023
+octeontx&#x2F;	-	Wed Nov 15 02:21:05 2023
+oxnas&#x2F;	-	Wed Nov 15 02:48:35 2023
+pistachio&#x2F;	-	Wed Nov 15 00:50:27 2023
+ramips&#x2F;	-	Wed Nov 15 03:11:32 2023
+realtek&#x2F;	-	Wed Nov 15 02:08:09 2023
+rockchip&#x2F;	-	Wed Nov 15 01:34:40 2023
+sifiveu&#x2F;	-	Wed Nov 15 04:01:12 2023
+sunxi&#x2F;	-	Wed Nov 15 02:52:02 2023
+tegra&#x2F;	-	Wed Nov 15 00:56:39 2023
+x86&#x2F;	-	Wed Nov 15 02:47:34 2023
+zynq&#x2F;	-	Wed Nov 15 00:54:14 2023<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>选择汝的设备型号&#x2F;处理器型号&#x2F;架构，每种不同的分类的镜像格式或内容都是不一样的，很多平台有独立的刷写机制，会生成特定格式的文件以便操作。这里咱们仅关注x86架构，显然，通用x86目标直接位于顶级目录，没有区分处理器或厂商  </p>
+<p><strong>这个目录下还区分了几个子项:</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">File Name	File Size	Date
+64&#x2F;	-	Wed Nov 15 02:13:04 2023
+generic&#x2F;	-	Wed Nov 15 02:47:31 2023
+geode&#x2F;	-	Wed Nov 15 02:10:06 2023
+legacy&#x2F;	-	Wed Nov 15 01:34:48 2023<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>咱用的是x64<del>(都4202年了!)</del></p>
+<ul>
+<li>legacy适用于<code>旧的</code>x86处理器，应该是为32位准备的</li>
+<li>geode是amd的一个嵌入式低功耗的系列</li>
+<li>generic，当汝拿不定主意的时候试试这个</li>
+</ul>
+<h2 id="选择镜像格式"><a href="#选择镜像格式" class="headerlink" title="选择镜像格式"></a>选择镜像格式</h2><pre class="line-numbers language-none"><code class="language-none">Image for your Device	sha256sum	File Size	Date
+generic-ext4-combined-efi.img.gz	090187a632f80c90093417830701d9a7f391b7729b4942d7e620a8c8f4dedb30	11236.6 KB	Wed Nov 15 02:10:23 2023
+generic-ext4-combined.img.gz	f8588a9937bd77010f88545ccd21bb59cf8b47462793d80ef7d49ad92ce8ab11	11052.6 KB	Wed Nov 15 02:10:22 2023
+generic-ext4-rootfs.img.gz	b48df205150a4465b48a21f9449b3cb79d2dd3181feda0cb0ebd6693e1dc3596	5163.4 KB	Wed Nov 15 02:10:21 2023
+generic-kernel.bin	19ea5d644317bb77931a4f94030b8c2bbd1312c554ec1bf276e80cf4a02f36c6	5497.1 KB	Wed Nov 15 02:10:03 2023
+generic-squashfs-combined-efi.img.gz	3445abde9fb8371ae441dc947699cb397dda0cddc943e95bd4db5a89841fe5e7	10390.8 KB	Wed Nov 15 02:10:22 2023
+generic-squashfs-combined.img.gz	2fdaf53bf8ff264137a7950acec017a0f9f38664cee0b3c95357fdd05dc24c5f	10208.1 KB	Wed Nov 15 02:10:22 2023
+generic-squashfs-rootfs.img.gz	7d558743d6a8e8a85615242e14c92b5384839ecca55205a415f547702bf32039	4321.3 KB	Wed Nov 15 02:10:20 2023
+rootfs.tar.gz	dc5379af73ebd6845da419ccf034987dc0c8b26e503cefd5231b05a1ff8cc26c	4207.5 KB	Wed Nov 15 02:10:07 2023<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这几个文件，先刨去<code>rootfs.tar.gz</code>仅根文件系统和<code>generic-kernel.bin</code>仅内核，它们可以用于更定制化的安装，流程也更为复杂<del>(咱也没有用过qwq)</del><br>剩下四个文件显然分为两组，<code>ext4</code>和<code>squashfs</code>，<br>这是镜像的文件系统格式，对，这种安装镜像其实是一种硬盘镜像，自带分区表的那种<br>ext4，最常用的linux文件系统之一，不再赘述，倒是这里可以讲一下squashfs</p>
+<p><strong>squashfs</strong><br>这种文件系统本身是只读的，所有对于它的写入和更改都将被存储至一个额外的分区<br>这意味着，如果汝把系统淦烂了，只要删除&#x2F;清空这个额外的分区，系统将直接恢复到干净的状态，<br>openwrt本身的web界面中就提供这个恢复初始状态的功能<br><br><br>每个文件系统的镜像又分为ufi版本和非ufi版本，这没有任何系统功能上的区别，只要汝的设备支持ufi引导就用ufi版本，否则使用没有ufi的版本<del>(废话)</del><br>咱这里选择的是<code>generic-ext4-combined-efi.img</code></p>
+<h1 id="解压镜像"><a href="#解压镜像" class="headerlink" title="解压镜像"></a>解压镜像</h1><p>openwrt官网的<code>.img.gz</code>文件不是标准的gz格式，在文件结尾会包含文件的签名<br>所以部分软件无法解压这个文件，例如7zip和physdiskwrite<br>咱的解决方案是直接扔进linux用gunzip解压，虽然扔会抛出错误，但是解压出的文件是可用的</p>
+<ul>
+<li><em>另，有解决方案称winrar支持解压这种格式</em></li>
+</ul>
+<h1 id="刷写镜像"><a href="#刷写镜像" class="headerlink" title="刷写镜像"></a>刷写镜像</h1><p>openwrt的发布文件(.img)是一个磁盘的完整镜像，而不是像windows或其他linux那样的安装镜像<br>所以我们不需要刻录安装盘，而是将这个镜像直接<strong>刷写</strong>到目标设备的启动磁盘上</p>
+<hr>
+<p>有很多软件可以进行这个操作（如果汝想，linux使用dd直接刷也行），这里，咱在windows下使用<code>physdiskwrite</code><em><a target="_blank" rel="noopener" href="https://m0n0.ch/wall/physdiskwrite.php">官网</a></em></p>
+<pre class="line-numbers language-none"><code class="language-none">.\physdiskwrite.exe -u openwrt-22.03.5-x86-64-generic-ext4-combined-efi.img<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>-u</code>参数的意义是解除安全覆盖限制*(默认情况下，该软件将拒绝对2G以上的磁盘进行写入)*</p>
+<p><strong>注意</strong></p>
+<ul>
+<li>需要使用管理员权限运行，否则读不到磁盘</li>
+<li>刷写前务必手动清除目标磁盘上的分区，否则会写入异常</li>
+</ul>
+<h1 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h1><p>如果没有差错，直接引导这个设备，那么一切都应就位！</p>
+
+    </div>
+    <div id="qwq" \>
+  </body>
+
+</html>
+
+
+

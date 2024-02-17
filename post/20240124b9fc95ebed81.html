@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>smyhw'blog | 意志</title>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <!-- 手动引入固定库 -->
+    <script src="/libs/jquery.js"></script>
+    <script src="/libs/prism.js"></script>
+    <link href="/libs/prism.css" rel="stylesheet" />
+    <!-- 不做成SPA的原因是咱想每个页面拥有单独的直连URL -->
+    <script type="module" crossorigin src="/index.js"></script>
+    <link rel="stylesheet" href="/assets/index.css">
+  <meta name="generator" content="Hexo 5.4.2"></head>
+
+  <body>
+    <div id="data" page_type="contents" title="随身wifi指导手册之三—刷机" date="2024-01-23">
+        <p>这是现有条件下的尽可能简单的刷机流程。很简单的，真的</p>
+<span id="more"></span>
+<hr>
+<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><blockquote>
+<p>请在任何刷机操作前务必备份</p>
+</blockquote>
+<p>取决于这些棒子的体质，即使是正确的操作也有出错的可能。所以，无论如何，在任何危险操作前备份！！！</p>
+<p>汝也很有可能漏掉一些事情，比如棒子原始系统里的一些信息(IMEI,配置项)，这时只能刷回原系统查看，如果没有备份，即使同一型号的其他棒子也未必拥有一样的内容</p>
+<h1 id="工具链"><a href="#工具链" class="headerlink" title="工具链"></a>工具链</h1><p>这些是目前比较好用的刷机包</p>
+<ul>
+<li>酷安苏苏小亮亮的openwrt和debian -&gt; <a target="_blank" rel="noopener" href="https://www.kancloud.cn/a813630449/ufi_car/2792820">&lt;这里&gt;</a></li>
+<li>酷安酷安jsbsbxjxh66的debian的debian -&gt; <a target="_blank" rel="noopener" href="https://cloud.189.cn/t/N7jIB3e6jEV3">&lt;这里&gt;（访问码：5g6n）</a><br>链接均取自原作者，不保证可用性，<strong>注意查毒</strong><br>既然是最简单的刷机流程，那么,这几个自带fastboot和adb工具的刷机包最合适不过</li>
+</ul>
+<h1 id="安装驱动"><a href="#安装驱动" class="headerlink" title="安装驱动"></a>安装驱动</h1><p>刷机需要用到<code>fastboot</code>模式，这个模式需要使用驱动才能正常被识别，一般使用的是vivo的驱动(咱也不知道为啥，但是其他dalao都用的这个.jpg),搜索<code>vivo 9008驱动</code>等关键词就能找到</p>
+<h1 id="刷入"><a href="#刷入" class="headerlink" title="刷入"></a>刷入</h1><p>首先进入fastboot模式，<br>解压刷机包，咱这里使用了酷安jsbsbxjxh66的包，解压后直接运行一键刷入工具，苏苏小亮亮的包也提供相似的脚本<br><img src="https://webstatic.smyhw.online/e1d735fd3341384543a7b0e58c2f7156.png" alt="脚本截图"><br>这里选择汝所插入的棒子的型号，x表示任意匹配，例如，咱的ufi103s使用1<br>一路确定，刷入过程中棒子会重启多次，这是正常情况，<br>漫长的等待后，脚本会提示按任意键继续，这时按任意按键会重启棒子，重启后刷入流程完成</p>
+<h1 id="刷机后事项"><a href="#刷机后事项" class="headerlink" title="刷机后事项"></a>刷机后事项</h1><h2 id="连接刷入后的系统"><a href="#连接刷入后的系统" class="headerlink" title="连接刷入后的系统"></a>连接刷入后的系统</h2><p>在刷入后，棒子在若干次重启后会注册一个rndis网络设备，查看它</p>
+<pre class="line-numbers language-none"><code class="language-none">以太网适配器 以太网 2:
+
+   连接特定的 DNS 后缀 . . . . . . . :
+   本地链接 IPv6 地址. . . . . . . . : fe80::8f6f:abd9:c485:8047%27
+   IPv4 地址 . . . . . . . . . . . . : 10.42.0.224
+   子网掩码  . . . . . . . . . . . . : 255.255.255.0
+   默认网关. . . . . . . . . . . . . : 10.42.0.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后使用ssh连接网关，咱这里是<code>10.42.0.1</code>，则使用<code>ssh root@10.42.0.1</code>，密码应该随刷机包附带，jsbsbxjxh66这个包是<code>1313144</code><br><strong>注意</strong></p>
+<ul>
+<li>如果没有出现RNDIS设备，而只是多了个adb设备，则主机没有RNDIS驱动，或RNDIS驱动没有注册到设备，这时尝试直接给这个adb设备手动更新驱动程序至RNDIS。或直接使用adb连接排查固件问题</li>
+<li>如果什么设备都没有出现，则很可能表示固件USB方面存在问题，这时尝试扫描周围wifi，固件仍可能开放了wifi可以连接</li>
+</ul>
+<h2 id="adb连接"><a href="#adb连接" class="headerlink" title="adb连接"></a>adb连接</h2><p>大部分固件仍然在usb接口上提供adb，并且接入了shell，所以在把网络完全玩丢的时候可以使用<code>adb shell</code>直接访问设备shell</p>
+<h2 id="wifi连接"><a href="#wifi连接" class="headerlink" title="wifi连接"></a>wifi连接</h2><p>部分固件&#x2F;设备的wifi可能无法同时发射和接收，如果扫描不到周围的wifi列表或者自身发射wifi但是其他设备搜索不到，先删除其他无线配置以确保没有同时尝试接收和发射</p>
+<h2 id="4g联网相关"><a href="#4g联网相关" class="headerlink" title="4g联网相关"></a>4g联网相关</h2><p>刷机包区分具体型号，但是同时系列中的细分型号的区别很可能只是modem的固件文件，如果刷入之后无法启动modem或modem报错，尝试替换modem固件：</p>
+<ol>
+<li>首先需要原始的modem分区备份，在QPT的备份中应该名为<code>NON-HLOS.bin</code>，这是个压缩包，可以直接解开</li>
+<li>找到棒子系统中的固件文件夹，例如<code>/lib/firmware</code>，直接解压进去</li>
+<li>重启，完成</li>
+</ol>
+<ul>
+<li><code>mmcli -L</code>可以列出所有modem</li>
+<li><code>mmcli -l &lt;modem序号&gt;</code>可以展示指定modem的信息</li>
+</ul>
+<h3 id="切卡相关"><a href="#切卡相关" class="headerlink" title="切卡相关"></a>切卡相关</h3><p>不同固件的切卡方式都不一样，不同硬件的切卡方式也不一样，所以对于最终用户这是个很玄学问题<br>固件作者应或多或少都附带了切卡方式，例如本文所述的<code>jsbsbxjxh66</code>的固件，则附带了一个txt文件描述如何切卡</p>
+<pre class="line-numbers language-none"><code class="language-none">echo 1 &gt; &#x2F;sys&#x2F;class&#x2F;leds&#x2F;sim:sel&#x2F;brightness
+echo 0 &gt; &#x2F;sys&#x2F;class&#x2F;leds&#x2F;sim:en&#x2F;brightness
+echo 0 &gt; &#x2F;sys&#x2F;class&#x2F;leds&#x2F;sim:sel2&#x2F;brightness
+echo 0 &gt; &#x2F;sys&#x2F;class&#x2F;leds&#x2F;sim:en2&#x2F;brightness
+modprobe -r qcom-q6v5-mss
+modprobe qcom-q6v5-mss
+systemctl restart rmtfs
+systemctl restart dbus-org.freedesktop.ModemManager1.service<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到这个固件通过将切卡的gpio绑定到led灯控制上实现的切卡<br>所以，如果一个设备找不到切卡说明并且汝的一切尝试都没有效果，很有可能这个固件就没法在汝的设备上实现切卡，这种情况不妨换一个固件</p>
+
+    </div>
+    <div id="qwq" \>
+  </body>
+
+</html>
+
+
+
